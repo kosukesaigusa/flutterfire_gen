@@ -152,8 +152,9 @@ DocumentReference<ReadAppUserPostLike> readAppUserPostLikeDocumentReference({
   required String appUserPostLikeId,
 }) =>
     readAppUserPostLikeCollectionReference(
-            appUserId: appUserId, appUserPostId: appUserPostId)
-        .doc(appUserPostLikeId);
+      appUserId: appUserId,
+      appUserPostId: appUserPostId,
+    ).doc(appUserPostLikeId);
 
 /// Provides a reference to the appUserPostLikes collection for creating.
 CollectionReference<CreateAppUserPostLike>
@@ -180,8 +181,9 @@ DocumentReference<CreateAppUserPostLike>
   required String appUserPostLikeId,
 }) =>
         createAppUserPostLikeCollectionReference(
-                appUserId: appUserId, appUserPostId: appUserPostId)
-            .doc(appUserPostLikeId);
+          appUserId: appUserId,
+          appUserPostId: appUserPostId,
+        ).doc(appUserPostLikeId);
 
 /// Provides a reference to the appUserPostLikes collection for updating.
 CollectionReference<UpdateAppUserPostLike>
@@ -208,8 +210,9 @@ DocumentReference<UpdateAppUserPostLike>
   required String appUserPostLikeId,
 }) =>
         updateAppUserPostLikeCollectionReference(
-                appUserId: appUserId, appUserPostId: appUserPostId)
-            .doc(appUserPostLikeId);
+          appUserId: appUserId,
+          appUserPostId: appUserPostId,
+        ).doc(appUserPostLikeId);
 
 /// Provides a reference to the appUserPostLikes collection for deleting.
 CollectionReference<DeleteAppUserPostLike>
@@ -236,8 +239,9 @@ DocumentReference<DeleteAppUserPostLike>
   required String appUserPostLikeId,
 }) =>
         deleteAppUserPostLikeCollectionReference(
-                appUserId: appUserId, appUserPostId: appUserPostId)
-            .doc(appUserPostLikeId);
+          appUserId: appUserId,
+          appUserPostId: appUserPostId,
+        ).doc(appUserPostLikeId);
 
 /// Manages queries against the appUserPostLikes collection.
 class AppUserPostLikeQuery {
@@ -251,7 +255,9 @@ class AppUserPostLikeQuery {
     int Function(ReadAppUserPostLike lhs, ReadAppUserPostLike rhs)? compare,
   }) async {
     Query<ReadAppUserPostLike> query = readAppUserPostLikeCollectionReference(
-        appUserId: appUserId, appUserPostId: appUserPostId);
+      appUserId: appUserId,
+      appUserPostId: appUserPostId,
+    );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -274,7 +280,9 @@ class AppUserPostLikeQuery {
     bool excludePendingWrites = false,
   }) {
     Query<ReadAppUserPostLike> query = readAppUserPostLikeCollectionReference(
-        appUserId: appUserId, appUserPostId: appUserPostId);
+      appUserId: appUserId,
+      appUserPostId: appUserPostId,
+    );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -333,8 +341,9 @@ class AppUserPostLikeQuery {
     required CreateAppUserPostLike createAppUserPostLike,
   }) =>
       createAppUserPostLikeCollectionReference(
-              appUserId: appUserId, appUserPostId: appUserPostId)
-          .add(createAppUserPostLike);
+        appUserId: appUserId,
+        appUserPostId: appUserPostId,
+      ).add(createAppUserPostLike);
 
   /// Sets a [AppUserPostLike] document.
   Future<void> set({

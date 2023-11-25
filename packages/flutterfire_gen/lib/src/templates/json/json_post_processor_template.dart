@@ -1,31 +1,42 @@
-import '../../configs/json_post_processor_config.dart';
+import '../../configs/field_config.dart';
+
+enum _JsonPostProcessorTemplateType { fromJson, toJson }
 
 /// A template for JSON post processors.
 class JsonPostProcessorTemplate {
-  /// Creates a [JsonPostProcessorTemplate].
-  const JsonPostProcessorTemplate({
-    required this.fields,
-    required this.jsonPostProcessorConfigs,
-  });
+  ///
+  const JsonPostProcessorTemplate.fromJson(this.fieldConfigs)
+      : _type = _JsonPostProcessorTemplateType.fromJson;
 
-  /// The fields for the document.
-  final Map<String, String> fields;
+  ///
+  const JsonPostProcessorTemplate.toJson(this.fieldConfigs)
+      : _type = _JsonPostProcessorTemplateType.toJson;
 
-  /// The JSON post processor configs for the document.
-  final Map<String, JsonPostProcessorConfig> jsonPostProcessorConfigs;
+  ///
+  final List<FieldConfig> fieldConfigs;
 
-  /// Returns the JSON post processor fromJson string.
-  String fromJsonTemplate() {
+  ///
+  final _JsonPostProcessorTemplateType _type;
+
+  @override
+  String toString() {
     final buffer = StringBuffer();
-    for (final entry in fields.entries) {
-      final fieldNameString = entry.key;
-      final jsonPostProcessorConfig = jsonPostProcessorConfigs[fieldNameString];
+    for (final fieldConfig in fieldConfigs) {
+      final jsonPostProcessorConfig = fieldConfig.jsonPostProcessorConfig;
       if (jsonPostProcessorConfig == null) {
         continue;
       }
-      final value = '${jsonPostProcessorConfig.jsonPostProcessorString}.'
-          'fromJson(json)';
-      buffer.writeln("'$fieldNameString': $value,");
+      switch (_type) {
+        case _JsonPostProcessorTemplateType.fromJson:
+          final value = '${jsonPostProcessorConfig.jsonPostProcessorString}.'
+              'fromJson(json)';
+          buffer.writeln("'${fieldConfig.name}': $value,");
+        case _JsonPostProcessorTemplateType.toJson:
+          buffer.writeln(
+            "if (json.containsKey('${fieldConfig.name}')) "
+            '${jsonPostProcessorConfig.jsonPostProcessorString}.toJson(json),',
+          );
+      }
     }
     return buffer.toString();
   }

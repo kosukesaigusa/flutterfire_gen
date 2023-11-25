@@ -148,7 +148,9 @@ DocumentReference<ReadAppUserPost> readAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
-    readAppUserPostCollectionReference(appUserId: appUserId).doc(appUserPostId);
+    readAppUserPostCollectionReference(
+      appUserId: appUserId,
+    ).doc(appUserPostId);
 
 /// Provides a reference to the appUserPosts collection for creating.
 CollectionReference<CreateAppUserPost> createAppUserPostCollectionReference({
@@ -168,8 +170,9 @@ DocumentReference<CreateAppUserPost> createAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
-    createAppUserPostCollectionReference(appUserId: appUserId)
-        .doc(appUserPostId);
+    createAppUserPostCollectionReference(
+      appUserId: appUserId,
+    ).doc(appUserPostId);
 
 /// Provides a reference to the appUserPosts collection for updating.
 CollectionReference<UpdateAppUserPost> updateAppUserPostCollectionReference({
@@ -189,8 +192,9 @@ DocumentReference<UpdateAppUserPost> updateAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
-    updateAppUserPostCollectionReference(appUserId: appUserId)
-        .doc(appUserPostId);
+    updateAppUserPostCollectionReference(
+      appUserId: appUserId,
+    ).doc(appUserPostId);
 
 /// Provides a reference to the appUserPosts collection for deleting.
 CollectionReference<DeleteAppUserPost> deleteAppUserPostCollectionReference({
@@ -210,8 +214,9 @@ DocumentReference<DeleteAppUserPost> deleteAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
-    deleteAppUserPostCollectionReference(appUserId: appUserId)
-        .doc(appUserPostId);
+    deleteAppUserPostCollectionReference(
+      appUserId: appUserId,
+    ).doc(appUserPostId);
 
 /// Manages queries against the appUserPosts collection.
 class AppUserPostQuery {
@@ -223,8 +228,9 @@ class AppUserPostQuery {
         queryBuilder,
     int Function(ReadAppUserPost lhs, ReadAppUserPost rhs)? compare,
   }) async {
-    Query<ReadAppUserPost> query =
-        readAppUserPostCollectionReference(appUserId: appUserId);
+    Query<ReadAppUserPost> query = readAppUserPostCollectionReference(
+      appUserId: appUserId,
+    );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -245,8 +251,9 @@ class AppUserPostQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadAppUserPost> query =
-        readAppUserPostCollectionReference(appUserId: appUserId);
+    Query<ReadAppUserPost> query = readAppUserPostCollectionReference(
+      appUserId: appUserId,
+    );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -299,8 +306,9 @@ class AppUserPostQuery {
     required String appUserId,
     required CreateAppUserPost createAppUserPost,
   }) =>
-      createAppUserPostCollectionReference(appUserId: appUserId)
-          .add(createAppUserPost);
+      createAppUserPostCollectionReference(
+        appUserId: appUserId,
+      ).add(createAppUserPost);
 
   /// Sets a [AppUserPost] document.
   Future<void> set({

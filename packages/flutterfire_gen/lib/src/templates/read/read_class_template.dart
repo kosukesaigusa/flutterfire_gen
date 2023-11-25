@@ -17,29 +17,40 @@ class ReadClassTemplate {
   String toString() {
     final constructor = ConstructorTemplate(
       className: config.readClassName,
-      requiredFieldNames:
-          config.allFields.entries.map((entry) => entry.key).toList(),
-      optionalFieldNames: [],
+      configs: [
+        for (final fieldConfig in config.fieldConfigs)
+          ConstructorFieldConfig(name: fieldConfig.name, isOptional: false),
+        ConstructorFieldConfig(
+          name: config.documentIdFieldName,
+          isOptional: false,
+        ),
+        if (config.includePathField)
+          ConstructorFieldConfig(name: 'path', isOptional: false),
+        if (config.includeDocumentReferenceField)
+          ConstructorFieldConfig(
+            name: config.documentReferenceFieldName,
+            isOptional: false,
+          ),
+      ],
     );
 
-    final fieldDefinitions = FieldDefinitionsTemplate(fields: config.allFields);
-
-    final fromJson = FromJsonTemplate(
-      className: config.readClassName,
-      fields: config.allFields,
-      defaultValueStrings: config.readDefaultValueStrings,
-      jsonConverterConfigs: config.jsonConverterConfigs,
-      jsonPostProcessorConfigs: config.jsonPostProcessorConfigs,
+    final fieldDefinitions = FieldDefinitionsTemplate(
+      fields: <String, String>{
+        for (final fieldConfig in config.fieldConfigs)
+          fieldConfig.name: fieldConfig.typeName(),
+        config.documentIdFieldName: 'String',
+        if (config.includePathField) 'path': 'String',
+        if (config.includeDocumentReferenceField)
+          config.documentReferenceFieldName:
+              config.readDocumentReferenceTypeName,
+      },
     );
+
+    final fromJson = FromJsonTemplate(config);
 
     final fromDocumentSnapshot = FromDocumentSnapshotTemplate(config: config);
 
-    final copyWith = config.generateCopyWith
-        ? CopyWithTemplate(
-            className: config.readClassName,
-            fields: config.allFields,
-          )
-        : '';
+    final copyWith = config.generateCopyWith ? CopyWithTemplate(config) : '';
 
     return '''
 class ${config.readClassName} {

@@ -101,8 +101,10 @@ class CreateAppUserPostLikeTask {
       'appUserPostLikeId': appUserPostLikeId,
     };
     final jsonPostProcessors = <({String key, dynamic value})>[
-      _AppUserIdRefJsonPostProcessor().toJson(json),
-      _AppUserPostIdRefJsonPostProcessor().toJson(json),
+      if (json.containsKey('appUserId'))
+        _AppUserIdRefJsonPostProcessor().toJson(json),
+      if (json.containsKey('appUserPostId'))
+        _AppUserPostIdRefJsonPostProcessor().toJson(json),
     ];
     return {
       ...json,

@@ -117,7 +117,9 @@ DocumentReference<ReadReadStatus> readReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
 }) =>
-    readReadStatusCollectionReference(chatRoomId: chatRoomId).doc(readStatusId);
+    readReadStatusCollectionReference(
+      chatRoomId: chatRoomId,
+    ).doc(readStatusId);
 
 /// Provides a reference to the readStatuses collection for creating.
 CollectionReference<CreateReadStatus> createReadStatusCollectionReference({
@@ -137,8 +139,9 @@ DocumentReference<CreateReadStatus> createReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
 }) =>
-    createReadStatusCollectionReference(chatRoomId: chatRoomId)
-        .doc(readStatusId);
+    createReadStatusCollectionReference(
+      chatRoomId: chatRoomId,
+    ).doc(readStatusId);
 
 /// Provides a reference to the readStatuses collection for updating.
 CollectionReference<UpdateReadStatus> updateReadStatusCollectionReference({
@@ -158,8 +161,9 @@ DocumentReference<UpdateReadStatus> updateReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
 }) =>
-    updateReadStatusCollectionReference(chatRoomId: chatRoomId)
-        .doc(readStatusId);
+    updateReadStatusCollectionReference(
+      chatRoomId: chatRoomId,
+    ).doc(readStatusId);
 
 /// Provides a reference to the readStatuses collection for deleting.
 CollectionReference<DeleteReadStatus> deleteReadStatusCollectionReference({
@@ -179,8 +183,9 @@ DocumentReference<DeleteReadStatus> deleteReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
 }) =>
-    deleteReadStatusCollectionReference(chatRoomId: chatRoomId)
-        .doc(readStatusId);
+    deleteReadStatusCollectionReference(
+      chatRoomId: chatRoomId,
+    ).doc(readStatusId);
 
 /// Manages queries against the readStatuses collection.
 class ReadStatusQuery {
@@ -191,8 +196,9 @@ class ReadStatusQuery {
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     int Function(ReadReadStatus lhs, ReadReadStatus rhs)? compare,
   }) async {
-    Query<ReadReadStatus> query =
-        readReadStatusCollectionReference(chatRoomId: chatRoomId);
+    Query<ReadReadStatus> query = readReadStatusCollectionReference(
+      chatRoomId: chatRoomId,
+    );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -212,8 +218,9 @@ class ReadStatusQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadReadStatus> query =
-        readReadStatusCollectionReference(chatRoomId: chatRoomId);
+    Query<ReadReadStatus> query = readReadStatusCollectionReference(
+      chatRoomId: chatRoomId,
+    );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -266,8 +273,9 @@ class ReadStatusQuery {
     required String chatRoomId,
     required CreateReadStatus createReadStatus,
   }) =>
-      createReadStatusCollectionReference(chatRoomId: chatRoomId)
-          .add(createReadStatus);
+      createReadStatusCollectionReference(
+        chatRoomId: chatRoomId,
+      ).add(createReadStatus);
 
   /// Sets a [ReadStatus] document.
   Future<void> set({

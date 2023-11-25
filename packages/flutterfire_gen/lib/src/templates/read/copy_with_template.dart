@@ -1,32 +1,38 @@
-import '../../utils/string.dart';
+import '../../configs/code_generation_config.dart';
 
 /// A template for a copyWith method for a document class.
 class CopyWithTemplate {
-  /// Creates a [CopyWithTemplate] with the given [className] and [fields].
-  const CopyWithTemplate({
-    required this.className,
-    required this.fields,
-  });
+  ///
+  const CopyWithTemplate(this.config);
 
-  /// The name of the document class.
-  final String className;
-
-  /// The fields of the document.
-  final Map<String, String> fields;
+  ///
+  final CodeGenerationConfig config;
 
   /// Returns the copyWith method for the document class.
   /// return empty string if `config.generateCopyWith` is false.
   @override
   String toString() {
+    final fields = <String, String>{
+      for (final fieldConfig in config.fieldConfigs)
+        fieldConfig.name: fieldConfig.typeName(forceNullable: true),
+      config.documentIdFieldName: 'String?',
+      if (config.includePathField) 'path': 'String?',
+      if (config.includeDocumentReferenceField)
+        config.documentReferenceFieldName:
+            'DocumentReference<${config.readClassName}>?',
+    };
+    if (fields.isEmpty) {
+      return '${config.readClassName} copyWith() => ${config.readClassName}();';
+    }
     return '''
-$className copyWith({
+${config.readClassName} copyWith({
     ${fields.entries.map((entry) {
       final fieldNameString = entry.key;
       final typeNameString = entry.value;
-      return '${typeNameString.ensureNullable()} $fieldNameString,';
+      return '$typeNameString $fieldNameString,';
     }).join('\n')}
   }) {
-    return $className(
+    return ${config.readClassName}(
       ${fields.entries.map((entry) => '${entry.key}: ${entry.key} ?? this.${entry.key},').join('\n')}
     );
   }

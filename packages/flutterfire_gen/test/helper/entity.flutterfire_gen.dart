@@ -419,8 +419,8 @@ class ReadEntity {
 class CreateEntity {
   const CreateEntity({
     required this.text,
-    this.textWithDefault = 'createDefault',
-    this.nullableText = 'createDefault',
+    this.textWithDefault,
+    this.nullableText,
     required this.integer,
     required this.integerWithDefault,
     this.nullableInteger,
@@ -460,15 +460,14 @@ class CreateEntity {
     required this.foo,
     required this.fooWithDefault,
     this.nullableFoo,
-    this.nullableFooWithDefaultAnnotation = const Foo('defaultBar'),
+    this.nullableFooWithDefaultAnnotation,
     required this.fieldValueAllowedInt,
     this.fieldValueAllowedNullableInt,
-    this.fieldValueAllowedNullableIntWithDefaultAnnotation =
-        const ActualValue(0),
+    this.fieldValueAllowedNullableIntWithDefaultAnnotation,
   });
 
   final String text;
-  final String textWithDefault;
+  final String? textWithDefault;
   final String? nullableText;
   final int integer;
   final int integerWithDefault;
@@ -517,7 +516,7 @@ class CreateEntity {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{
       'text': text,
-      'textWithDefault': textWithDefault,
+      'textWithDefault': textWithDefault ?? 'createDefault',
       'nullableText': nullableText ?? 'createDefault',
       'integer': integer,
       'integerWithDefault': integerWithDefault,
@@ -579,8 +578,8 @@ class CreateEntity {
 class UpdateEntity {
   const UpdateEntity({
     this.text,
-    this.textWithDefault = 'updateDefault',
-    this.nullableText = 'updateDefault',
+    this.textWithDefault,
+    this.nullableText,
     this.integer,
     this.integerWithDefault,
     this.nullableInteger,
@@ -670,8 +669,8 @@ class UpdateEntity {
   final Foo? nullableFoo;
   final Foo? nullableFooWithDefaultAnnotation;
   final FirestoreData<int>? fieldValueAllowedInt;
-  final FirestoreData<int?>? fieldValueAllowedNullableInt;
-  final FirestoreData<int?>? fieldValueAllowedNullableIntWithDefaultAnnotation;
+  final FirestoreData<int>? fieldValueAllowedNullableInt;
+  final FirestoreData<int>? fieldValueAllowedNullableIntWithDefaultAnnotation;
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{

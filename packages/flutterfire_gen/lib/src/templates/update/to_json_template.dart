@@ -1,37 +1,14 @@
-import 'package:meta/meta.dart';
-
-import '../../configs/json_converter_config.dart';
-import '../../configs/json_post_processor_config.dart';
+import '../../configs/field_config.dart';
+import '../../parser/to_json_field_parser.dart';
+import '../json/json_post_processor_template.dart';
 
 /// A template for `toJson` method when updating documents in Firestore.
 class ToJsonTemplate {
   /// Creates a [ToJsonTemplate].
-  const ToJsonTemplate({
-    required this.fields,
-    required this.defaultValueStrings,
-    required this.fieldValueAllowedFields,
-    required this.alwaysUseFieldValueServerTimestampWhenUpdatingFields,
-    required this.jsonConverterConfigs,
-    required this.jsonPostProcessorConfigs,
-  });
+  const ToJsonTemplate(this.fieldConfigs);
 
-  /// The fields for the document.
-  final Map<String, String> fields;
-
-  /// The default value strings for the document.
-  final Map<String, String> defaultValueStrings;
-
-  /// The fields that are allowed to be `FieldValue`.
-  final Set<String> fieldValueAllowedFields;
-
-  /// The fields that are always `FieldValue.serverTimestamp()`.
-  final Set<String> alwaysUseFieldValueServerTimestampWhenUpdatingFields;
-
-  /// The JSON converter configs for the document.
-  final Map<String, JsonConverterConfig> jsonConverterConfigs;
-
-  /// The JSON post processor configs for the document.
-  final Map<String, JsonPostProcessorConfig> jsonPostProcessorConfigs;
+  ///
+  final List<FieldConfig> fieldConfigs;
 
   @override
   String toString() {
@@ -41,7 +18,7 @@ Map<String, dynamic> toJson() {
     ${_parseFields()}
   };
   final jsonPostProcessors = <({String key, dynamic value})>[
-    ${_parseJsonPostProcessors()}
+    ${JsonPostProcessorTemplate.toJson(fieldConfigs)}
   ];
   return {
     ...json,
@@ -52,94 +29,21 @@ Map<String, dynamic> toJson() {
 ''';
   }
 
-  String _parseJsonPostProcessors() {
-    final buffer = StringBuffer();
-    for (final entry in fields.entries) {
-      final fieldNameString = entry.key;
-      final jsonPostProcessorConfig = jsonPostProcessorConfigs[fieldNameString];
-      if (jsonPostProcessorConfig == null) {
-        continue;
-      }
-      buffer.writeln(
-        "if (json.containsKey('$fieldNameString')) "
-        '${jsonPostProcessorConfig.jsonPostProcessorString}.toJson(json),',
-      );
-    }
-    return buffer.toString();
-  }
-
   String _parseFields() {
-    return fields.entries.map((entry) {
-      final fieldNameString = entry.key;
-      final typeNameString = entry.value;
-      final defaultValueString = defaultValueStrings[fieldNameString];
-      final isFieldValueAllowed = fieldValueAllowedFields.contains(entry.key);
-      final isAlwaysUseFieldValueServerTimestampWhenUpdating =
-          alwaysUseFieldValueServerTimestampWhenUpdatingFields
-              .contains(entry.key);
-      final jsonConverterConfig = jsonConverterConfigs[fieldNameString];
-      return toJsonEachField(
-        fieldNameString: fieldNameString,
-        typeNameString: typeNameString,
-        defaultValueString: defaultValueString,
-        isFieldValueAllowed: isFieldValueAllowed,
-        isAlwaysUseFieldValueServerTimestampWhenUpdating:
-            isAlwaysUseFieldValueServerTimestampWhenUpdating,
-        jsonConverterConfig: jsonConverterConfig,
+    final stringBuffer = StringBuffer();
+    for (final fieldConfig in fieldConfigs) {
+      final result = ToJsonFieldParser(
+        name: fieldConfig.name,
+        dartType: fieldConfig.dartType,
+        defaultValueString: fieldConfig.updateDefaultValueString,
+        allowFieldValue: fieldConfig.allowFieldValue,
+        alwaysUseFieldValueServerTimestamp:
+            fieldConfig.alwaysUseFieldValueServerTimestampWhenUpdating,
+        jsonConverterConfig: fieldConfig.jsonConverterConfig,
+        skipIfNull: true,
       );
-    }).join('\n');
-  }
-
-  ///
-  @visibleForTesting
-  String toJsonEachField({
-    required String fieldNameString,
-    required String typeNameString,
-    String? defaultValueString,
-    bool isFieldValueAllowed = false,
-    bool isAlwaysUseFieldValueServerTimestampWhenUpdating = false,
-    JsonConverterConfig? jsonConverterConfig,
-  }) {
-    final hasDefaultValue = (defaultValueString ?? '').isNotEmpty;
-    if (isAlwaysUseFieldValueServerTimestampWhenUpdating) {
-      return "'$fieldNameString': FieldValue.serverTimestamp(),";
+      stringBuffer.writeln(result);
     }
-    if (jsonConverterConfig != null) {
-      if (hasDefaultValue) {
-        if (isFieldValueAllowed) {
-          return "'$fieldNameString': $fieldNameString == null "
-              '? $defaultValueString '
-              ': ${jsonConverterConfig.jsonConverterString}'
-              '.toJson($fieldNameString!.actualValue),';
-        } else {
-          return "'$fieldNameString': $fieldNameString == null "
-              '? $defaultValueString '
-              ': ${jsonConverterConfig.jsonConverterString}'
-              '.toJson($fieldNameString!),';
-        }
-      }
-      if (isFieldValueAllowed) {
-        return "if ($fieldNameString != null) '$fieldNameString': "
-            '${jsonConverterConfig.jsonConverterString}'
-            '.toJson($fieldNameString!.actualValue),';
-      } else {
-        return "if ($fieldNameString != null) '$fieldNameString': "
-            '${jsonConverterConfig.jsonConverterString}'
-            '.toJson($fieldNameString!),';
-      }
-    }
-    if (isFieldValueAllowed) {
-      if (hasDefaultValue) {
-        return "'$fieldNameString': "
-            '$fieldNameString?.value ?? $defaultValueString,';
-      }
-      return 'if ($fieldNameString != null) '
-          "'$fieldNameString': $fieldNameString!.value,";
-    }
-    if (hasDefaultValue) {
-      return "'$fieldNameString': $fieldNameString ?? $defaultValueString,";
-    }
-    return 'if ($fieldNameString != null) '
-        "'$fieldNameString': $fieldNameString,";
+    return stringBuffer.toString();
   }
 }

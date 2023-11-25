@@ -1,6 +1,5 @@
 import '../utils/string.dart';
-import 'json_converter_config.dart';
-import 'json_post_processor_config.dart';
+import 'field_config.dart';
 
 /// A class to represent the configuration for a Firestore document.
 class CodeGenerationConfig {
@@ -12,16 +11,7 @@ class CodeGenerationConfig {
     required this.path,
     required this.baseClassName,
     required this.documentName,
-    required this.selfDefinedFields,
-    required this.allFields,
-    required this.readDefaultValueStrings,
-    required this.createDefaultValueStrings,
-    required this.updateDefaultValueStrings,
-    required this.fieldValueAllowedFields,
-    required this.alwaysUseFieldValueServerTimestampWhenCreatingFields,
-    required this.alwaysUseFieldValueServerTimestampWhenUpdatingFields,
-    required this.jsonConverterConfigs,
-    required this.jsonPostProcessorConfigs,
+    required this.fieldConfigs,
   }) : firestorePathSegments = parseFirestorePath(path);
 
   /// Whether to include a path field in the document class.
@@ -48,40 +38,8 @@ class CodeGenerationConfig {
   /// The name of the document.
   final String documentName;
 
-  /// Self-defined fields of visited FirestoreDocument annotated class.
-  final Map<String, String> selfDefinedFields;
-
-  /// All fields of self-defined fields and flutterfire_gen added fields.
-  final Map<String, String> allFields;
-
-  /// Default value strings of each field when reading Cloud Firestore
-  /// documents.
-  final Map<String, String> readDefaultValueStrings;
-
-  /// Default value strings of each field when creating Cloud Firestore
-  /// documents.
-  final Map<String, String> createDefaultValueStrings;
-
-  /// Default value strings of each field when updating Cloud Firestore
-  /// documents.
-  final Map<String, String> updateDefaultValueStrings;
-
-  /// A set of strings of FieldValue allowed fields.
-  final Set<String> fieldValueAllowedFields;
-
-  /// A set of strings of fields always use `FieldValue.serverTimestamp()` when
-  /// creating.
-  final Set<String> alwaysUseFieldValueServerTimestampWhenCreatingFields;
-
-  /// A set of strings of fields always use `FieldValue.serverTimestamp()` when
-  /// updating.
-  final Set<String> alwaysUseFieldValueServerTimestampWhenUpdatingFields;
-
-  /// JsonConverter configurations of each field.
-  final Map<String, JsonConverterConfig> jsonConverterConfigs;
-
-  /// JsonPostProcessor configurations of each field.
-  final Map<String, JsonPostProcessorConfig> jsonPostProcessorConfigs;
+  /// All fields configurations of the generation target class.
+  final List<FieldConfig> fieldConfigs;
 
   /// The capitalized collection name of the document.
   String get capitalizedCollectionName => collectionName.capitalize();
@@ -113,47 +71,66 @@ class CodeGenerationConfig {
   /// The document ID field name.
   String get documentIdFieldName => '${documentName}Id';
 
-  /// The document path field name.
-  // final String documentPathFieldName = 'path';
-
   /// The document reference field name.
   String get documentReferenceFieldName => '${documentName}Reference';
 
-  /// The collection reference name of the document for reading.
-  String get readCollectionReferenceName =>
-      'read${baseClassName}CollectionReference';
-
-  /// The document reference name of the document for reading.
+  ///
   String get readDocumentReferenceName =>
-      'read${baseClassName}DocumentReference';
+      documentReferenceName(ReferenceClassType.read);
 
-  /// The collection reference name of the document for creating.
-  String get createCollectionReferenceName =>
-      'create${baseClassName}CollectionReference';
+  ///
+  String get createDocumentReferenceName =>
+      documentReferenceName(ReferenceClassType.create);
+
+  ///
+  String get updateDocumentReferenceName =>
+      documentReferenceName(ReferenceClassType.update);
+
+  ///
+  String get deleteDocumentReferenceName =>
+      documentReferenceName(ReferenceClassType.delete);
+
+  ///
+  String documentReferenceName(
+    ReferenceClassType referenceClassType,
+  ) =>
+      '${referenceClassType.name}${baseClassName}DocumentReference';
 
   /// The document reference name of the document for creating.
-  String collectionReferenceName(ReferenceClassType referenceClassType) =>
+  String collectionReferenceName(
+    ReferenceClassType referenceClassType,
+  ) =>
       '${referenceClassType.name}${baseClassName}CollectionReference';
 
-  /// The collection reference name of the document for updating.
-  String get createDocumentReferenceName =>
-      'create${baseClassName}DocumentReference';
+  /// The document reference type name of the document for reading.
+  String get readDocumentReferenceTypeName =>
+      documentReferenceTypeName(ReferenceClassType.read);
 
-  /// The collection reference name of the document for updating.
-  String get updateCollectionReferenceName =>
-      'update${baseClassName}CollectionReference';
+  ///
+  String documentReferenceTypeName(ReferenceClassType referenceClassType) =>
+      'DocumentReference'
+      '<${classNameFromReferenceClassType(referenceClassType)}>';
 
-  /// The document reference name of the document for updating.
-  String get updateDocumentReferenceName =>
-      'update${baseClassName}DocumentReference';
+  ///
+  String collectionReferenceTypeName(ReferenceClassType referenceClassType) =>
+      'CollectionReference'
+      '<${classNameFromReferenceClassType(referenceClassType)}>';
 
-  /// The collection reference name of the document for deleting.
-  String get deleteCollectionReferenceName =>
-      'delete${baseClassName}CollectionReference';
-
-  /// The document reference name of the document for deleting.
-  String get deleteDocumentReferenceName =>
-      'delete${baseClassName}DocumentReference';
+  ///
+  String classNameFromReferenceClassType(
+    ReferenceClassType referenceClassType,
+  ) {
+    switch (referenceClassType) {
+      case ReferenceClassType.read:
+        return readClassName;
+      case ReferenceClassType.create:
+        return createClassName;
+      case ReferenceClassType.update:
+        return updateClassName;
+      case ReferenceClassType.delete:
+        return deleteClassName;
+    }
+  }
 }
 
 /// An enum to represent the type of a reference class.

@@ -1,5 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import 'package:source_gen/source_gen.dart';
+
 import '../configs/code_generation_config.dart';
 
 /// Returns Query class template.
@@ -136,28 +138,44 @@ class ${config.baseClassName}Query {
   }
 
   String _parentDocumentIdArguments() {
-    final documentIds = config.firestorePathSegments
-        .map((segment) => segment.documentName)
-        .whereType<String>();
-    return documentIds.isNotEmpty
-        ? "${documentIds.map((documentId) => 'required String $documentId').join(',\n')},"
-        : '';
+    final buffer = StringBuffer();
+    for (final segment in config.firestorePathSegments) {
+      final documentName = segment.documentName;
+      if (documentName != null) {
+        buffer.writeln('required String $documentName,');
+      }
+    }
+    return buffer.toString();
   }
 
   String _parentDocumentIdParameters() {
-    final documentIds = config.firestorePathSegments
-        .map((segment) => segment.documentName)
-        .whereType<String>();
-    return documentIds.isNotEmpty
-        ? "${documentIds.map((documentId) => '$documentId: $documentId').join(',\n')},"
-        : '';
+    final buffer = StringBuffer();
+    for (final segment in config.firestorePathSegments) {
+      final documentName = segment.documentName;
+      if (documentName != null) {
+        buffer.writeln('$documentName: $documentName,');
+      }
+    }
+    return buffer.toString();
   }
 
   String _collectionReference(ReferenceClassType referenceClassType) {
-    if (config.firestorePathSegments.length > 1) {
-      return '${config.collectionReferenceName(referenceClassType)}(${config.firestorePathSegments.map((segment) => segment.documentName).whereType<String>().map((documentId) => '$documentId: $documentId').join(',')})';
-    } else {
+    if (config.firestorePathSegments.isEmpty) {
+      throw InvalidGenerationSourceError(
+        '@FirestoreDocument(path: ...) must be provided.',
+      );
+    }
+    if (config.firestorePathSegments.length == 1) {
       return config.collectionReferenceName(referenceClassType);
+    } else {
+      final buffer = StringBuffer();
+      for (final segment in config.firestorePathSegments) {
+        final documentName = segment.documentName;
+        if (documentName != null) {
+          buffer.writeln('$documentName: $documentName,');
+        }
+      }
+      return '${config.collectionReferenceName(referenceClassType)}($buffer)';
     }
   }
 }

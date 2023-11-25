@@ -140,8 +140,8 @@ class CreateChatMessage {
     required this.deeplyNestedMap,
     required this.chatMessageType,
     required this.content,
-    this.imageUrls = const <String>[],
-    this.isDeleted = false,
+    this.imageUrls,
+    this.isDeleted,
   });
 
   final String senderId;
@@ -151,8 +151,8 @@ class CreateChatMessage {
       deeplyNestedMap;
   final ChatMessageType chatMessageType;
   final String content;
-  final List<String> imageUrls;
-  final bool isDeleted;
+  final List<String>? imageUrls;
+  final bool? isDeleted;
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{
@@ -162,8 +162,8 @@ class CreateChatMessage {
       'deeplyNestedMap': deeplyNestedMap,
       'chatMessageType': _chatMessageTypeConverter.toJson(chatMessageType),
       'content': content,
-      'imageUrls': imageUrls,
-      'isDeleted': isDeleted,
+      'imageUrls': imageUrls ?? const <String>[],
+      'isDeleted': isDeleted ?? false,
       'createdAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
     };
@@ -243,8 +243,9 @@ DocumentReference<ReadChatMessage> readChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
 }) =>
-    readChatMessageCollectionReference(chatRoomId: chatRoomId)
-        .doc(chatMessageId);
+    readChatMessageCollectionReference(
+      chatRoomId: chatRoomId,
+    ).doc(chatMessageId);
 
 /// Provides a reference to the chatMessages collection for creating.
 CollectionReference<CreateChatMessage> createChatMessageCollectionReference({
@@ -264,8 +265,9 @@ DocumentReference<CreateChatMessage> createChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
 }) =>
-    createChatMessageCollectionReference(chatRoomId: chatRoomId)
-        .doc(chatMessageId);
+    createChatMessageCollectionReference(
+      chatRoomId: chatRoomId,
+    ).doc(chatMessageId);
 
 /// Provides a reference to the chatMessages collection for updating.
 CollectionReference<UpdateChatMessage> updateChatMessageCollectionReference({
@@ -285,8 +287,9 @@ DocumentReference<UpdateChatMessage> updateChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
 }) =>
-    updateChatMessageCollectionReference(chatRoomId: chatRoomId)
-        .doc(chatMessageId);
+    updateChatMessageCollectionReference(
+      chatRoomId: chatRoomId,
+    ).doc(chatMessageId);
 
 /// Provides a reference to the chatMessages collection for deleting.
 CollectionReference<DeleteChatMessage> deleteChatMessageCollectionReference({
@@ -306,8 +309,9 @@ DocumentReference<DeleteChatMessage> deleteChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
 }) =>
-    deleteChatMessageCollectionReference(chatRoomId: chatRoomId)
-        .doc(chatMessageId);
+    deleteChatMessageCollectionReference(
+      chatRoomId: chatRoomId,
+    ).doc(chatMessageId);
 
 /// Manages queries against the chatMessages collection.
 class ChatMessageQuery {
@@ -319,8 +323,9 @@ class ChatMessageQuery {
         queryBuilder,
     int Function(ReadChatMessage lhs, ReadChatMessage rhs)? compare,
   }) async {
-    Query<ReadChatMessage> query =
-        readChatMessageCollectionReference(chatRoomId: chatRoomId);
+    Query<ReadChatMessage> query = readChatMessageCollectionReference(
+      chatRoomId: chatRoomId,
+    );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -341,8 +346,9 @@ class ChatMessageQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadChatMessage> query =
-        readChatMessageCollectionReference(chatRoomId: chatRoomId);
+    Query<ReadChatMessage> query = readChatMessageCollectionReference(
+      chatRoomId: chatRoomId,
+    );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -395,8 +401,9 @@ class ChatMessageQuery {
     required String chatRoomId,
     required CreateChatMessage createChatMessage,
   }) =>
-      createChatMessageCollectionReference(chatRoomId: chatRoomId)
-          .add(createChatMessage);
+      createChatMessageCollectionReference(
+        chatRoomId: chatRoomId,
+      ).add(createChatMessage);
 
   /// Sets a [ChatMessage] document.
   Future<void> set({

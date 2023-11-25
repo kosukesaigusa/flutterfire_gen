@@ -1,15 +1,13 @@
-import '../../configs/code_generation_config.dart';
-
 /// A template for a class to delete documents in Firestore.
 class DeleteClassTemplate {
   /// Creates a [DeleteClassTemplate].
-  const DeleteClassTemplate(this.config);
+  const DeleteClassTemplate(this.className);
 
-  /// Configurations for code generation.
-  final CodeGenerationConfig config;
+  ///
+  final String className;
 
   @override
   String toString() {
-    return 'class ${config.deleteClassName} {}';
+    return 'class $className {}';
   }
 }

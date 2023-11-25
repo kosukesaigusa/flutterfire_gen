@@ -2,70 +2,57 @@
 
 import 'package:meta/meta.dart';
 
+import '../../configs/code_generation_config.dart';
+import '../../configs/field_config.dart';
 import '../../configs/json_converter_config.dart';
-import '../../configs/json_post_processor_config.dart';
+import '../../parser/from_json_field_parser.dart';
 import '../../utils/string.dart';
 import '../json/json_post_processor_template.dart';
 
 /// A template for a class to read documents from Firestore.
 class FromJsonTemplate {
   /// Creates a [FromJsonTemplate].
-  FromJsonTemplate({
-    required this.className,
-    required this.fields,
-    required this.defaultValueStrings,
-    required this.jsonConverterConfigs,
-    required this.jsonPostProcessorConfigs,
-  });
+  FromJsonTemplate(this.config);
 
-  /// The name of the document class.
-  final String className;
-
-  /// The fields for the document.
-  final Map<String, String> fields;
-
-  /// The default value strings for the document.
-  final Map<String, String> defaultValueStrings;
-
-  /// The JSON converter configs for the document.
-  final Map<String, JsonConverterConfig> jsonConverterConfigs;
-
-  /// The JSON post processor configs for the document.
-  final Map<String, JsonPostProcessorConfig> jsonPostProcessorConfigs;
+  ///
+  final CodeGenerationConfig config;
 
   @override
   String toString() {
-    final jsonPostProcessors = JsonPostProcessorTemplate(
-      fields: fields,
-      jsonPostProcessorConfigs: jsonPostProcessorConfigs,
-    ).fromJsonTemplate();
+    final jsonPostProcessors =
+        JsonPostProcessorTemplate.fromJson(config.fieldConfigs);
+    final additionalFields = [
+      "${config.documentIdFieldName}: extendedJson['${config.documentIdFieldName}'] as String",
+      if (config.includePathField) "path: extendedJson['path'] as String",
+      if (config.includeDocumentReferenceField)
+        "${config.documentReferenceFieldName}: extendedJson['${config.documentReferenceFieldName}'] as ${config.readDocumentReferenceTypeName},",
+    ].join(',\n');
     return '''
-factory $className.fromJson(Map<String, dynamic> json) {
+factory ${config.readClassName}.fromJson(Map<String, dynamic> json) {
     final extendedJson = <String, dynamic>{
       ...json,
       $jsonPostProcessors
     };
-    return $className(
-      ${_parseFields()}
+    return ${config.readClassName}(
+      ${_parseFields(config.fieldConfigs)}
+      $additionalFields
     );
   }
 ''';
   }
 
-  ///
-  String _parseFields() {
-    return '${fields.entries.map((entry) {
-      final fieldNameString = entry.key;
-      final typeNameString = entry.value;
-      final defaultValueString = defaultValueStrings[fieldNameString];
-      final jsonConverterConfig = jsonConverterConfigs[fieldNameString];
-      return fromJsonEachField(
-        fieldNameString: fieldNameString,
-        typeNameString: typeNameString,
-        defaultValueString: defaultValueString,
-        jsonConverterConfig: jsonConverterConfig,
+  String _parseFields(List<FieldConfig> fieldConfigs) {
+    final stringBuffer = StringBuffer();
+    for (final fieldConfig in fieldConfigs) {
+      final result = FromJsonFieldParser(
+        name: fieldConfig.name,
+        dartType: fieldConfig.dartType,
+        defaultValueString: fieldConfig.readDefaultValueString,
+        jsonConverterConfig: fieldConfig.jsonConverterConfig,
       );
-    }).join(',\n')},';
+      stringBuffer.writeln(result);
+    }
+    return stringBuffer.toString();
   }
 
   String _parseType(

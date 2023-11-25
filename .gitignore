@@ -32,7 +32,6 @@ build/
 .flutter-plugins
 .flutter-plugins-dependencies
 melos.yaml
-pubspec_overrides.yaml
 
 # FVM related
 .fvm/
