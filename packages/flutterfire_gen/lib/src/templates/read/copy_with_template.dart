@@ -8,8 +8,6 @@ class CopyWithTemplate {
   ///
   final CodeGenerationConfig config;
 
-  /// Returns the copyWith method for the document class.
-  /// return empty string if `config.generateCopyWith` is false.
   @override
   String toString() {
     final fields = <String, String>{

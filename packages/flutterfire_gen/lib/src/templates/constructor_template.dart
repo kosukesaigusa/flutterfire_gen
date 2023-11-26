@@ -29,17 +29,14 @@ class ConstructorTemplate {
     if (configs.isEmpty) {
       return 'const $className();';
     }
-    final fields = configs.map((config) {
+    final buffer = StringBuffer();
+    for (final config in configs) {
       if (config.isOptional) {
-        return 'this.${config.name}';
+        buffer.writeln('this.${config.name},');
       } else {
-        return 'required this.${config.name}';
+        buffer.writeln('required this.${config.name},');
       }
-    }).join(',\n');
-    return '''
-const $className({
-    $fields,
-});
-  ''';
+    }
+    return 'const $className({$buffer});';
   }
 }

@@ -1,5 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'package:source_gen/source_gen.dart';
 
 import '../configs/code_generation_config.dart';
