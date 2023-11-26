@@ -1,6 +1,7 @@
 import 'package:source_gen/source_gen.dart';
 
 import '../configs/code_generation_config.dart';
+import 'path_segment_parameters_template.dart';
 
 /// Returns Query class template.
 class QueryClassTemplate {
@@ -12,12 +13,20 @@ class QueryClassTemplate {
 
   @override
   String toString() {
+    final documentIdParametersDefinition =
+        DocumentIdParametersTemplate.parameterDefinition(
+      config.firestorePathSegments,
+    );
+    final documentIdParametersArgumentInvocation =
+        DocumentIdParametersTemplate.argumentInvocation(
+      config.firestorePathSegments,
+    );
     return '''
 /// Manages queries against the ${config.collectionName} collection.
 class ${config.baseClassName}Query {
   /// Fetches [${config.readClassName}] documents.
   Future<List<${config.readClassName}>> fetchDocuments({
-    ${_parentDocumentIdArguments()}
+    $documentIdParametersDefinition
     GetOptions? options,
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
     int Function(${config.readClassName} lhs, ${config.readClassName} rhs)? compare,
@@ -36,7 +45,7 @@ class ${config.baseClassName}Query {
 
   /// Subscribes [${config.baseClassName}] documents.
   Stream<List<${config.readClassName}>> subscribeDocuments({
-    ${_parentDocumentIdArguments()}
+    $documentIdParametersDefinition
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
     int Function(${config.readClassName} lhs, ${config.readClassName} rhs)? compare,
     bool includeMetadataChanges = false,
@@ -62,13 +71,13 @@ class ${config.baseClassName}Query {
 
   /// Fetches a specific [${config.readClassName}] document.
   Future<${config.readClassName}?> fetchDocument({
-    ${_parentDocumentIdArguments()}
+    $documentIdParametersDefinition
     required String ${config.documentName}Id,
     GetOptions? options,
   }) async {
     final ds =
         await read${config.baseClassName}DocumentReference(
-          ${_parentDocumentIdParameters()}
+          $documentIdParametersArgumentInvocation
           ${config.documentName}Id: ${config.documentName}Id,
         ).get(options);
     return ds.data();
@@ -76,13 +85,13 @@ class ${config.baseClassName}Query {
 
   /// Subscribes a specific [${config.baseClassName}] document.
   Stream<${config.readClassName}?> subscribeDocument({
-    ${_parentDocumentIdArguments()}
+    $documentIdParametersDefinition
     required String ${config.documentName}Id,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
     var streamDs = read${config.baseClassName}DocumentReference(
-      ${_parentDocumentIdParameters()}
+      $documentIdParametersArgumentInvocation
       ${config.documentName}Id: ${config.documentName}Id,
     )
         .snapshots(includeMetadataChanges: includeMetadataChanges);
@@ -94,67 +103,45 @@ class ${config.baseClassName}Query {
 
   /// Adds a [${config.baseClassName}] document.
   Future<DocumentReference<${config.createClassName}>> add({
-    ${_parentDocumentIdArguments()}
+    $documentIdParametersDefinition
     required ${config.createClassName} ${config.createClassInstanceName},
   }) =>
       ${_collectionReference(ReferenceClassType.create)}.add(${config.createClassInstanceName});
 
   /// Sets a [${config.baseClassName}] document.
   Future<void> set({
-    ${_parentDocumentIdArguments()}
+    $documentIdParametersDefinition
     required String ${config.documentName}Id,
     required ${config.createClassName} ${config.createClassInstanceName},
     SetOptions? options,
   }) =>
       ${config.createDocumentReferenceName}(
-        ${_parentDocumentIdParameters()}
+        $documentIdParametersArgumentInvocation
         ${config.documentName}Id: ${config.documentName}Id,
       ).set(${config.createClassInstanceName}, options);
 
   /// Updates a specific [${config.baseClassName}] document.
   Future<void> update({
-    ${_parentDocumentIdArguments()}
+    $documentIdParametersDefinition
     required String ${config.documentName}Id,
     required ${config.updateClassName} ${config.updateClassInstanceName},
   }) =>
       ${config.updateDocumentReferenceName}(
-        ${_parentDocumentIdParameters()}
+        $documentIdParametersArgumentInvocation
         ${config.documentName}Id: ${config.documentName}Id,
       ).update(${config.updateClassInstanceName}.toJson());
 
   /// Deletes a specific [${config.baseClassName}] document.
   Future<void> delete({
-    ${_parentDocumentIdArguments()}
+    $documentIdParametersDefinition
     required String ${config.documentName}Id,
   }) =>
       ${config.deleteDocumentReferenceName}(
-        ${_parentDocumentIdParameters()}
+        $documentIdParametersArgumentInvocation
         ${config.documentName}Id: ${config.documentName}Id,
       ).delete();
 }
 ''';
-  }
-
-  String _parentDocumentIdArguments() {
-    final buffer = StringBuffer();
-    for (final segment in config.firestorePathSegments) {
-      final documentName = segment.documentName;
-      if (documentName != null) {
-        buffer.writeln('required String $documentName,');
-      }
-    }
-    return buffer.toString();
-  }
-
-  String _parentDocumentIdParameters() {
-    final buffer = StringBuffer();
-    for (final segment in config.firestorePathSegments) {
-      final documentName = segment.documentName;
-      if (documentName != null) {
-        buffer.writeln('$documentName: $documentName,');
-      }
-    }
-    return buffer.toString();
   }
 
   String _collectionReference(ReferenceClassType referenceClassType) {

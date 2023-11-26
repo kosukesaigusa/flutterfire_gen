@@ -1,6 +1,7 @@
 import 'package:source_gen/source_gen.dart';
 
 import '../../configs/code_generation_config.dart';
+import '../path_segment_parameters_template.dart';
 import 'with_converter_template.dart';
 
 ///
@@ -70,11 +71,11 @@ class ReferencesTemplate {
     if (config.firestorePathSegments.length == 1) {
       return 'final $varName = ';
     }
-    return '''
-$typeName $varName ({
-  ${_documentIdParameters()}
-}) =>
-''';
+    final documentIdParametersDefinition =
+        DocumentIdParametersTemplate.parameterDefinition(
+      config.firestorePathSegments,
+    );
+    return '$typeName $varName ({$documentIdParametersDefinition}) => ';
   }
 
   String _documentReference(ReferenceClassType referenceClassType) {
@@ -96,36 +97,22 @@ $typeName $documentReferenceVarName({
     $collectionReferenceVarName.doc(${config.documentName}Id);
 ''';
     }
+    final documentIdParametersDefinition =
+        DocumentIdParametersTemplate.parameterDefinition(
+      config.firestorePathSegments,
+    );
+    final documentIdParametersArgumentInvocation =
+        DocumentIdParametersTemplate.argumentInvocation(
+      config.firestorePathSegments,
+    );
     return '''
 $typeName $documentReferenceVarName({
-  ${_documentIdParameters()}
+  $documentIdParametersDefinition
   required String ${config.documentName}Id,
 }) =>
     $collectionReferenceVarName(
-      ${_collectionReferenceParameters()}
+      $documentIdParametersArgumentInvocation
     ).doc(${config.documentName}Id);
 ''';
-  }
-
-  String _documentIdParameters() {
-    final buffer = StringBuffer();
-    for (final segment in config.firestorePathSegments) {
-      final documentName = segment.documentName;
-      if (documentName != null) {
-        buffer.writeln('required String $documentName,');
-      }
-    }
-    return buffer.toString();
-  }
-
-  String _collectionReferenceParameters() {
-    final buffer = StringBuffer();
-    for (final segment in config.firestorePathSegments) {
-      final documentName = segment.documentName;
-      if (documentName != null) {
-        buffer.writeln('$documentName: $documentName,');
-      }
-    }
-    return buffer.toString();
   }
 }
