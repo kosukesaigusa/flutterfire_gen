@@ -23,9 +23,9 @@ class ReadTodo {
 
   final bool isCompleted;
 
-  final int createdAt;
+  final DateTime? createdAt;
 
-  final int updatedAt;
+  final DateTime? updatedAt;
 
   final String todoId;
 
@@ -40,8 +40,8 @@ class ReadTodo {
     return ReadTodo(
       title: extendedJson['title'] as String,
       isCompleted: extendedJson['isCompleted'] as bool? ?? false,
-      createdAt: extendedJson['createdAt'] as int,
-      updatedAt: extendedJson['updatedAt'] as int,
+      createdAt: (extendedJson['createdAt'] as Timestamp?)?.toDate(),
+      updatedAt: (extendedJson['updatedAt'] as Timestamp?)?.toDate(),
       todoId: extendedJson['todoId'] as String,
       path: extendedJson['path'] as String,
       todoReference:
@@ -65,8 +65,8 @@ class ReadTodo {
   ReadTodo copyWith({
     String? title,
     bool? isCompleted,
-    int? createdAt,
-    int? updatedAt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     String? todoId,
     String? path,
     DocumentReference<ReadTodo>? todoReference,
@@ -117,7 +117,7 @@ class UpdateTodo {
 
   final String? title;
   final bool? isCompleted;
-  final int? createdAt;
+  final DateTime? createdAt;
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{

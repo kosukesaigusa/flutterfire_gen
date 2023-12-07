@@ -14,17 +14,21 @@ class TodoList extends _$TodoList {
   Future<List<ReadTodo>> build() =>
       ref.watch(todoQueryProvider).fetchDocuments();
 
-  Future<void> addTodo(String title) =>
-      ref.watch(todoQueryProvider).add(createTodo: CreateTodo(title: title));
+  Future<DocumentReference<CreateTodo>> addTodo(String title) {
+    return ref
+        .read(todoQueryProvider)
+        .add(createTodo: CreateTodo(title: title));
+  }
 
   Future<void> updateCompletionStatus({
     required String todoId,
     required bool isCompleted,
-  }) =>
-      ref.watch(todoQueryProvider).update(
-            todoId: todoId,
-            updateTodo: UpdateTodo(isCompleted: isCompleted),
-          );
+  }) {
+    return ref.read(todoQueryProvider).update(
+          todoId: todoId,
+          updateTodo: UpdateTodo(isCompleted: isCompleted),
+        );
+  }
 }
 
 @FirestoreDocument(path: 'todos', documentName: 'todo')
@@ -43,9 +47,9 @@ class Todo {
   final bool isCompleted;
 
   @AlwaysUseFieldValueServerTimestampWhenCreating()
-  final int createdAt;
+  final DateTime? createdAt;
 
   @AlwaysUseFieldValueServerTimestampWhenCreating()
   @AlwaysUseFieldValueServerTimestampWhenUpdating()
-  final int updatedAt;
+  final DateTime? updatedAt;
 }
