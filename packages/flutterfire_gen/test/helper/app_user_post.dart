@@ -19,10 +19,10 @@ class AppUserPost {
   final String content;
 
   @ReadDefault(<int>[])
-  @AllowFieldValue()
+  @allowFieldValue
   final List<int> numbers;
 
-  @AlwaysUseFieldValueServerTimestampWhenCreating()
-  @AlwaysUseFieldValueServerTimestampWhenUpdating()
+  @alwaysUseFieldValueServerTimestampWhenCreating
+  @alwaysUseFieldValueServerTimestampWhenUpdating
   final DateTime? updatedAt;
 }

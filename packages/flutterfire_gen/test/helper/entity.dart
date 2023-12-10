@@ -181,13 +181,13 @@ class Entity {
   @_FooJsonConverter()
   final Foo? nullableFooWithDefaultAnnotation;
 
-  @AllowFieldValue()
+  @allowFieldValue
   final int fieldValueAllowedInt;
 
-  @AllowFieldValue()
+  @allowFieldValue
   final int? fieldValueAllowedNullableInt;
 
-  @AllowFieldValue()
+  @allowFieldValue
   @CreateDefault(0)
   final int? fieldValueAllowedNullableIntWithDefaultAnnotation;
 }

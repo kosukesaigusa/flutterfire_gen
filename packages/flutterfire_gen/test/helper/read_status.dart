@@ -12,7 +12,7 @@ class ReadStatus {
     this.lastReadAt,
   });
 
-  @AlwaysUseFieldValueServerTimestampWhenCreating()
-  @AlwaysUseFieldValueServerTimestampWhenUpdating()
+  @alwaysUseFieldValueServerTimestampWhenCreating
+  @alwaysUseFieldValueServerTimestampWhenUpdating
   final DateTime? lastReadAt;
 }

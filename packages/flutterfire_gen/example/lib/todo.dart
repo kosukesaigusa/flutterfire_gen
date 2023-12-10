@@ -46,10 +46,10 @@ class Todo {
   @CreateDefault(false)
   final bool isCompleted;
 
-  @AlwaysUseFieldValueServerTimestampWhenCreating()
+  @alwaysUseFieldValueServerTimestampWhenCreating
   final DateTime? createdAt;
 
-  @AlwaysUseFieldValueServerTimestampWhenCreating()
-  @AlwaysUseFieldValueServerTimestampWhenUpdating()
+  @alwaysUseFieldValueServerTimestampWhenCreating
+  @alwaysUseFieldValueServerTimestampWhenUpdating
   final DateTime? updatedAt;
 }

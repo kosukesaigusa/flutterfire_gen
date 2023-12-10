@@ -46,11 +46,11 @@ class ChatMessage {
   @CreateDefault(false)
   final bool isDeleted;
 
-  @AlwaysUseFieldValueServerTimestampWhenCreating()
+  @alwaysUseFieldValueServerTimestampWhenCreating
   final DateTime? createdAt;
 
-  @AlwaysUseFieldValueServerTimestampWhenCreating()
-  @AlwaysUseFieldValueServerTimestampWhenUpdating()
+  @alwaysUseFieldValueServerTimestampWhenCreating
+  @alwaysUseFieldValueServerTimestampWhenUpdating
   final DateTime? updatedAt;
 }
 

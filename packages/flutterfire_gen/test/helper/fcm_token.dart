@@ -12,11 +12,11 @@ class FcmToken {
     required this.createdAt,
   });
 
-  @AllowFieldValue()
+  @allowFieldValue
   @_tokenAndDevicesConverter
   final List<TokenAndDevice> tokenAndDevices;
 
-  @AlwaysUseFieldValueServerTimestampWhenCreating()
+  @alwaysUseFieldValueServerTimestampWhenCreating
   final DateTime? createdAt;
 }
 

@@ -16,10 +16,10 @@ class AppUserPostLike {
 
   final String likedByAppUserId;
 
-  @AlwaysUseFieldValueServerTimestampWhenCreating()
+  @alwaysUseFieldValueServerTimestampWhenCreating
   final DateTime? likedAt;
 
-  @AlwaysUseFieldValueServerTimestampWhenCreating()
-  @AlwaysUseFieldValueServerTimestampWhenUpdating()
+  @alwaysUseFieldValueServerTimestampWhenCreating
+  @alwaysUseFieldValueServerTimestampWhenUpdating
   final DateTime? updatedAt;
 }
