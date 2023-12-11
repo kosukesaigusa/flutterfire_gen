@@ -1,6 +1,6 @@
 name: flutterfire_gen
 description: flutterfire_gen
-version: 0.0.1-dev.9
+version: 0.2.0-dev.1
 homepage: https://github.com/kosukesaigusa/flutterfire_gen
 
 environment:
@@ -13,8 +13,8 @@ dependencies:
   cloud_firestore: ^4.11.0
   flutter:
     sdk: flutter
-  flutterfire_gen_annotation: ^0.1.0-dev.5
-  flutterfire_gen_utils: ^0.0.1-dev.3
+  flutterfire_gen_annotation: ^0.2.0-dev.1
+  flutterfire_gen_utils: ^0.2.0-dev.1
   json_annotation: ^4.8.1
   meta: ^1.9.1
   path: ^1.8.3
