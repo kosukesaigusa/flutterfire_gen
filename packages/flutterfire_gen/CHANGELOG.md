@@ -1,3 +1,7 @@
+## 0.2.0-dev.1
+
+* Refactor entire codes.
+
 ## 0.0.1-dev.9
 
 * Enable to use `JsonPostProcessor` annotation.
