@@ -31,7 +31,7 @@ class TodoList extends _$TodoList {
   }
 }
 
-@FirestoreDocument(path: 'todos', documentName: 'todo')
+@FirestoreDocument(path: 'todos/{todoId}')
 class Todo {
   const Todo({
     required this.title,

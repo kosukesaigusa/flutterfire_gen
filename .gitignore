@@ -31,10 +31,6 @@ migrate_working_dir/
 build/
 .flutter-plugins
 .flutter-plugins-dependencies
-melos.yaml
-
-# FVM related
-.fvm/
 
 # Codecov related
 coverage/

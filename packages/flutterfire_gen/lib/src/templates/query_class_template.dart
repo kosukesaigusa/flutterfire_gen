@@ -1,6 +1,5 @@
-import 'package:source_gen/source_gen.dart';
-
 import '../configs/code_generation_config.dart';
+import '../configs/reference_class_type.dart';
 import 'path_segment_parameters_template.dart';
 
 /// Returns Query class template.
@@ -15,11 +14,11 @@ class QueryClassTemplate {
   String toString() {
     final documentIdParametersDefinition =
         DocumentIdParametersTemplate.parameterDefinition(
-      config.firestorePathSegments,
+      config.firestoreDocumentPath,
     );
     final documentIdParametersArgumentInvocation =
         DocumentIdParametersTemplate.argumentInvocation(
-      config.firestorePathSegments,
+      config.firestoreDocumentPath,
     );
     return '''
 /// Manages queries against the ${config.collectionName} collection.
@@ -72,13 +71,13 @@ class ${config.baseClassName}Query {
   /// Fetches a specific [${config.readClassName}] document.
   Future<${config.readClassName}?> fetchDocument({
     $documentIdParametersDefinition
-    required String ${config.documentName}Id,
+    required String ${config.documentId},
     GetOptions? options,
   }) async {
     final ds =
         await read${config.baseClassName}DocumentReference(
           $documentIdParametersArgumentInvocation
-          ${config.documentName}Id: ${config.documentName}Id,
+          ${config.documentId}: ${config.documentId},
         ).get(options);
     return ds.data();
   }
@@ -86,13 +85,13 @@ class ${config.baseClassName}Query {
   /// Subscribes a specific [${config.baseClassName}] document.
   Stream<${config.readClassName}?> subscribeDocument({
     $documentIdParametersDefinition
-    required String ${config.documentName}Id,
+    required String ${config.documentId},
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
     var streamDs = read${config.baseClassName}DocumentReference(
       $documentIdParametersArgumentInvocation
-      ${config.documentName}Id: ${config.documentName}Id,
+      ${config.documentId}: ${config.documentId},
     )
         .snapshots(includeMetadataChanges: includeMetadataChanges);
     if (excludePendingWrites) {
@@ -111,56 +110,53 @@ class ${config.baseClassName}Query {
   /// Sets a [${config.baseClassName}] document.
   Future<void> set({
     $documentIdParametersDefinition
-    required String ${config.documentName}Id,
+    required String ${config.documentId},
     required ${config.createClassName} ${config.createClassInstanceName},
     SetOptions? options,
   }) =>
       ${config.createDocumentReferenceName}(
         $documentIdParametersArgumentInvocation
-        ${config.documentName}Id: ${config.documentName}Id,
+        ${config.documentId}: ${config.documentId},
       ).set(${config.createClassInstanceName}, options);
 
   /// Updates a specific [${config.baseClassName}] document.
   Future<void> update({
     $documentIdParametersDefinition
-    required String ${config.documentName}Id,
+    required String ${config.documentId},
     required ${config.updateClassName} ${config.updateClassInstanceName},
   }) =>
       ${config.updateDocumentReferenceName}(
         $documentIdParametersArgumentInvocation
-        ${config.documentName}Id: ${config.documentName}Id,
+        ${config.documentId}: ${config.documentId},
       ).update(${config.updateClassInstanceName}.toJson());
 
   /// Deletes a specific [${config.baseClassName}] document.
   Future<void> delete({
     $documentIdParametersDefinition
-    required String ${config.documentName}Id,
+    required String ${config.documentId},
   }) =>
       ${config.deleteDocumentReferenceName}(
         $documentIdParametersArgumentInvocation
-        ${config.documentName}Id: ${config.documentName}Id,
+        ${config.documentId}: ${config.documentId},
       ).delete();
 }
 ''';
   }
 
+  ///
   String _collectionReference(ReferenceClassType referenceClassType) {
-    if (config.firestorePathSegments.isEmpty) {
-      throw InvalidGenerationSourceError(
-        '@FirestoreDocument(path: ...) must be provided.',
-      );
-    }
-    if (config.firestorePathSegments.length == 1) {
-      return config.collectionReferenceName(referenceClassType);
+    final name =
+        '${referenceClassType.name}${config.baseClassName}CollectionReference';
+    final ancestors = config.firestoreDocumentPath.ancestors;
+    if (config.firestoreDocumentPath.ancestors.isEmpty) {
+      return name;
     } else {
       final buffer = StringBuffer();
-      for (final segment in config.firestorePathSegments) {
-        final documentName = segment.documentName;
-        if (documentName != null) {
-          buffer.writeln('$documentName: $documentName,');
-        }
+      for (final segment in ancestors) {
+        final documentId = segment.documentId;
+        buffer.writeln('$documentId: $documentId,');
       }
-      return '${config.collectionReferenceName(referenceClassType)}($buffer)';
+      return '$name($buffer)';
     }
   }
 }

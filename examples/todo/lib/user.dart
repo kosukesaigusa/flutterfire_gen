@@ -14,10 +14,7 @@ Stream<ReadUser?> user(UserRef ref, String userId) {
 @riverpod
 UserQuery userQuery(UserQueryRef _) => UserQuery();
 
-@FirestoreDocument(
-  path: 'users',
-  documentName: 'user',
-)
+@FirestoreDocument(path: 'users/{userId}')
 class User {
   const User({
     required this.name,

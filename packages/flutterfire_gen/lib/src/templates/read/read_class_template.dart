@@ -21,7 +21,7 @@ class ReadClassTemplate {
         for (final fieldConfig in config.fieldConfigs)
           ConstructorFieldConfig(name: fieldConfig.name, isOptional: false),
         ConstructorFieldConfig(
-          name: config.documentIdFieldName,
+          name: config.documentId,
           isOptional: false,
         ),
         if (config.includePathField)
@@ -38,7 +38,7 @@ class ReadClassTemplate {
       fields: <String, String>{
         for (final fieldConfig in config.fieldConfigs)
           fieldConfig.name: fieldConfig.typeName(),
-        config.documentIdFieldName: 'String',
+        config.documentId: 'String',
         if (config.includePathField) 'path': 'String',
         if (config.includeDocumentReferenceField)
           config.documentReferenceFieldName:

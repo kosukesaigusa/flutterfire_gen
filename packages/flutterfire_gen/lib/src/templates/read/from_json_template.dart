@@ -18,7 +18,7 @@ class FromJsonTemplate {
     final jsonPostProcessors =
         JsonPostProcessorTemplate.fromJson(config.fieldConfigs);
     final additionalFields = [
-      "${config.documentIdFieldName}: extendedJson['${config.documentIdFieldName}'] as String",
+      "${config.documentId}: extendedJson['${config.documentId}'] as String",
       if (config.includePathField) "path: extendedJson['path'] as String",
       if (config.includeDocumentReferenceField)
         "${config.documentReferenceFieldName}: extendedJson['${config.documentReferenceFieldName}'] as ${config.readDocumentReferenceTypeName},",

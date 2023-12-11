@@ -1,6 +1,5 @@
-import 'package:source_gen/source_gen.dart';
-
 import '../../configs/code_generation_config.dart';
+import '../../configs/reference_class_type.dart';
 import '../path_segment_parameters_template.dart';
 import 'with_converter_template.dart';
 
@@ -28,25 +27,28 @@ class ReferencesTemplate {
     final buffer = StringBuffer()
       ..writeln(
         '/// Provides a reference to the ${config.collectionName} '
-        'collection for ${referenceClassType.toIng()}.',
+        'collection for $referenceClassType.',
       )
       ..write(_collectionReference(referenceClassType))
       ..write('FirebaseFirestore.instance');
-    for (final segment in config.firestorePathSegments) {
-      final collectionName = segment.collectionName;
-      final documentName = segment.documentName;
-      buffer.write(".collection('$collectionName')");
-      if (documentName != null) {
-        buffer.write('.doc($documentName)');
-      }
+    for (final pair in config.firestoreDocumentPath.ancestors) {
+      final collectionName = pair.collectionName;
+      final documentId = pair.documentId;
+      buffer
+        ..write(".collection('$collectionName')")
+        ..write('.doc($documentId)');
     }
-    buffer.write(
-      WithConverterTemplate(
-        config: config,
-        referenceClassType: referenceClassType,
-      ),
-    );
-    buffer.write(';');
+    buffer
+      ..write(
+        ".collection('${config.firestoreDocumentPath.endPair.collectionName}')",
+      )
+      ..write(
+        WithConverterTemplate(
+          config: config,
+          referenceClassType: referenceClassType,
+        ),
+      )
+      ..write(';');
     return buffer.toString();
   }
 
@@ -54,65 +56,59 @@ class ReferencesTemplate {
     final buffer = StringBuffer()
       ..writeln(
         '/// Provides a reference to a ${config.documentName} '
-        'document for ${referenceClassType.toIng()}.',
+        'document for $referenceClassType.',
       )
       ..writeln(_documentReference(referenceClassType));
     return buffer.toString();
   }
 
   String _collectionReference(ReferenceClassType referenceClassType) {
-    if (config.firestorePathSegments.isEmpty) {
-      throw InvalidGenerationSourceError(
-        '@FirestoreDocument(path: ...) must be provided.',
-      );
-    }
+    final ancestors = config.firestoreDocumentPath.ancestors;
     final typeName = config.collectionReferenceTypeName(referenceClassType);
     final varName = config.collectionReferenceName(referenceClassType);
-    if (config.firestorePathSegments.length == 1) {
+    if (ancestors.isEmpty) {
       return 'final $varName = ';
+    } else {
+      final documentIdParametersDefinition =
+          DocumentIdParametersTemplate.parameterDefinition(
+        config.firestoreDocumentPath,
+      );
+      return '$typeName $varName ({$documentIdParametersDefinition}) => ';
     }
-    final documentIdParametersDefinition =
-        DocumentIdParametersTemplate.parameterDefinition(
-      config.firestorePathSegments,
-    );
-    return '$typeName $varName ({$documentIdParametersDefinition}) => ';
   }
 
   String _documentReference(ReferenceClassType referenceClassType) {
-    if (config.firestorePathSegments.isEmpty) {
-      throw InvalidGenerationSourceError(
-        '@FirestoreDocument(path: ...) must be provided.',
-      );
-    }
+    final ancestors = config.firestoreDocumentPath.ancestors;
     final typeName = config.documentReferenceTypeName(referenceClassType);
     final documentReferenceVarName =
         config.documentReferenceName(referenceClassType);
     final collectionReferenceVarName =
         config.collectionReferenceName(referenceClassType);
-    if (config.firestorePathSegments.length == 1) {
+    if (ancestors.isEmpty) {
       return '''
 $typeName $documentReferenceVarName({
-  required String ${config.documentName}Id,
+  required String ${config.documentId},
 }) =>
-    $collectionReferenceVarName.doc(${config.documentName}Id);
+    $collectionReferenceVarName.doc(${config.documentId});
 ''';
-    }
-    final documentIdParametersDefinition =
-        DocumentIdParametersTemplate.parameterDefinition(
-      config.firestorePathSegments,
-    );
-    final documentIdParametersArgumentInvocation =
-        DocumentIdParametersTemplate.argumentInvocation(
-      config.firestorePathSegments,
-    );
-    return '''
+    } else {
+      final documentIdParametersDefinition =
+          DocumentIdParametersTemplate.parameterDefinition(
+        config.firestoreDocumentPath,
+      );
+      final documentIdParametersArgumentInvocation =
+          DocumentIdParametersTemplate.argumentInvocation(
+        config.firestoreDocumentPath,
+      );
+      return '''
 $typeName $documentReferenceVarName({
   $documentIdParametersDefinition
-  required String ${config.documentName}Id,
+  required String ${config.documentId},
 }) =>
     $collectionReferenceVarName(
       $documentIdParametersArgumentInvocation
-    ).doc(${config.documentName}Id);
+    ).doc(${config.documentId});
 ''';
+    }
   }
 }

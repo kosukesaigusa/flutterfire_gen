@@ -1,4 +1,5 @@
 import '../../configs/code_generation_config.dart';
+import '../../configs/reference_class_type.dart';
 
 ///
 class WithConverterTemplate {

@@ -1,0 +1,12 @@
+name: flutterfire_gen
+
+repository: https://github.com/kosukesaigusa/flutterfire_gen
+
+packages:
+  - packages/**
+  - examples/**
+
+scripts:
+  generate:
+    run: melos exec --depends-on=build_runner -- "dart run build_runner build -d"
+    description: Build all generated files for Dart & Flutter packages in this project.

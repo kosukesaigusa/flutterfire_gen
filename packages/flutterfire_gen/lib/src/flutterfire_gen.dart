@@ -50,15 +50,6 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
           element: element,
         ),
       ),
-      documentName: annotation.decodeField(
-        'documentName',
-        decode: (obj) => obj.toStringValue()!,
-        orElse: () => throw InvalidGenerationSourceError(
-          'documentName field is required. '
-          'Failing element: ${element.name}',
-          element: element,
-        ),
-      ),
       includePathField: annotation.decodeField(
         'includePathField',
         decode: (obj) => obj.toBoolValue() ?? false,

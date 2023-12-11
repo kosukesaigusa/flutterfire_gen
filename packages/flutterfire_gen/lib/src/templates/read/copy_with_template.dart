@@ -13,7 +13,7 @@ class CopyWithTemplate {
     final fields = <String, String>{
       for (final fieldConfig in config.fieldConfigs)
         fieldConfig.name: fieldConfig.typeName(forceNullable: true),
-      config.documentIdFieldName: 'String?',
+      config.documentId: 'String?',
       if (config.includePathField) 'path': 'String?',
       if (config.includeDocumentReferenceField)
         config.documentReferenceFieldName:

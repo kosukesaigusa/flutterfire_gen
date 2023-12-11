@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'fcm_token.flutterfire_gen.dart';
 
-@FirestoreDocument(path: 'fcmTokens', documentName: 'fcmToken')
+@FirestoreDocument(path: 'fcmTokens/{fcmTokenId}')
 class FcmToken {
   const FcmToken({
     required this.tokenAndDevices,

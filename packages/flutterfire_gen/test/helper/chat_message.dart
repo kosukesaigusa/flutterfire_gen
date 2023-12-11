@@ -4,10 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'chat_message.flutterfire_gen.dart';
 
-@FirestoreDocument(
-  path: 'chatRooms/{chatRoomId}/chatMessages',
-  documentName: 'chatMessage',
-)
+@FirestoreDocument(path: 'chatRooms/{chatRoomId}/chatMessages/{chatMessageId}')
 class ChatMessage {
   const ChatMessage({
     required this.senderId,

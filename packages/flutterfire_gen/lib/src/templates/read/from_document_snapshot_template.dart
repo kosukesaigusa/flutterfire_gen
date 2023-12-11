@@ -15,7 +15,7 @@ factory ${config.readClassName}.fromDocumentSnapshot(DocumentSnapshot ds) {
     final data = ds.data()! as Map<String, dynamic>;
     return ${config.readClassName}.fromJson(<String, dynamic>{
       ...data,
-      '${config.documentIdFieldName}': ds.id,
+      '${config.documentId}': ds.id,
       'path': ds.reference.path,
       ${_documentReferenceField()}
     });

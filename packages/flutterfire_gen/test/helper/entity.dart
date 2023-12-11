@@ -5,10 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'entity.flutterfire_gen.dart';
 
-@FirestoreDocument(
-  path: 'entities',
-  documentName: 'entity',
-)
+@FirestoreDocument(path: 'entities/{entityId}')
 class Entity {
   Entity({
     required this.text,

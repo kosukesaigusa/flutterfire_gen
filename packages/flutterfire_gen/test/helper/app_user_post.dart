@@ -4,10 +4,7 @@ import 'package:flutterfire_gen_utils/flutterfire_gen_utils.dart';
 
 part 'app_user_post.flutterfire_gen.dart';
 
-@FirestoreDocument(
-  path: 'appUsers/{appUserId}/appUserPosts',
-  documentName: 'appUserPost',
-)
+@FirestoreDocument(path: 'appUsers/{appUserId}/appUserPosts/{appUserPostId}')
 class AppUserPost {
   AppUserPost({
     required this.content,

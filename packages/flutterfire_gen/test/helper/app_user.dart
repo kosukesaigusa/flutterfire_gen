@@ -3,10 +3,7 @@ import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
 
 part 'app_user.flutterfire_gen.dart';
 
-@FirestoreDocument(
-  path: 'appUsers',
-  documentName: 'appUser',
-)
+@FirestoreDocument(path: 'appUsers/{appUserId}')
 class AppUser {
   AppUser({
     required this.name,
