@@ -1,3 +1,7 @@
+## 0.2.0-dev.1
+
+* Refactor entire codes.
+
 ## 0.1.0-dev.5
 
 * Update `FirestoreDocument` annotation.
