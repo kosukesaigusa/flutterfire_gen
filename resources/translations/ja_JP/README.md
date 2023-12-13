@@ -36,6 +36,9 @@ dependencies:
   # A package containing utility annotations for flutterfire_gen.
   flutterfire_gen_utils: ^0.2.0-dev.1
 
+  # Optional. Will be necessary if you use JsonConverter.
+  json_annotation: latest
+
 dev_dependencies:
   # The tool to run code-generators.
   build_runner: latest
@@ -312,5 +315,60 @@ Future<void> updateCompletionStatus({
 ### Advanced
 
 #### JsonConverter
+
+[json_annotation](https://pub.dev/packages/json_annotation) パッケージの `JsonConverter` を適用することも可能です。
+
+たとえば、下記の `visibility` フィールドには `@_visibilityConverter` の `JsonConverter` のアノテーションが施されており、
+
+- Dart では `enum` の `Visibility` 型
+- Cloud Firestore では `String` 型
+
+として扱うための変換をすることができます。
+
+```dart
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'repository.flutterfire_gen.dart';
+
+@FirestoreDocument(path: 'repositories/{repositoryId}')
+class Repository {
+  Repository({
+    required this.visibility,
+  });
+
+  @_visibilityConverter
+  final Visibility visibility;
+}
+
+enum Visibility {
+  public,
+  private,
+  ;
+
+  factory Visibility.fromString(String visibilityString) {
+    switch (visibilityString) {
+      case 'public':
+        return Visibility.public;
+      case 'private':
+        return Visibility.private;
+    }
+    throw ArgumentError('visibility is not valid: $visibilityString');
+  }
+}
+
+const _visibilityConverter = _VisibilityConverter();
+
+class _VisibilityConverter implements JsonConverter<Visibility, String> {
+  const _VisibilityConverter();
+
+  @override
+  Visibility fromJson(String json) => Visibility.fromString(json);
+
+  @override
+  String toJson(Visibility visibility) => visibility.name;
+}
+```
 
 #### FieldValue
