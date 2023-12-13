@@ -1,3 +1,7 @@
+## 0.2.0-dev.2
+
+* Update `ToJsonParser` logic for `DateTime` fields.
+
 ## 0.2.0-dev.1
 
 * Refactor entire codes.
