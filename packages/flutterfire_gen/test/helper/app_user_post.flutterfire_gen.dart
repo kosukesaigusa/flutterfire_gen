@@ -218,9 +218,33 @@ DocumentReference<DeleteAppUserPost> deleteAppUserPostDocumentReference({
       appUserId: appUserId,
     ).doc(appUserPostId);
 
-/// Manages queries against the appUserPosts collection.
+/// A service class for managing appUserPost documents in the database.
+///
+/// This class provides methods to perform CRUD (Create, Read, Update, Delete)
+/// operations on appUserPost documents.
+///
+/// It includes methods to fetch and subscribe to single or multiple [ReadAppUserPost]
+/// documents, as well as methods to add, set, update, and delete documents.
+///
+/// The class uses Firebase Firestore as the backend, assuming [ReadAppUserPost],
+/// [CreateAppUserPost], [UpdateAppUserPost] are models representing the data.
+///
+/// Usage:
+///
+/// - To fetch or subscribe to one or more appUserPost documents, use [fetchDocuments],
+/// [subscribeDocuments], [fetchDocument], or [subscribeDocument].
+/// - To modify appUserPost documents, use [add], [set], [update], or [delete].
+///
+/// This class is designed to abstract the complexities of direct Firestore
+/// usage and provide a straightforward API for appUserPost document operations.
+
 class AppUserPostQuery {
-  /// Fetches [ReadAppUserPost] documents.
+  /// Fetches a list of [ReadAppUserPost] documents from Cloud Firestore.
+  ///
+  /// This method retrieves documents based on the provided query and sorts them
+  /// if a [compare] function is given.
+  /// You can customize the query by using the [queryBuilder] and control the
+
   Future<List<ReadAppUserPost>> fetchDocuments({
     required String appUserId,
     GetOptions? options,
@@ -242,7 +266,12 @@ class AppUserPostQuery {
     return result;
   }
 
-  /// Subscribes [AppUserPost] documents.
+  /// Subscribes to a stream of [ReadAppUserPost] documents from Cloud Firestore.
+  ///
+  /// This method returns a stream of [ReadAppUserPost] documents, which updates in
+  /// real-time based on the database changes. You can customize the query using
+  /// [queryBuilder]. The documents can be sorted using the [compare] function.
+
   Stream<List<ReadAppUserPost>> subscribeDocuments({
     required String appUserId,
     Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
@@ -271,7 +300,11 @@ class AppUserPostQuery {
     });
   }
 
-  /// Fetches a specific [ReadAppUserPost] document.
+  /// Fetches a single [ReadAppUserPost] document from Cloud Firestore by its ID.
+  ///
+  /// This method retrieves a specific document using the provided [appUserPostId].
+  /// You can control the data retrieval with [GetOptions].
+
   Future<ReadAppUserPost?> fetchDocument({
     required String appUserId,
     required String appUserPostId,
@@ -284,7 +317,11 @@ class AppUserPostQuery {
     return ds.data();
   }
 
-  /// Subscribes a specific [AppUserPost] document.
+  /// Subscribes to a stream of a single [ReadAppUserPost] document from Cloud Firestore by its ID.
+  ///
+  /// This method returns a stream of a single [ReadAppUserPost] document, which updates in
+  /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
+
   Stream<ReadAppUserPost?> subscribeDocument({
     required String appUserId,
     required String appUserPostId,
@@ -301,7 +338,11 @@ class AppUserPostQuery {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [AppUserPost] document.
+  /// Adds a [appUserPost] document to Cloud Firestore.
+  ///
+  /// This method creates a new document in Cloud Firestore using the provided
+  /// [createAppUserPost] data.
+
   Future<DocumentReference<CreateAppUserPost>> add({
     required String appUserId,
     required CreateAppUserPost createAppUserPost,
@@ -310,7 +351,11 @@ class AppUserPostQuery {
         appUserId: appUserId,
       ).add(createAppUserPost);
 
-  /// Sets a [AppUserPost] document.
+  /// Sets a [appUserPost] document to Cloud Firestore.
+  ///
+  /// This method creates a new document in Cloud Firestore using the provided
+  /// [updateAppUserPost] data.
+
   Future<void> set({
     required String appUserId,
     required String appUserPostId,
@@ -322,7 +367,12 @@ class AppUserPostQuery {
         appUserPostId: appUserPostId,
       ).set(createAppUserPost, options);
 
-  /// Updates a specific [AppUserPost] document.
+  /// Updates a appUserPost document in Cloud Firestore.
+  ///
+  /// This method partially updates the document identified by [appUserPostId] with the
+  /// provided [updateAppUserPost] data.
+  /// The update is based on the structure defined in `UpdateAppUserPost.toJson()`.
+
   Future<void> update({
     required String appUserId,
     required String appUserPostId,
@@ -333,7 +383,10 @@ class AppUserPostQuery {
         appUserPostId: appUserPostId,
       ).update(updateAppUserPost.toJson());
 
-  /// Deletes a specific [AppUserPost] document.
+  /// Deletes a [appUserPost] document from Cloud Firestore.
+  ///
+  /// This method deletes an existing document identified by [appUserPostId].
+
   Future<void> delete({
     required String appUserId,
     required String appUserPostId,

@@ -8,7 +8,7 @@ import 'configs/code_generation_config.dart';
 import 'parser/field_element_parser.dart';
 import 'templates/create/create_class_template.dart';
 import 'templates/delete/delete_class_template.dart';
-import 'templates/query_class_template.dart';
+import 'templates/query/query_class_template.dart';
 import 'templates/read/read_class_template.dart';
 import 'templates/references/references_template.dart';
 import 'templates/update/update_class_template.dart';

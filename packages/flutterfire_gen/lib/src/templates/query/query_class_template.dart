@@ -1,6 +1,7 @@
-import '../configs/code_generation_config.dart';
-import '../configs/reference_class_type.dart';
-import 'path_segment_parameters_template.dart';
+import '../../configs/code_generation_config.dart';
+import '../../configs/reference_class_type.dart';
+import '../path_segment_parameters_template.dart';
+import 'doc_comment_template.dart';
 
 /// Returns Query class template.
 class QueryClassTemplate {
@@ -20,10 +21,11 @@ class QueryClassTemplate {
         DocumentIdParametersTemplate.argumentInvocation(
       config.firestoreDocumentPath,
     );
+    final docCommentTemplate = QueryClassDocCommentTemplate(config);
     return '''
-/// Manages queries against the ${config.collectionName} collection.
+${docCommentTemplate.forClass()}
 class ${config.baseClassName}Query {
-  /// Fetches [${config.readClassName}] documents.
+  ${docCommentTemplate.forFetchDocumentsMethod()}
   Future<List<${config.readClassName}>> fetchDocuments({
     $documentIdParametersDefinition
     GetOptions? options,
@@ -42,7 +44,7 @@ class ${config.baseClassName}Query {
     return result;
   }
 
-  /// Subscribes [${config.baseClassName}] documents.
+  ${docCommentTemplate.forSubscribeDocumentsMethod()}
   Stream<List<${config.readClassName}>> subscribeDocuments({
     $documentIdParametersDefinition
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
@@ -68,7 +70,7 @@ class ${config.baseClassName}Query {
     });
   }
 
-  /// Fetches a specific [${config.readClassName}] document.
+  ${docCommentTemplate.forFetchDocumentMethod()}
   Future<${config.readClassName}?> fetchDocument({
     $documentIdParametersDefinition
     required String ${config.documentId},
@@ -82,7 +84,7 @@ class ${config.baseClassName}Query {
     return ds.data();
   }
 
-  /// Subscribes a specific [${config.baseClassName}] document.
+  ${docCommentTemplate.forSubscribeDocumentMethod()}
   Stream<${config.readClassName}?> subscribeDocument({
     $documentIdParametersDefinition
     required String ${config.documentId},
@@ -100,14 +102,14 @@ class ${config.baseClassName}Query {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [${config.baseClassName}] document.
+  ${docCommentTemplate.forAddMethod()}
   Future<DocumentReference<${config.createClassName}>> add({
     $documentIdParametersDefinition
     required ${config.createClassName} ${config.createClassInstanceName},
   }) =>
       ${_collectionReference(ReferenceClassType.create)}.add(${config.createClassInstanceName});
 
-  /// Sets a [${config.baseClassName}] document.
+  ${docCommentTemplate.forSetMethod()}
   Future<void> set({
     $documentIdParametersDefinition
     required String ${config.documentId},
@@ -119,7 +121,7 @@ class ${config.baseClassName}Query {
         ${config.documentId}: ${config.documentId},
       ).set(${config.createClassInstanceName}, options);
 
-  /// Updates a specific [${config.baseClassName}] document.
+  ${docCommentTemplate.forUpdateMethod()}
   Future<void> update({
     $documentIdParametersDefinition
     required String ${config.documentId},
@@ -130,7 +132,7 @@ class ${config.baseClassName}Query {
         ${config.documentId}: ${config.documentId},
       ).update(${config.updateClassInstanceName}.toJson());
 
-  /// Deletes a specific [${config.baseClassName}] document.
+  ${docCommentTemplate.forDeleteMethod()}
   Future<void> delete({
     $documentIdParametersDefinition
     required String ${config.documentId},

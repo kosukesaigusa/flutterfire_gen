@@ -190,9 +190,32 @@ DocumentReference<DeleteTodo> deleteTodoDocumentReference({
 }) =>
     deleteTodoCollectionReference.doc(todoId);
 
-/// Manages queries against the todos collection.
+/// A service class for managing todo documents in the database.
+///
+/// This class provides methods to perform CRUD (Create, Read, Update, Delete)
+/// operations on todo documents.
+///
+/// It includes methods to fetch and subscribe to single or multiple [ReadTodo]
+/// documents, as well as methods to add, set, update, and delete documents.
+///
+/// The class uses Firebase Firestore as the backend, assuming [ReadTodo],
+/// [CreateTodo], [UpdateTodo] are models representing the data.
+///
+/// Usage:
+///
+/// - To fetch or subscribe to one or more todo documents, use [fetchDocuments],\
+/// [subscribeDocuments], [fetchDocument], or [subscribeDocument].
+/// - To modify todo documents, use [add], [set], [update], or [delete].
+///
+/// This class is designed to abstract the complexities of direct Firestore
+/// usage and provide a straightforward API for todo document operations.
 class TodoQuery {
-  /// Fetches [ReadTodo] documents.
+  /// Fetches a list of [ReadTodo] documents from Cloud Firestore.
+  ///
+  /// This method retrieves documents based on the provided query and sorts them
+  /// if a [compare] function is given.
+  /// You can customize the query by using the [queryBuilder] and control the
+  /// data retrieval with [GetOptions].
   Future<List<ReadTodo>> fetchDocuments({
     GetOptions? options,
     Query<ReadTodo>? Function(Query<ReadTodo> query)? queryBuilder,
@@ -210,7 +233,11 @@ class TodoQuery {
     return result;
   }
 
-  /// Subscribes [Todo] documents.
+  /// Subscribes to a stream of [ReadTodo] documents from Cloud Firestore.
+  ///
+  /// This method returns a stream of [ReadTodo] documents, which updates in
+  /// real-time based on the database changes. You can customize the query using
+  /// [queryBuilder]. The documents can be sorted using the [compare] function.
   Stream<List<ReadTodo>> subscribeDocuments({
     Query<ReadTodo>? Function(Query<ReadTodo> query)? queryBuilder,
     int Function(ReadTodo lhs, ReadTodo rhs)? compare,
@@ -235,7 +262,10 @@ class TodoQuery {
     });
   }
 
-  /// Fetches a specific [ReadTodo] document.
+  /// Fetches a single [ReadTodo] document from Cloud Firestore by its ID.
+  ///
+  /// This method retrieves a specific document using the provided [todoId].
+  /// You can control the data retrieval with [GetOptions].
   Future<ReadTodo?> fetchDocument({
     required String todoId,
     GetOptions? options,
@@ -246,7 +276,12 @@ class TodoQuery {
     return ds.data();
   }
 
-  /// Subscribes a specific [Todo] document.
+  /// Subscribes to a stream of a single [ReadTodo] document from the database
+  /// by its ID.
+  ///
+  /// This method returns a stream that emits updates of a specific [ReadTodo]
+  /// document in real-time. It fetches the document using the provided
+  /// [todoId].
   Stream<ReadTodo?> subscribeDocument({
     required String todoId,
     bool includeMetadataChanges = false,
@@ -261,13 +296,20 @@ class TodoQuery {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [Todo] document.
+  /// Adds a new todo document to Cloud Firestore.
+  ///
+  /// This method creates a new document in Cloud Firestore using the provided
+  /// [createTodo] data.
   Future<DocumentReference<CreateTodo>> add({
     required CreateTodo createTodo,
   }) =>
       createTodoCollectionReference.add(createTodo);
 
-  /// Sets a [Todo] document.
+  /// Sets the data of a todo document in the database.
+  ///
+  /// This method overwrites the existing document data or creates a new
+  /// document if it does not exist, using the provided [createTodo] data and
+  /// [todoId].
   Future<void> set({
     required String todoId,
     required CreateTodo createTodo,
@@ -277,7 +319,11 @@ class TodoQuery {
         todoId: todoId,
       ).set(createTodo, options);
 
-  /// Updates a specific [Todo] document.
+  /// Updates a todo document in Cloud Firestore.
+  ///
+  /// This method partially updates the document identified by [todoId] with the
+  /// provided [updateTodo] data.
+  /// The update is based on the structure defined in `UpdateTodo.toJson()`.
   Future<void> update({
     required String todoId,
     required UpdateTodo updateTodo,
@@ -286,7 +332,9 @@ class TodoQuery {
         todoId: todoId,
       ).update(updateTodo.toJson());
 
-  /// Deletes a specific [Todo] document.
+  /// Deletes a todo document from the database.
+  ///
+  /// This method deletes the document identified by [todoId].
   Future<void> delete({
     required String todoId,
   }) =>

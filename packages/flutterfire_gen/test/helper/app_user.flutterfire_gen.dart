@@ -175,9 +175,33 @@ DocumentReference<DeleteAppUser> deleteAppUserDocumentReference({
 }) =>
     deleteAppUserCollectionReference.doc(appUserId);
 
-/// Manages queries against the appUsers collection.
+/// A service class for managing appUser documents in the database.
+///
+/// This class provides methods to perform CRUD (Create, Read, Update, Delete)
+/// operations on appUser documents.
+///
+/// It includes methods to fetch and subscribe to single or multiple [ReadAppUser]
+/// documents, as well as methods to add, set, update, and delete documents.
+///
+/// The class uses Firebase Firestore as the backend, assuming [ReadAppUser],
+/// [CreateAppUser], [UpdateAppUser] are models representing the data.
+///
+/// Usage:
+///
+/// - To fetch or subscribe to one or more appUser documents, use [fetchDocuments],
+/// [subscribeDocuments], [fetchDocument], or [subscribeDocument].
+/// - To modify appUser documents, use [add], [set], [update], or [delete].
+///
+/// This class is designed to abstract the complexities of direct Firestore
+/// usage and provide a straightforward API for appUser document operations.
+
 class AppUserQuery {
-  /// Fetches [ReadAppUser] documents.
+  /// Fetches a list of [ReadAppUser] documents from Cloud Firestore.
+  ///
+  /// This method retrieves documents based on the provided query and sorts them
+  /// if a [compare] function is given.
+  /// You can customize the query by using the [queryBuilder] and control the
+
   Future<List<ReadAppUser>> fetchDocuments({
     GetOptions? options,
     Query<ReadAppUser>? Function(Query<ReadAppUser> query)? queryBuilder,
@@ -195,7 +219,12 @@ class AppUserQuery {
     return result;
   }
 
-  /// Subscribes [AppUser] documents.
+  /// Subscribes to a stream of [ReadAppUser] documents from Cloud Firestore.
+  ///
+  /// This method returns a stream of [ReadAppUser] documents, which updates in
+  /// real-time based on the database changes. You can customize the query using
+  /// [queryBuilder]. The documents can be sorted using the [compare] function.
+
   Stream<List<ReadAppUser>> subscribeDocuments({
     Query<ReadAppUser>? Function(Query<ReadAppUser> query)? queryBuilder,
     int Function(ReadAppUser lhs, ReadAppUser rhs)? compare,
@@ -220,7 +249,11 @@ class AppUserQuery {
     });
   }
 
-  /// Fetches a specific [ReadAppUser] document.
+  /// Fetches a single [ReadAppUser] document from Cloud Firestore by its ID.
+  ///
+  /// This method retrieves a specific document using the provided [appUserId].
+  /// You can control the data retrieval with [GetOptions].
+
   Future<ReadAppUser?> fetchDocument({
     required String appUserId,
     GetOptions? options,
@@ -231,7 +264,11 @@ class AppUserQuery {
     return ds.data();
   }
 
-  /// Subscribes a specific [AppUser] document.
+  /// Subscribes to a stream of a single [ReadAppUser] document from Cloud Firestore by its ID.
+  ///
+  /// This method returns a stream of a single [ReadAppUser] document, which updates in
+  /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
+
   Stream<ReadAppUser?> subscribeDocument({
     required String appUserId,
     bool includeMetadataChanges = false,
@@ -246,13 +283,21 @@ class AppUserQuery {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [AppUser] document.
+  /// Adds a [appUser] document to Cloud Firestore.
+  ///
+  /// This method creates a new document in Cloud Firestore using the provided
+  /// [createAppUser] data.
+
   Future<DocumentReference<CreateAppUser>> add({
     required CreateAppUser createAppUser,
   }) =>
       createAppUserCollectionReference.add(createAppUser);
 
-  /// Sets a [AppUser] document.
+  /// Sets a [appUser] document to Cloud Firestore.
+  ///
+  /// This method creates a new document in Cloud Firestore using the provided
+  /// [updateAppUser] data.
+
   Future<void> set({
     required String appUserId,
     required CreateAppUser createAppUser,
@@ -262,7 +307,12 @@ class AppUserQuery {
         appUserId: appUserId,
       ).set(createAppUser, options);
 
-  /// Updates a specific [AppUser] document.
+  /// Updates a appUser document in Cloud Firestore.
+  ///
+  /// This method partially updates the document identified by [appUserId] with the
+  /// provided [updateAppUser] data.
+  /// The update is based on the structure defined in `UpdateAppUser.toJson()`.
+
   Future<void> update({
     required String appUserId,
     required UpdateAppUser updateAppUser,
@@ -271,7 +321,10 @@ class AppUserQuery {
         appUserId: appUserId,
       ).update(updateAppUser.toJson());
 
-  /// Deletes a specific [AppUser] document.
+  /// Deletes a [appUser] document from Cloud Firestore.
+  ///
+  /// This method deletes an existing document identified by [appUserId].
+
   Future<void> delete({
     required String appUserId,
   }) =>

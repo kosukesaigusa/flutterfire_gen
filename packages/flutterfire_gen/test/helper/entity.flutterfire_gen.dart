@@ -806,9 +806,33 @@ DocumentReference<DeleteEntity> deleteEntityDocumentReference({
 }) =>
     deleteEntityCollectionReference.doc(entityId);
 
-/// Manages queries against the entities collection.
+/// A service class for managing entity documents in the database.
+///
+/// This class provides methods to perform CRUD (Create, Read, Update, Delete)
+/// operations on entity documents.
+///
+/// It includes methods to fetch and subscribe to single or multiple [ReadEntity]
+/// documents, as well as methods to add, set, update, and delete documents.
+///
+/// The class uses Firebase Firestore as the backend, assuming [ReadEntity],
+/// [CreateEntity], [UpdateEntity] are models representing the data.
+///
+/// Usage:
+///
+/// - To fetch or subscribe to one or more entity documents, use [fetchDocuments],
+/// [subscribeDocuments], [fetchDocument], or [subscribeDocument].
+/// - To modify entity documents, use [add], [set], [update], or [delete].
+///
+/// This class is designed to abstract the complexities of direct Firestore
+/// usage and provide a straightforward API for entity document operations.
+
 class EntityQuery {
-  /// Fetches [ReadEntity] documents.
+  /// Fetches a list of [ReadEntity] documents from Cloud Firestore.
+  ///
+  /// This method retrieves documents based on the provided query and sorts them
+  /// if a [compare] function is given.
+  /// You can customize the query by using the [queryBuilder] and control the
+
   Future<List<ReadEntity>> fetchDocuments({
     GetOptions? options,
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
@@ -826,7 +850,12 @@ class EntityQuery {
     return result;
   }
 
-  /// Subscribes [Entity] documents.
+  /// Subscribes to a stream of [ReadEntity] documents from Cloud Firestore.
+  ///
+  /// This method returns a stream of [ReadEntity] documents, which updates in
+  /// real-time based on the database changes. You can customize the query using
+  /// [queryBuilder]. The documents can be sorted using the [compare] function.
+
   Stream<List<ReadEntity>> subscribeDocuments({
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
     int Function(ReadEntity lhs, ReadEntity rhs)? compare,
@@ -851,7 +880,11 @@ class EntityQuery {
     });
   }
 
-  /// Fetches a specific [ReadEntity] document.
+  /// Fetches a single [ReadEntity] document from Cloud Firestore by its ID.
+  ///
+  /// This method retrieves a specific document using the provided [entityId].
+  /// You can control the data retrieval with [GetOptions].
+
   Future<ReadEntity?> fetchDocument({
     required String entityId,
     GetOptions? options,
@@ -862,7 +895,11 @@ class EntityQuery {
     return ds.data();
   }
 
-  /// Subscribes a specific [Entity] document.
+  /// Subscribes to a stream of a single [ReadEntity] document from Cloud Firestore by its ID.
+  ///
+  /// This method returns a stream of a single [ReadEntity] document, which updates in
+  /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
+
   Stream<ReadEntity?> subscribeDocument({
     required String entityId,
     bool includeMetadataChanges = false,
@@ -877,13 +914,21 @@ class EntityQuery {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [Entity] document.
+  /// Adds a [entity] document to Cloud Firestore.
+  ///
+  /// This method creates a new document in Cloud Firestore using the provided
+  /// [createEntity] data.
+
   Future<DocumentReference<CreateEntity>> add({
     required CreateEntity createEntity,
   }) =>
       createEntityCollectionReference.add(createEntity);
 
-  /// Sets a [Entity] document.
+  /// Sets a [entity] document to Cloud Firestore.
+  ///
+  /// This method creates a new document in Cloud Firestore using the provided
+  /// [updateEntity] data.
+
   Future<void> set({
     required String entityId,
     required CreateEntity createEntity,
@@ -893,7 +938,12 @@ class EntityQuery {
         entityId: entityId,
       ).set(createEntity, options);
 
-  /// Updates a specific [Entity] document.
+  /// Updates a entity document in Cloud Firestore.
+  ///
+  /// This method partially updates the document identified by [entityId] with the
+  /// provided [updateEntity] data.
+  /// The update is based on the structure defined in `UpdateEntity.toJson()`.
+
   Future<void> update({
     required String entityId,
     required UpdateEntity updateEntity,
@@ -902,7 +952,10 @@ class EntityQuery {
         entityId: entityId,
       ).update(updateEntity.toJson());
 
-  /// Deletes a specific [Entity] document.
+  /// Deletes a [entity] document from Cloud Firestore.
+  ///
+  /// This method deletes an existing document identified by [entityId].
+
   Future<void> delete({
     required String entityId,
   }) =>

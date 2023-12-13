@@ -208,9 +208,33 @@ DocumentReference<DeleteAppUserPostLikeTask>
 }) =>
         deleteAppUserPostLikeTaskCollectionReference.doc(appUserPostLikeTaskId);
 
-/// Manages queries against the appUserPostLikeTasks collection.
+/// A service class for managing appUserPostLikeTask documents in the database.
+///
+/// This class provides methods to perform CRUD (Create, Read, Update, Delete)
+/// operations on appUserPostLikeTask documents.
+///
+/// It includes methods to fetch and subscribe to single or multiple [ReadAppUserPostLikeTask]
+/// documents, as well as methods to add, set, update, and delete documents.
+///
+/// The class uses Firebase Firestore as the backend, assuming [ReadAppUserPostLikeTask],
+/// [CreateAppUserPostLikeTask], [UpdateAppUserPostLikeTask] are models representing the data.
+///
+/// Usage:
+///
+/// - To fetch or subscribe to one or more appUserPostLikeTask documents, use [fetchDocuments],
+/// [subscribeDocuments], [fetchDocument], or [subscribeDocument].
+/// - To modify appUserPostLikeTask documents, use [add], [set], [update], or [delete].
+///
+/// This class is designed to abstract the complexities of direct Firestore
+/// usage and provide a straightforward API for appUserPostLikeTask document operations.
+
 class AppUserPostLikeTaskQuery {
-  /// Fetches [ReadAppUserPostLikeTask] documents.
+  /// Fetches a list of [ReadAppUserPostLikeTask] documents from Cloud Firestore.
+  ///
+  /// This method retrieves documents based on the provided query and sorts them
+  /// if a [compare] function is given.
+  /// You can customize the query by using the [queryBuilder] and control the
+
   Future<List<ReadAppUserPostLikeTask>> fetchDocuments({
     GetOptions? options,
     Query<ReadAppUserPostLikeTask>? Function(
@@ -232,7 +256,12 @@ class AppUserPostLikeTaskQuery {
     return result;
   }
 
-  /// Subscribes [AppUserPostLikeTask] documents.
+  /// Subscribes to a stream of [ReadAppUserPostLikeTask] documents from Cloud Firestore.
+  ///
+  /// This method returns a stream of [ReadAppUserPostLikeTask] documents, which updates in
+  /// real-time based on the database changes. You can customize the query using
+  /// [queryBuilder]. The documents can be sorted using the [compare] function.
+
   Stream<List<ReadAppUserPostLikeTask>> subscribeDocuments({
     Query<ReadAppUserPostLikeTask>? Function(
             Query<ReadAppUserPostLikeTask> query)?
@@ -261,7 +290,11 @@ class AppUserPostLikeTaskQuery {
     });
   }
 
-  /// Fetches a specific [ReadAppUserPostLikeTask] document.
+  /// Fetches a single [ReadAppUserPostLikeTask] document from Cloud Firestore by its ID.
+  ///
+  /// This method retrieves a specific document using the provided [appUserPostLikeTaskId].
+  /// You can control the data retrieval with [GetOptions].
+
   Future<ReadAppUserPostLikeTask?> fetchDocument({
     required String appUserPostLikeTaskId,
     GetOptions? options,
@@ -272,7 +305,11 @@ class AppUserPostLikeTaskQuery {
     return ds.data();
   }
 
-  /// Subscribes a specific [AppUserPostLikeTask] document.
+  /// Subscribes to a stream of a single [ReadAppUserPostLikeTask] document from Cloud Firestore by its ID.
+  ///
+  /// This method returns a stream of a single [ReadAppUserPostLikeTask] document, which updates in
+  /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
+
   Stream<ReadAppUserPostLikeTask?> subscribeDocument({
     required String appUserPostLikeTaskId,
     bool includeMetadataChanges = false,
@@ -287,14 +324,22 @@ class AppUserPostLikeTaskQuery {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [AppUserPostLikeTask] document.
+  /// Adds a [appUserPostLikeTask] document to Cloud Firestore.
+  ///
+  /// This method creates a new document in Cloud Firestore using the provided
+  /// [createAppUserPostLikeTask] data.
+
   Future<DocumentReference<CreateAppUserPostLikeTask>> add({
     required CreateAppUserPostLikeTask createAppUserPostLikeTask,
   }) =>
       createAppUserPostLikeTaskCollectionReference
           .add(createAppUserPostLikeTask);
 
-  /// Sets a [AppUserPostLikeTask] document.
+  /// Sets a [appUserPostLikeTask] document to Cloud Firestore.
+  ///
+  /// This method creates a new document in Cloud Firestore using the provided
+  /// [updateAppUserPostLikeTask] data.
+
   Future<void> set({
     required String appUserPostLikeTaskId,
     required CreateAppUserPostLikeTask createAppUserPostLikeTask,
@@ -304,7 +349,12 @@ class AppUserPostLikeTaskQuery {
         appUserPostLikeTaskId: appUserPostLikeTaskId,
       ).set(createAppUserPostLikeTask, options);
 
-  /// Updates a specific [AppUserPostLikeTask] document.
+  /// Updates a appUserPostLikeTask document in Cloud Firestore.
+  ///
+  /// This method partially updates the document identified by [appUserPostLikeTaskId] with the
+  /// provided [updateAppUserPostLikeTask] data.
+  /// The update is based on the structure defined in `UpdateAppUserPostLikeTask.toJson()`.
+
   Future<void> update({
     required String appUserPostLikeTaskId,
     required UpdateAppUserPostLikeTask updateAppUserPostLikeTask,
@@ -313,7 +363,10 @@ class AppUserPostLikeTaskQuery {
         appUserPostLikeTaskId: appUserPostLikeTaskId,
       ).update(updateAppUserPostLikeTask.toJson());
 
-  /// Deletes a specific [AppUserPostLikeTask] document.
+  /// Deletes a [appUserPostLikeTask] document from Cloud Firestore.
+  ///
+  /// This method deletes an existing document identified by [appUserPostLikeTaskId].
+
   Future<void> delete({
     required String appUserPostLikeTaskId,
   }) =>
