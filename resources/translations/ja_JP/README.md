@@ -372,3 +372,51 @@ class _VisibilityConverter implements JsonConverter<Visibility, String> {
 ```
 
 #### FieldValue
+
+Cloud Firestore で値を作成したり更新したりする際には、フィールドに `42` や `[1, 3, 5]` のように具体的な値を与えることもできますが、
+
+- `num` 型のフィールドに対して、現在の値から相対的な値を指定するための `FieldValue.increment(1)`
+- `array` 型のフィールドに対して、既になければ指定した値を追加するための `FieldValue.arrayUnion([7])` や、指定した値があれば取り除く `FieldValue.arrayRemove([5])`
+
+のように `FieldValue` を使用した指定方法もあります。
+
+そのような `FieldValue` で指定する可能性があるフィールドには `@allowFieldValue` アノテーションを使用して、下記のように定義することができます。
+
+```dart
+@allowFieldValue
+final int fieldValueAllowedInt;
+
+@allowFieldValue
+final List<String> fieldValueAllowedList;
+```
+
+そうすると、`CreateFoo` や `UpdateFoo` のインターフェースとして
+
+- `int` 型の代わりに `FirestoreData<int>` 型
+- `List<String>` 型の代わりに `FirestoreData<List<String>>` 型
+
+を使用することになります。
+
+`FirestoreData` 型は [flutterfire_gen_utils](https://pub.dev/packages/flutterfire_gen_utils) パッケージで定義された、sealed class で、下記の 2 つ
+
+- `ActualValue`: `42` や `[1, 3, 5]` のような具体的な値を指定するための型
+- `FieldValueData`: `FieldValue` で指定するための型
+
+をまとめています。
+
+よって、たとえば `Counter` ドキュメントの `count` という整数フィールドを更新する際には、下記のように実際の値と `FieldValue` とで更新を実行することができます。
+
+```dart
+final query = CounterQuery();
+
+Future<void> updateCount(String counterId, int count) => query.update(
+      counterId: counterId,
+      updateCounter: UpdateCounter(count: ActualValue<int>(count)),
+    );
+
+Future<void> incrementCount(String counterId) => query.update(
+      counterId: counterId,
+      updateCounter:
+          UpdateCounter(count: FieldValueData<int>(FieldValue.increment(1))),
+    );
+```
