@@ -20,6 +20,8 @@ Cloud Firestore のドキュメントのスキーマを Dart で記述するこ�
 
 ## How to use
 
+### Install
+
 あなたの Flutter アプリの `pubspec.yaml` に下記のような記述をしてください。
 
 ```yaml
@@ -53,6 +55,11 @@ dev_dependencies:
 `todos` コレクションの Todo ドキュメントのスキーマを flutterfire_gen の記法で記述してみましょう。
 
 ```dart
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+
+part 'todo.flutterfire_gen.dart';
+
 @FirestoreDocument(path: 'todos/{todoId}')
 class Todo {
   const Todo({
@@ -162,3 +169,148 @@ final DateTime? createdAt;
 @alwaysUseFieldValueServerTimestampWhenUpdating
 final DateTime? updatedAt;
 ```
+
+### Run the generator
+
+コード生成を実行するためには下記のコマンドを実行してください。
+
+```sh
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+また、生成元ファイルの拡張子の直前に `.flutterfire_gen` を追加したファイルが生成されるので、生成元ファイルには下記のような `part 'todo.flutterfire_gen.dart';` の記述がされている必要があります。
+
+```dart
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+
+part 'todo.flutterfire_gen.dart';
+```
+
+### Use generated Query class
+
+上記の `@FirestoreDocument` アノテーションを施した `Todo` クラスに対してコード生成を行うと、生成結果に `TodoQuery` というクラスが含まれています。`TodoQuery` には
+
+read
+
+- `fetchDocuments`: `todos` コレクションの複数のドキュメントを取得する
+- `subscribeDocuments`: `todos` コレクションの複数のドキュメントのリアルタイム更新を取得する
+- `fetchDocument`: `todos` コレクションの指定したドキュメントを取得する
+- `subscribeDocument`: `todos` コレクションの指定したドキュメントのリアルタイム更新を取得する
+
+create/update
+
+- `add`: `todos` コレクションに新しいドキュメントを作成する
+- `set`: `todos` コレクションの指定したドキュメントにデータをセットする
+- `update`: `todos` コレクションの指定したドキュメントを更新する
+
+delete
+
+- `delete`: `todos` コレクションの指定したドキュメントを削除する
+
+のような基本的な読み書きメソッドが定義されています。
+
+さらに、それらは
+
+- read で得られる値としての `ReadTodo` 型
+- create で作成する際のインターフェースとしての `CreateTodo` 型
+- update で更新する際のインターフェースとしての `UpdateTodo` 型
+
+が定義されて型安全性が担保されています。
+
+たとえば、`@FirestoreDocument` アノテーションを施した `Todo` クラスには特にドキュメント ID の文字列フィールドを定義していませんが、`TodoQuery` のメソッドを通じて得られる `ReadTodo` 型のインスタンスには、自動的に non-nullable な `String todoId` が含まれるようになっています。
+
+一方で、create 時にはこれから作成するドキュメントの ID は知り得ないので、`todoId` はそのインターフェースに含まれません。
+
+そして、update では指定したフィールドだけを更新したいので、`UpdateTodo` 型が提供するドキュメントの更新のためのインターフェースのパラメータはすべて optional です。
+
+`Todo` クラスを一つ定義してコード生成を実行するだけで、読み書きの操作のそれぞれで異なる最適な型と、基本的な読み書きのメソッドが自動で生成されるのが flutterfire_gen を使用することで得られる大きな恩恵です。
+
+### read (get/list)
+
+read 操作は下記のようにとてもシンプルに書くことができます。`FirebaseFirestore.instance` と繰り返し書くことも、`CollectionReference` や `DocumentReference` に `withConverter` を施して型安全な操作をするためのコードを自分で書く必要も全くありません。それらのボイラプレートコードはすべて flutterfire_gen が生成します。
+
+```dart
+final query = TodoQuery();
+
+Future<List<ReadTodo>> fetchTodos() => query.fetchDocuments();
+
+Stream<List<ReadTodo>> subscribeTodos() => query.subscribeDocuments();
+
+Future<ReadTodo?> fetchTodo(String todoId) =>
+    query.fetchDocument(todoId: todoId);
+
+Stream<ReadTodo?> subscribeTodo(String todoId) =>
+    query.subscribeDocument(todoId: todoId);
+```
+
+読み込みクエリに `where` 句や `orderBy` 句を追加するのにも対応しています。各メソッドの任意引数の `queryBuilder` を持ちいて下記のように各種の条件を追加するだけです。
+
+```dart
+final query = TodoQuery();
+
+Future<List<ReadTodo>> fetchTodos() => query.fetchDocuments(
+      queryBuilder: (query) => query
+          .where('isCompleted', isEqualTo: false)
+          .orderBy('createdAt', descending: true),
+    );
+```
+
+上で説明した通り、`Todo` クラスの定義をした際には書く必要のなかった `todoId` が確実に取得できています。
+
+```dart
+Future<List<ReadTodo>> fetchTodos() async {
+  final todos = await query.fetchDocuments();
+  for (final todo in todos) {
+    print(todo.todoId);
+  }
+  return todos;
+}
+```
+
+### create
+
+create 時には、型安全な操作のために `CreateTodo` という専用のインターフェースが提供されています。
+
+```dart
+final query = TodoQuery();
+
+Future<DocumentReference<CreateTodo>> addTodo(String title) =>
+    query.add(createTodo: CreateTodo(title: title));
+
+Future<DocumentReference<CreateTodo>> addCompletedTodo(String title) =>
+    query.add(createTodo: CreateTodo(title: title, isCompleted: true));
+```
+
+Todo の `title` が必須のパラメータとなっています。`isCompleted` が任意のパラメータになっているのは、`Todo` クラスを定義した際に `@CreateDefault(false)` のアノテーションを施したためです。よって、特に指定しなければ `isCompleted` は `false` でドキュメントが作成されます。
+
+また、`createdAt`, `updatedAt` はインターフェースに登場しませんが、内部で自動で `FieldValue.serverTimestamp()` が適用されています。このあたりを何も意識しなくて良いのも flutterfire_gen が自動でそれらのコードを生成している恩恵です。
+
+### update
+
+update 時にも、`UpdateTodo` という専用のインターフェースが提供されています。
+
+指定したフィールドのみを更新したいので、`UpdateTodo` に定義されているのはすべて任意引数です。
+
+```dart
+final query = TodoQuery();
+
+Future<void> updateCompletionStatus({
+  required String todoId,
+  required bool isCompleted,
+}) =>
+    query.update(
+      todoId: todoId,
+      updateTodo: UpdateTodo(isCompleted: isCompleted),
+    );
+```
+
+上記は、指定した Todo ドキュメントの完了状態 (`isCompleted`) を更新する関数です。
+
+ここでも create と同様に、`updatedAt` には内部で自動で `FieldValue.serverTimestamp()` が適用されています。
+
+### Advanced
+
+#### JsonConverter
+
+#### FieldValue
