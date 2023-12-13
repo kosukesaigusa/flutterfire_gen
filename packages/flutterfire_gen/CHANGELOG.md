@@ -1,3 +1,7 @@
+## 0.2.0-dev.3
+
+* Update `README.md`.
+
 ## 0.2.0-dev.2
 
 * Update `ToJsonParser` logic for `DateTime` fields.
