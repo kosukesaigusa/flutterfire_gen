@@ -44,7 +44,7 @@ dev_dependencies:
   build_runner: latest
 
   # The code generator.
-  flutterfire_gen: ^0.2.0-dev.2
+  flutterfire_gen: ^0.2.0-dev.3
 ```
 
 <https://pub.dev/publishers/kosukesaigusa.com/unlisted-packages>
