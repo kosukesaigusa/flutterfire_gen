@@ -123,7 +123,8 @@ class UpdateTodo {
     final json = <String, dynamic>{
       if (title != null) 'title': title,
       if (isCompleted != null) 'isCompleted': isCompleted,
-      if (createdAt != null) 'createdAt': createdAt,
+      if (createdAt != null)
+        'createdAt': createdAt == null ? null : Timestamp.fromDate(createdAt!),
       'updatedAt': FieldValue.serverTimestamp(),
     };
     final jsonPostProcessors = <({String key, dynamic value})>[];
