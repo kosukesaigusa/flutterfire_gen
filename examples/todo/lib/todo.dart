@@ -14,21 +14,20 @@ class TodoList extends _$TodoList {
   Future<List<ReadTodo>> build() =>
       ref.watch(todoQueryProvider).fetchDocuments();
 
-  Future<DocumentReference<CreateTodo>> addTodo(String title) {
-    return ref
-        .read(todoQueryProvider)
-        .add(createTodo: CreateTodo(title: title));
-  }
+  Future<DocumentReference<CreateTodo>> addTodo(String title) =>
+      ref.read(todoQueryProvider).add(createTodo: CreateTodo(title: title));
 
   Future<void> updateCompletionStatus({
     required String todoId,
     required bool isCompleted,
-  }) {
-    return ref.read(todoQueryProvider).update(
-          todoId: todoId,
-          updateTodo: UpdateTodo(isCompleted: isCompleted),
-        );
-  }
+  }) =>
+      ref.read(todoQueryProvider).update(
+            todoId: todoId,
+            updateTodo: UpdateTodo(isCompleted: isCompleted),
+          );
+
+  Future<void> delete(String todoId) =>
+      ref.read(todoQueryProvider).delete(todoId: todoId);
 }
 
 @FirestoreDocument(path: 'todos/{todoId}')
