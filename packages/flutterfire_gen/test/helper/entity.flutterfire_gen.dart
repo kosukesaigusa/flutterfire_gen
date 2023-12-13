@@ -548,8 +548,10 @@ class CreateEntity {
       'geoPoint': geoPoint,
       'geoPointWithDefault': geoPointWithDefault,
       'nullableGeoPoint': nullableGeoPoint,
-      'dateTime': dateTime,
-      'nullableDateTime': nullableDateTime,
+      'dateTime': Timestamp.fromDate(dateTime),
+      'nullableDateTime': nullableDateTime == null
+          ? null
+          : Timestamp.fromDate(nullableDateTime!),
       'timestamp': timestamp,
       'nullableTimestamp': nullableTimestamp,
       'documentReference': documentReference,
@@ -712,8 +714,11 @@ class UpdateEntity {
       if (geoPointWithDefault != null)
         'geoPointWithDefault': geoPointWithDefault,
       if (nullableGeoPoint != null) 'nullableGeoPoint': nullableGeoPoint,
-      if (dateTime != null) 'dateTime': dateTime,
-      if (nullableDateTime != null) 'nullableDateTime': nullableDateTime,
+      if (dateTime != null) 'dateTime': Timestamp.fromDate(dateTime!),
+      if (nullableDateTime != null)
+        'nullableDateTime': nullableDateTime == null
+            ? null
+            : Timestamp.fromDate(nullableDateTime!),
       if (timestamp != null) 'timestamp': timestamp,
       if (nullableTimestamp != null) 'nullableTimestamp': nullableTimestamp,
       if (documentReference != null) 'documentReference': documentReference,

@@ -108,7 +108,8 @@ class UpdateFcmToken {
       if (tokenAndDevices != null)
         'tokenAndDevices':
             _tokenAndDevicesConverter.toJson(tokenAndDevices!.actualValue),
-      if (createdAt != null) 'createdAt': createdAt,
+      if (createdAt != null)
+        'createdAt': createdAt == null ? null : Timestamp.fromDate(createdAt!),
     };
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {

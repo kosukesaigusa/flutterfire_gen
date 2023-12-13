@@ -123,6 +123,18 @@ class ToJsonFieldParser {
       }
     }
 
+    if (dartType.isDateTimeType) {
+      if (dartType.isNullableType) {
+        return '$name == null ? null : Timestamp.fromDate($name!)';
+      } else {
+        if (assertNonNull) {
+          return 'Timestamp.fromDate($name!)';
+        } else {
+          return 'Timestamp.fromDate($name)';
+        }
+      }
+    }
+
     return '$name$defaultValueExpression';
   }
 }

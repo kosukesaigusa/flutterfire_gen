@@ -211,7 +211,8 @@ class UpdateChatMessage {
       if (content != null) 'content': content,
       if (imageUrls != null) 'imageUrls': imageUrls,
       if (isDeleted != null) 'isDeleted': isDeleted,
-      if (createdAt != null) 'createdAt': createdAt,
+      if (createdAt != null)
+        'createdAt': createdAt == null ? null : Timestamp.fromDate(createdAt!),
       'updatedAt': FieldValue.serverTimestamp(),
     };
     final jsonPostProcessors = <({String key, dynamic value})>[];

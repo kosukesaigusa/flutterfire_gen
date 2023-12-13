@@ -113,7 +113,8 @@ class UpdateAppUserPostLike {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{
       if (likedByAppUserId != null) 'likedByAppUserId': likedByAppUserId,
-      if (likedAt != null) 'likedAt': likedAt,
+      if (likedAt != null)
+        'likedAt': likedAt == null ? null : Timestamp.fromDate(likedAt!),
       'updatedAt': FieldValue.serverTimestamp(),
     };
     final jsonPostProcessors = <({String key, dynamic value})>[];
