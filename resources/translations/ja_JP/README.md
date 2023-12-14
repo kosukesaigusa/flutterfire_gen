@@ -1,6 +1,6 @@
 # flutterfire_gen
 
-[English](https://github.com/kosukesaigusa/flutterfire_gen/blob/main/packages/flutterfire_gen/README.md) | [日本語](https://github.com/rrousselGit/freezed/blob/main/resources/translations/ja_JP/README.md)
+[English](https://github.com/kosukesaigusa/flutterfire_gen/blob/main/packages/flutterfire_gen/README.md) | [日本語](https://github.com/kosukesaigusa/flutterfire_gen/blob/main/resources/translations/ja_JP/README.md)
 
 flutterfire_gen は Flutter の Cloud Firestore のためのコード生成パッケージです。
 
@@ -46,8 +46,6 @@ dev_dependencies:
   # The code generator.
   flutterfire_gen: ^0.2.0-dev.3
 ```
-
-<https://pub.dev/publishers/kosukesaigusa.com/unlisted-packages>
 
 - [flutterfire_gen](https://pub.dev/packages/flutterfire_gen)
 - [flutterfire_gen_annotation](https://pub.dev/packages/flutterfire_gen_annotation)
