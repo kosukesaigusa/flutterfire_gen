@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('test', () {
-    expect(0, 0);
+  test('testWidgets', () {
+    expect(2 + 3, 5);
   });
 }

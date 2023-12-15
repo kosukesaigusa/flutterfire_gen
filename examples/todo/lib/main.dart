@@ -1,13 +1,27 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'firebase_options.dart';
 import 'todo.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(
-    const ProviderScope(
+    ProviderScope(
       child: MaterialApp(
-        home: TodoListPage(),
+        home: const TodoListPage(),
+        scrollBehavior: const MaterialScrollBehavior().copyWith(
+          dragDevices: {
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+            PointerDeviceKind.stylus,
+            PointerDeviceKind.unknown,
+          },
+        ),
       ),
     ),
   );
@@ -29,6 +43,7 @@ class TodoListPage extends ConsumerWidget {
             itemBuilder: (context, index) {
               final todo = todos[index];
               return ListTile(
+                key: ValueKey(todo.todoId),
                 title: Text(todo.title),
                 subtitle: Text(todo.todoId),
                 leading: Checkbox(
