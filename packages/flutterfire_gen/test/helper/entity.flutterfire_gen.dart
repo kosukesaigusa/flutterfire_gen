@@ -419,7 +419,7 @@ class ReadEntity {
 /// Represents the data structure for creating a new entity document in Cloud Firestore.
 ///
 /// This class is used to define the necessary data for creating a new entity document.
-/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateEntity {
   const CreateEntity({
@@ -825,10 +825,26 @@ DocumentReference<DeleteEntity> deleteEntityDocumentReference({
 }) =>
     deleteEntityCollectionReference.doc(entityId);
 
+/// A sealed class that serves as a base for representing batch write operations in Firestore.
+///
+/// This class is the abstract base for subclasses that define specific types
+/// of batch operations, such as creating, updating, or deleting entity documents.
+/// It is used as a part of a type hierarchy for batch operations and is not
+/// intended for direct instantiation. Instead, it establishes a common
+/// interface and structure for various types of batch write operations.
+///
+/// The use of a sealed class here ensures type safety and polymorphic handling
+/// of different batch operation types, while allowing specific implementations
+/// in the subclasses.
 sealed class BatchWriteEntity {
   const BatchWriteEntity();
 }
 
+/// Represents a batch operation for creating a entity document in Firestore.
+///
+/// This class is used as part of a batch write to Firestore, specifically for
+/// creating new entity documents. It encapsulates the ID of the new entity document
+/// and the data required for creation.
 final class BatchCreateEntity extends BatchWriteEntity {
   const BatchCreateEntity({
     required this.entityId,
@@ -840,6 +856,11 @@ final class BatchCreateEntity extends BatchWriteEntity {
   final CreateEntity createEntity;
 }
 
+/// Represents a batch operation for updating an existing entity document in Firestore.
+///
+/// This class is utilized in a batch write process to Firestore, allowing for
+/// the update of existing entity documents. It includes the entity document's ID
+/// and the data for the update.
 final class BatchUpdateEntity extends BatchWriteEntity {
   const BatchUpdateEntity({
     required this.entityId,
@@ -851,6 +872,11 @@ final class BatchUpdateEntity extends BatchWriteEntity {
   final UpdateEntity updateEntity;
 }
 
+// Represents a batch operation for deleting a entity document in Firestore.
+///
+/// Used in a batch write to Firestore for deleting a entity document. This class
+/// only requires the ID of the entity document to be deleted, as no additional
+/// data is needed for deletion.
 final class BatchDeleteEntity extends BatchWriteEntity {
   const BatchDeleteEntity({
     required this.entityId,
@@ -962,7 +988,7 @@ class EntityQuery {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [entity] document to Cloud Firestore.
+  /// Adds a entity document to Cloud Firestore.
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createEntity] data.
@@ -971,10 +997,10 @@ class EntityQuery {
   }) =>
       createEntityCollectionReference.add(createEntity);
 
-  /// Sets a [entity] document to Cloud Firestore.
+  /// Sets a entity document to Cloud Firestore.
   ///
   /// This method creates a new document in Cloud Firestore using the provided
-  /// [updateEntity] data.
+  /// [createEntity] data.
   Future<void> set({
     required String entityId,
     required CreateEntity createEntity,
@@ -997,7 +1023,7 @@ class EntityQuery {
         entityId: entityId,
       ).update(updateEntity.toJson());
 
-  /// Deletes a [entity] document from Cloud Firestore.
+  /// Deletes a entity document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [entityId].
   Future<void> delete({
@@ -1007,6 +1033,27 @@ class EntityQuery {
         entityId: entityId,
       ).delete();
 
+  /// Performs a batch write operation in Firestore using a list of [BatchWriteEntity] tasks.
+  ///
+  /// This function allows for executing multiple Firestore write operations (create, update, delete)
+  /// as a single batch. This ensures that all operations either complete successfully or fail
+  /// without applying any changes, providing atomicity.
+  ///
+  /// Parameters:
+  ///   - [batchWriteTasks] A list of [BatchWriteEntity] objects, each representing a specific
+  ///     write operation (create, update, or delete) for Entity documents.
+  ///
+  /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
+  /// Firestore operation. This includes:
+  ///   - Creating new documents for tasks of type [BatchCreateEntity].
+  ///   - Updating existing documents for tasks of type [BatchUpdateEntity].
+  ///   - Deleting documents for tasks of type [BatchDeleteEntity].
+  ///
+  /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
+  ///
+  /// Throws:
+  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  ///     operations within the batch.
   Future<void> batchWrite(List<BatchWriteEntity> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

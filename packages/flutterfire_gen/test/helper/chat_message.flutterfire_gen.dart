@@ -135,7 +135,7 @@ class ReadChatMessage {
 /// Represents the data structure for creating a new chatMessage document in Cloud Firestore.
 ///
 /// This class is used to define the necessary data for creating a new chatMessage document.
-/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateChatMessage {
   const CreateChatMessage({
@@ -333,10 +333,26 @@ DocumentReference<DeleteChatMessage> deleteChatMessageDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
+/// A sealed class that serves as a base for representing batch write operations in Firestore.
+///
+/// This class is the abstract base for subclasses that define specific types
+/// of batch operations, such as creating, updating, or deleting chatMessage documents.
+/// It is used as a part of a type hierarchy for batch operations and is not
+/// intended for direct instantiation. Instead, it establishes a common
+/// interface and structure for various types of batch write operations.
+///
+/// The use of a sealed class here ensures type safety and polymorphic handling
+/// of different batch operation types, while allowing specific implementations
+/// in the subclasses.
 sealed class BatchWriteChatMessage {
   const BatchWriteChatMessage();
 }
 
+/// Represents a batch operation for creating a chatMessage document in Firestore.
+///
+/// This class is used as part of a batch write to Firestore, specifically for
+/// creating new chatMessage documents. It encapsulates the ID of the new chatMessage document
+/// and the data required for creation.
 final class BatchCreateChatMessage extends BatchWriteChatMessage {
   const BatchCreateChatMessage({
     required this.chatRoomId,
@@ -351,6 +367,11 @@ final class BatchCreateChatMessage extends BatchWriteChatMessage {
   final CreateChatMessage createChatMessage;
 }
 
+/// Represents a batch operation for updating an existing chatMessage document in Firestore.
+///
+/// This class is utilized in a batch write process to Firestore, allowing for
+/// the update of existing chatMessage documents. It includes the chatMessage document's ID
+/// and the data for the update.
 final class BatchUpdateChatMessage extends BatchWriteChatMessage {
   const BatchUpdateChatMessage({
     required this.chatRoomId,
@@ -365,6 +386,11 @@ final class BatchUpdateChatMessage extends BatchWriteChatMessage {
   final UpdateChatMessage updateChatMessage;
 }
 
+// Represents a batch operation for deleting a chatMessage document in Firestore.
+///
+/// Used in a batch write to Firestore for deleting a chatMessage document. This class
+/// only requires the ID of the chatMessage document to be deleted, as no additional
+/// data is needed for deletion.
 final class BatchDeleteChatMessage extends BatchWriteChatMessage {
   const BatchDeleteChatMessage({
     required this.chatRoomId,
@@ -491,7 +517,7 @@ class ChatMessageQuery {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [chatMessage] document to Cloud Firestore.
+  /// Adds a chatMessage document to Cloud Firestore.
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createChatMessage] data.
@@ -503,10 +529,10 @@ class ChatMessageQuery {
         chatRoomId: chatRoomId,
       ).add(createChatMessage);
 
-  /// Sets a [chatMessage] document to Cloud Firestore.
+  /// Sets a chatMessage document to Cloud Firestore.
   ///
   /// This method creates a new document in Cloud Firestore using the provided
-  /// [updateChatMessage] data.
+  /// [createChatMessage] data.
   Future<void> set({
     required String chatRoomId,
     required String chatMessageId,
@@ -533,7 +559,7 @@ class ChatMessageQuery {
         chatMessageId: chatMessageId,
       ).update(updateChatMessage.toJson());
 
-  /// Deletes a [chatMessage] document from Cloud Firestore.
+  /// Deletes a chatMessage document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [chatMessageId].
   Future<void> delete({
@@ -545,6 +571,27 @@ class ChatMessageQuery {
         chatMessageId: chatMessageId,
       ).delete();
 
+  /// Performs a batch write operation in Firestore using a list of [BatchWriteChatMessage] tasks.
+  ///
+  /// This function allows for executing multiple Firestore write operations (create, update, delete)
+  /// as a single batch. This ensures that all operations either complete successfully or fail
+  /// without applying any changes, providing atomicity.
+  ///
+  /// Parameters:
+  ///   - [batchWriteTasks] A list of [BatchWriteChatMessage] objects, each representing a specific
+  ///     write operation (create, update, or delete) for ChatMessage documents.
+  ///
+  /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
+  /// Firestore operation. This includes:
+  ///   - Creating new documents for tasks of type [BatchCreateChatMessage].
+  ///   - Updating existing documents for tasks of type [BatchUpdateChatMessage].
+  ///   - Deleting documents for tasks of type [BatchDeleteChatMessage].
+  ///
+  /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
+  ///
+  /// Throws:
+  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  ///     operations within the batch.
   Future<void> batchWrite(List<BatchWriteChatMessage> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

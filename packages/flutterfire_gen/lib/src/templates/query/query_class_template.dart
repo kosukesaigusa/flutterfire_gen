@@ -34,11 +34,11 @@ class QueryClassTemplate {
     );
     final docCommentTemplate = QueryClassDocCommentTemplate(config);
     return '''
-sealed class BatchWrite${config.capitalizedDocumentName} {
+${docCommentTemplate.forBatchWriteSealedClass()}sealed class BatchWrite${config.capitalizedDocumentName} {
   const BatchWrite${config.capitalizedDocumentName}();
 }
 
-final class BatchCreate${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
+${docCommentTemplate.forBatchWriteCreateClass()}final class BatchCreate${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
   const BatchCreate${config.capitalizedDocumentName}({
     $documentIdConstructorParametersDefinition
     required this.${config.documentId},
@@ -46,12 +46,13 @@ final class BatchCreate${config.capitalizedDocumentName} extends BatchWrite${con
 });
 
   $documentIdFieldDefinitions
+
   final String ${config.documentId};
 
   final Create${config.capitalizedDocumentName} ${config.createClassInstanceName};
 }
 
-final class BatchUpdate${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
+${docCommentTemplate.forBatchWriteUpdateClass()}final class BatchUpdate${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
   const BatchUpdate${config.capitalizedDocumentName}({
     $documentIdConstructorParametersDefinition
     required this.${config.documentId},
@@ -59,18 +60,20 @@ final class BatchUpdate${config.capitalizedDocumentName} extends BatchWrite${con
   });
 
   $documentIdFieldDefinitions
+
   final String ${config.documentId};
 
   final Update${config.capitalizedDocumentName} ${config.updateClassInstanceName};
 }
 
-final class BatchDelete${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
+${docCommentTemplate.forBatchWriteDeleteClass()}final class BatchDelete${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
   const BatchDelete${config.capitalizedDocumentName}({
     $documentIdConstructorParametersDefinition
     required this.${config.documentId},
   });
 
   $documentIdFieldDefinitions
+
   final String ${config.documentId};
 }
 
@@ -184,7 +187,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
         ${config.documentId}: ${config.documentId},
       ).delete();
 
-  Future<void> batchWrite(List<BatchWrite${config.capitalizedDocumentName}> batchWriteTasks) {
+  ${docCommentTemplate.forBatchWriteMethod()}Future<void> batchWrite(List<BatchWrite${config.capitalizedDocumentName}> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {
       switch (task) {

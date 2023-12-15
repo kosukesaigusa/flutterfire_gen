@@ -86,7 +86,7 @@ class ReadTodo {
 /// Represents the data structure for creating a new todo document in Cloud Firestore.
 ///
 /// This class is used to define the necessary data for creating a new todo document.
-/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateTodo {
   const CreateTodo({
@@ -209,10 +209,26 @@ DocumentReference<DeleteTodo> deleteTodoDocumentReference({
 }) =>
     deleteTodoCollectionReference.doc(todoId);
 
+/// A sealed class that serves as a base for representing batch write operations in Firestore.
+///
+/// This class is the abstract base for subclasses that define specific types
+/// of batch operations, such as creating, updating, or deleting todo documents.
+/// It is used as a part of a type hierarchy for batch operations and is not
+/// intended for direct instantiation. Instead, it establishes a common
+/// interface and structure for various types of batch write operations.
+///
+/// The use of a sealed class here ensures type safety and polymorphic handling
+/// of different batch operation types, while allowing specific implementations
+/// in the subclasses.
 sealed class BatchWriteTodo {
   const BatchWriteTodo();
 }
 
+/// Represents a batch operation for creating a todo document in Firestore.
+///
+/// This class is used as part of a batch write to Firestore, specifically for
+/// creating new todo documents. It encapsulates the ID of the new todo document
+/// and the data required for creation.
 final class BatchCreateTodo extends BatchWriteTodo {
   const BatchCreateTodo({
     required this.todoId,
@@ -224,6 +240,11 @@ final class BatchCreateTodo extends BatchWriteTodo {
   final CreateTodo createTodo;
 }
 
+/// Represents a batch operation for updating an existing todo document in Firestore.
+///
+/// This class is utilized in a batch write process to Firestore, allowing for
+/// the update of existing todo documents. It includes the todo document's ID
+/// and the data for the update.
 final class BatchUpdateTodo extends BatchWriteTodo {
   const BatchUpdateTodo({
     required this.todoId,
@@ -235,6 +256,11 @@ final class BatchUpdateTodo extends BatchWriteTodo {
   final UpdateTodo updateTodo;
 }
 
+// Represents a batch operation for deleting a todo document in Firestore.
+///
+/// Used in a batch write to Firestore for deleting a todo document. This class
+/// only requires the ID of the todo document to be deleted, as no additional
+/// data is needed for deletion.
 final class BatchDeleteTodo extends BatchWriteTodo {
   const BatchDeleteTodo({
     required this.todoId,
@@ -346,7 +372,7 @@ class TodoQuery {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [todo] document to Cloud Firestore.
+  /// Adds a todo document to Cloud Firestore.
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createTodo] data.
@@ -355,10 +381,10 @@ class TodoQuery {
   }) =>
       createTodoCollectionReference.add(createTodo);
 
-  /// Sets a [todo] document to Cloud Firestore.
+  /// Sets a todo document to Cloud Firestore.
   ///
   /// This method creates a new document in Cloud Firestore using the provided
-  /// [updateTodo] data.
+  /// [createTodo] data.
   Future<void> set({
     required String todoId,
     required CreateTodo createTodo,
@@ -381,7 +407,7 @@ class TodoQuery {
         todoId: todoId,
       ).update(updateTodo.toJson());
 
-  /// Deletes a [todo] document from Cloud Firestore.
+  /// Deletes a todo document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [todoId].
   Future<void> delete({
@@ -391,6 +417,27 @@ class TodoQuery {
         todoId: todoId,
       ).delete();
 
+  /// Performs a batch write operation in Firestore using a list of [BatchWriteTodo] tasks.
+  ///
+  /// This function allows for executing multiple Firestore write operations (create, update, delete)
+  /// as a single batch. This ensures that all operations either complete successfully or fail
+  /// without applying any changes, providing atomicity.
+  ///
+  /// Parameters:
+  ///   - [batchWriteTasks] A list of [BatchWriteTodo] objects, each representing a specific
+  ///     write operation (create, update, or delete) for Todo documents.
+  ///
+  /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
+  /// Firestore operation. This includes:
+  ///   - Creating new documents for tasks of type [BatchCreateTodo].
+  ///   - Updating existing documents for tasks of type [BatchUpdateTodo].
+  ///   - Deleting documents for tasks of type [BatchDeleteTodo].
+  ///
+  /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
+  ///
+  /// Throws:
+  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  ///     operations within the batch.
   Future<void> batchWrite(List<BatchWriteTodo> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

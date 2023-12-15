@@ -75,7 +75,7 @@ class ReadFcmToken {
 /// Represents the data structure for creating a new fcmToken document in Cloud Firestore.
 ///
 /// This class is used to define the necessary data for creating a new fcmToken document.
-/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateFcmToken {
   const CreateFcmToken({
@@ -197,10 +197,26 @@ DocumentReference<DeleteFcmToken> deleteFcmTokenDocumentReference({
 }) =>
     deleteFcmTokenCollectionReference.doc(fcmTokenId);
 
+/// A sealed class that serves as a base for representing batch write operations in Firestore.
+///
+/// This class is the abstract base for subclasses that define specific types
+/// of batch operations, such as creating, updating, or deleting fcmToken documents.
+/// It is used as a part of a type hierarchy for batch operations and is not
+/// intended for direct instantiation. Instead, it establishes a common
+/// interface and structure for various types of batch write operations.
+///
+/// The use of a sealed class here ensures type safety and polymorphic handling
+/// of different batch operation types, while allowing specific implementations
+/// in the subclasses.
 sealed class BatchWriteFcmToken {
   const BatchWriteFcmToken();
 }
 
+/// Represents a batch operation for creating a fcmToken document in Firestore.
+///
+/// This class is used as part of a batch write to Firestore, specifically for
+/// creating new fcmToken documents. It encapsulates the ID of the new fcmToken document
+/// and the data required for creation.
 final class BatchCreateFcmToken extends BatchWriteFcmToken {
   const BatchCreateFcmToken({
     required this.fcmTokenId,
@@ -212,6 +228,11 @@ final class BatchCreateFcmToken extends BatchWriteFcmToken {
   final CreateFcmToken createFcmToken;
 }
 
+/// Represents a batch operation for updating an existing fcmToken document in Firestore.
+///
+/// This class is utilized in a batch write process to Firestore, allowing for
+/// the update of existing fcmToken documents. It includes the fcmToken document's ID
+/// and the data for the update.
 final class BatchUpdateFcmToken extends BatchWriteFcmToken {
   const BatchUpdateFcmToken({
     required this.fcmTokenId,
@@ -223,6 +244,11 @@ final class BatchUpdateFcmToken extends BatchWriteFcmToken {
   final UpdateFcmToken updateFcmToken;
 }
 
+// Represents a batch operation for deleting a fcmToken document in Firestore.
+///
+/// Used in a batch write to Firestore for deleting a fcmToken document. This class
+/// only requires the ID of the fcmToken document to be deleted, as no additional
+/// data is needed for deletion.
 final class BatchDeleteFcmToken extends BatchWriteFcmToken {
   const BatchDeleteFcmToken({
     required this.fcmTokenId,
@@ -334,7 +360,7 @@ class FcmTokenQuery {
     return streamDs.map((ds) => ds.data());
   }
 
-  /// Adds a [fcmToken] document to Cloud Firestore.
+  /// Adds a fcmToken document to Cloud Firestore.
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createFcmToken] data.
@@ -343,10 +369,10 @@ class FcmTokenQuery {
   }) =>
       createFcmTokenCollectionReference.add(createFcmToken);
 
-  /// Sets a [fcmToken] document to Cloud Firestore.
+  /// Sets a fcmToken document to Cloud Firestore.
   ///
   /// This method creates a new document in Cloud Firestore using the provided
-  /// [updateFcmToken] data.
+  /// [createFcmToken] data.
   Future<void> set({
     required String fcmTokenId,
     required CreateFcmToken createFcmToken,
@@ -369,7 +395,7 @@ class FcmTokenQuery {
         fcmTokenId: fcmTokenId,
       ).update(updateFcmToken.toJson());
 
-  /// Deletes a [fcmToken] document from Cloud Firestore.
+  /// Deletes a fcmToken document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [fcmTokenId].
   Future<void> delete({
@@ -379,6 +405,27 @@ class FcmTokenQuery {
         fcmTokenId: fcmTokenId,
       ).delete();
 
+  /// Performs a batch write operation in Firestore using a list of [BatchWriteFcmToken] tasks.
+  ///
+  /// This function allows for executing multiple Firestore write operations (create, update, delete)
+  /// as a single batch. This ensures that all operations either complete successfully or fail
+  /// without applying any changes, providing atomicity.
+  ///
+  /// Parameters:
+  ///   - [batchWriteTasks] A list of [BatchWriteFcmToken] objects, each representing a specific
+  ///     write operation (create, update, or delete) for FcmToken documents.
+  ///
+  /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
+  /// Firestore operation. This includes:
+  ///   - Creating new documents for tasks of type [BatchCreateFcmToken].
+  ///   - Updating existing documents for tasks of type [BatchUpdateFcmToken].
+  ///   - Deleting documents for tasks of type [BatchDeleteFcmToken].
+  ///
+  /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
+  ///
+  /// Throws:
+  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  ///     operations within the batch.
   Future<void> batchWrite(List<BatchWriteFcmToken> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {
