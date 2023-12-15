@@ -14,7 +14,7 @@ class CreateClassDocCommentTemplate {
 /// Represents the data structure for creating a new ${config.documentName} document in Cloud Firestore.
 ///
 /// This class is used to define the necessary data for creating a new ${config.documentName} document.
-/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 ''';
   }
