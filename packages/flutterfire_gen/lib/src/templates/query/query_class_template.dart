@@ -23,10 +23,8 @@ class QueryClassTemplate {
     );
     final docCommentTemplate = QueryClassDocCommentTemplate(config);
     return '''
-${docCommentTemplate.forClass()}
-class ${config.baseClassName}Query {
-  ${docCommentTemplate.forFetchDocumentsMethod()}
-  Future<List<${config.readClassName}>> fetchDocuments({
+${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
+  ${docCommentTemplate.forFetchDocumentsMethod()}Future<List<${config.readClassName}>> fetchDocuments({
     $documentIdParametersDefinition
     GetOptions? options,
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
@@ -44,8 +42,7 @@ class ${config.baseClassName}Query {
     return result;
   }
 
-  ${docCommentTemplate.forSubscribeDocumentsMethod()}
-  Stream<List<${config.readClassName}>> subscribeDocuments({
+  ${docCommentTemplate.forSubscribeDocumentsMethod()}Stream<List<${config.readClassName}>> subscribeDocuments({
     $documentIdParametersDefinition
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
     int Function(${config.readClassName} lhs, ${config.readClassName} rhs)? compare,
@@ -70,8 +67,7 @@ class ${config.baseClassName}Query {
     });
   }
 
-  ${docCommentTemplate.forFetchDocumentMethod()}
-  Future<${config.readClassName}?> fetchDocument({
+  ${docCommentTemplate.forFetchDocumentMethod()}Future<${config.readClassName}?> fetchDocument({
     $documentIdParametersDefinition
     required String ${config.documentId},
     GetOptions? options,
@@ -84,8 +80,7 @@ class ${config.baseClassName}Query {
     return ds.data();
   }
 
-  ${docCommentTemplate.forSubscribeDocumentMethod()}
-  Stream<${config.readClassName}?> subscribeDocument({
+  ${docCommentTemplate.forSubscribeDocumentMethod()}Stream<${config.readClassName}?> subscribeDocument({
     $documentIdParametersDefinition
     required String ${config.documentId},
     bool includeMetadataChanges = false,
@@ -102,15 +97,13 @@ class ${config.baseClassName}Query {
     return streamDs.map((ds) => ds.data());
   }
 
-  ${docCommentTemplate.forAddMethod()}
-  Future<DocumentReference<${config.createClassName}>> add({
+  ${docCommentTemplate.forAddMethod()}Future<DocumentReference<${config.createClassName}>> add({
     $documentIdParametersDefinition
     required ${config.createClassName} ${config.createClassInstanceName},
   }) =>
       ${_collectionReference(ReferenceClassType.create)}.add(${config.createClassInstanceName});
 
-  ${docCommentTemplate.forSetMethod()}
-  Future<void> set({
+  ${docCommentTemplate.forSetMethod()}Future<void> set({
     $documentIdParametersDefinition
     required String ${config.documentId},
     required ${config.createClassName} ${config.createClassInstanceName},
@@ -121,8 +114,7 @@ class ${config.baseClassName}Query {
         ${config.documentId}: ${config.documentId},
       ).set(${config.createClassInstanceName}, options);
 
-  ${docCommentTemplate.forUpdateMethod()}
-  Future<void> update({
+  ${docCommentTemplate.forUpdateMethod()}Future<void> update({
     $documentIdParametersDefinition
     required String ${config.documentId},
     required ${config.updateClassName} ${config.updateClassInstanceName},
@@ -132,8 +124,7 @@ class ${config.baseClassName}Query {
         ${config.documentId}: ${config.documentId},
       ).update(${config.updateClassInstanceName}.toJson());
 
-  ${docCommentTemplate.forDeleteMethod()}
-  Future<void> delete({
+  ${docCommentTemplate.forDeleteMethod()}Future<void> delete({
     $documentIdParametersDefinition
     required String ${config.documentId},
   }) =>
@@ -145,7 +136,6 @@ class ${config.baseClassName}Query {
 ''';
   }
 
-  ///
   String _collectionReference(ReferenceClassType referenceClassType) {
     final name =
         '${referenceClassType.name}${config.baseClassName}CollectionReference';
