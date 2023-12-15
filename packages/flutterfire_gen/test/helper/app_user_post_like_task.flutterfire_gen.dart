@@ -147,7 +147,9 @@ class UpdateAppUserPostLikeTask {
 
 class DeleteAppUserPostLikeTask {}
 
-/// Provides a reference to the appUserPostLikeTasks collection for reading.
+/// Reference to the 'appUserPostLikeTasks' collection with a converter for [ReadAppUserPostLikeTask].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents to [ReadAppUserPostLikeTask] objects.
 final readAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
     .collection('appUserPostLikeTasks')
     .withConverter<ReadAppUserPostLikeTask>(
@@ -156,14 +158,16 @@ final readAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
       toFirestore: (_, __) => throw UnimplementedError(),
     );
 
-/// Provides a reference to a appUserPostLikeTask document for reading.
+/// Creates a [DocumentReference] for a specific AppUserPostLikeTask document.
 DocumentReference<ReadAppUserPostLikeTask>
     readAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
 }) =>
         readAppUserPostLikeTaskCollectionReference.doc(appUserPostLikeTaskId);
 
-/// Provides a reference to the appUserPostLikeTasks collection for creating.
+/// Reference to the 'appUserPostLikeTasks' collection with a converter for [CreateAppUserPostLikeTask].
+/// This enables type-safe create operations in Firestore, converting
+/// [CreateAppUserPostLikeTask] objects to Firestore document data.
 final createAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
     .collection('appUserPostLikeTasks')
     .withConverter<CreateAppUserPostLikeTask>(
@@ -171,14 +175,16 @@ final createAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
       toFirestore: (obj, _) => obj.toJson(),
     );
 
-/// Provides a reference to a appUserPostLikeTask document for creating.
+/// Creates a [DocumentReference] for a specific AppUserPostLikeTask document.
 DocumentReference<CreateAppUserPostLikeTask>
     createAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
 }) =>
         createAppUserPostLikeTaskCollectionReference.doc(appUserPostLikeTaskId);
 
-/// Provides a reference to the appUserPostLikeTasks collection for updating.
+/// Reference to the 'appUserPostLikeTasks' collection with a converter for [UpdateAppUserPostLikeTask].
+/// This allows for type-safe update operations in Firestore, converting
+/// [UpdateAppUserPostLikeTask] objects to Firestore document data.
 final updateAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
     .collection('appUserPostLikeTasks')
     .withConverter<UpdateAppUserPostLikeTask>(
@@ -186,14 +192,16 @@ final updateAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
       toFirestore: (obj, _) => obj.toJson(),
     );
 
-/// Provides a reference to a appUserPostLikeTask document for updating.
+/// Creates a [DocumentReference] for a specific AppUserPostLikeTask document.
 DocumentReference<UpdateAppUserPostLikeTask>
     updateAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
 }) =>
         updateAppUserPostLikeTaskCollectionReference.doc(appUserPostLikeTaskId);
 
-/// Provides a reference to the appUserPostLikeTasks collection for deleting.
+/// Reference to the 'appUserPostLikeTasks' collection with a converter for [DeleteAppUserPostLikeTask].
+/// This reference is used specifically for delete operations and does not
+/// support reading or writing data to Firestore.
 final deleteAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
     .collection('appUserPostLikeTasks')
     .withConverter<DeleteAppUserPostLikeTask>(
@@ -201,7 +209,7 @@ final deleteAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
       toFirestore: (_, __) => throw UnimplementedError(),
     );
 
-/// Provides a reference to a appUserPostLikeTask document for deleting.
+/// Creates a [DocumentReference] for a specific AppUserPostLikeTask document.
 DocumentReference<DeleteAppUserPostLikeTask>
     deleteAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,

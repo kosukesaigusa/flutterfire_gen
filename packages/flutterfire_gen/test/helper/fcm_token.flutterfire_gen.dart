@@ -122,7 +122,9 @@ class UpdateFcmToken {
 
 class DeleteFcmToken {}
 
-/// Provides a reference to the fcmTokens collection for reading.
+/// Reference to the 'fcmTokens' collection with a converter for [ReadFcmToken].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents to [ReadFcmToken] objects.
 final readFcmTokenCollectionReference = FirebaseFirestore.instance
     .collection('fcmTokens')
     .withConverter<ReadFcmToken>(
@@ -130,13 +132,15 @@ final readFcmTokenCollectionReference = FirebaseFirestore.instance
       toFirestore: (_, __) => throw UnimplementedError(),
     );
 
-/// Provides a reference to a fcmToken document for reading.
+/// Creates a [DocumentReference] for a specific FcmToken document.
 DocumentReference<ReadFcmToken> readFcmTokenDocumentReference({
   required String fcmTokenId,
 }) =>
     readFcmTokenCollectionReference.doc(fcmTokenId);
 
-/// Provides a reference to the fcmTokens collection for creating.
+/// Reference to the 'fcmTokens' collection with a converter for [CreateFcmToken].
+/// This enables type-safe create operations in Firestore, converting
+/// [CreateFcmToken] objects to Firestore document data.
 final createFcmTokenCollectionReference = FirebaseFirestore.instance
     .collection('fcmTokens')
     .withConverter<CreateFcmToken>(
@@ -144,13 +148,15 @@ final createFcmTokenCollectionReference = FirebaseFirestore.instance
       toFirestore: (obj, _) => obj.toJson(),
     );
 
-/// Provides a reference to a fcmToken document for creating.
+/// Creates a [DocumentReference] for a specific FcmToken document.
 DocumentReference<CreateFcmToken> createFcmTokenDocumentReference({
   required String fcmTokenId,
 }) =>
     createFcmTokenCollectionReference.doc(fcmTokenId);
 
-/// Provides a reference to the fcmTokens collection for updating.
+/// Reference to the 'fcmTokens' collection with a converter for [UpdateFcmToken].
+/// This allows for type-safe update operations in Firestore, converting
+/// [UpdateFcmToken] objects to Firestore document data.
 final updateFcmTokenCollectionReference = FirebaseFirestore.instance
     .collection('fcmTokens')
     .withConverter<UpdateFcmToken>(
@@ -158,13 +164,15 @@ final updateFcmTokenCollectionReference = FirebaseFirestore.instance
       toFirestore: (obj, _) => obj.toJson(),
     );
 
-/// Provides a reference to a fcmToken document for updating.
+/// Creates a [DocumentReference] for a specific FcmToken document.
 DocumentReference<UpdateFcmToken> updateFcmTokenDocumentReference({
   required String fcmTokenId,
 }) =>
     updateFcmTokenCollectionReference.doc(fcmTokenId);
 
-/// Provides a reference to the fcmTokens collection for deleting.
+/// Reference to the 'fcmTokens' collection with a converter for [DeleteFcmToken].
+/// This reference is used specifically for delete operations and does not
+/// support reading or writing data to Firestore.
 final deleteFcmTokenCollectionReference = FirebaseFirestore.instance
     .collection('fcmTokens')
     .withConverter<DeleteFcmToken>(
@@ -172,7 +180,7 @@ final deleteFcmTokenCollectionReference = FirebaseFirestore.instance
       toFirestore: (_, __) => throw UnimplementedError(),
     );
 
-/// Provides a reference to a fcmToken document for deleting.
+/// Creates a [DocumentReference] for a specific FcmToken document.
 DocumentReference<DeleteFcmToken> deleteFcmTokenDocumentReference({
   required String fcmTokenId,
 }) =>

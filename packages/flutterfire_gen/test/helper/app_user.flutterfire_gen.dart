@@ -119,7 +119,9 @@ class UpdateAppUser {
 
 class DeleteAppUser {}
 
-/// Provides a reference to the appUsers collection for reading.
+/// Reference to the 'appUsers' collection with a converter for [ReadAppUser].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents to [ReadAppUser] objects.
 final readAppUserCollectionReference = FirebaseFirestore.instance
     .collection('appUsers')
     .withConverter<ReadAppUser>(
@@ -127,13 +129,15 @@ final readAppUserCollectionReference = FirebaseFirestore.instance
       toFirestore: (_, __) => throw UnimplementedError(),
     );
 
-/// Provides a reference to a appUser document for reading.
+/// Creates a [DocumentReference] for a specific AppUser document.
 DocumentReference<ReadAppUser> readAppUserDocumentReference({
   required String appUserId,
 }) =>
     readAppUserCollectionReference.doc(appUserId);
 
-/// Provides a reference to the appUsers collection for creating.
+/// Reference to the 'appUsers' collection with a converter for [CreateAppUser].
+/// This enables type-safe create operations in Firestore, converting
+/// [CreateAppUser] objects to Firestore document data.
 final createAppUserCollectionReference = FirebaseFirestore.instance
     .collection('appUsers')
     .withConverter<CreateAppUser>(
@@ -141,13 +145,15 @@ final createAppUserCollectionReference = FirebaseFirestore.instance
       toFirestore: (obj, _) => obj.toJson(),
     );
 
-/// Provides a reference to a appUser document for creating.
+/// Creates a [DocumentReference] for a specific AppUser document.
 DocumentReference<CreateAppUser> createAppUserDocumentReference({
   required String appUserId,
 }) =>
     createAppUserCollectionReference.doc(appUserId);
 
-/// Provides a reference to the appUsers collection for updating.
+/// Reference to the 'appUsers' collection with a converter for [UpdateAppUser].
+/// This allows for type-safe update operations in Firestore, converting
+/// [UpdateAppUser] objects to Firestore document data.
 final updateAppUserCollectionReference = FirebaseFirestore.instance
     .collection('appUsers')
     .withConverter<UpdateAppUser>(
@@ -155,13 +161,15 @@ final updateAppUserCollectionReference = FirebaseFirestore.instance
       toFirestore: (obj, _) => obj.toJson(),
     );
 
-/// Provides a reference to a appUser document for updating.
+/// Creates a [DocumentReference] for a specific AppUser document.
 DocumentReference<UpdateAppUser> updateAppUserDocumentReference({
   required String appUserId,
 }) =>
     updateAppUserCollectionReference.doc(appUserId);
 
-/// Provides a reference to the appUsers collection for deleting.
+/// Reference to the 'appUsers' collection with a converter for [DeleteAppUser].
+/// This reference is used specifically for delete operations and does not
+/// support reading or writing data to Firestore.
 final deleteAppUserCollectionReference = FirebaseFirestore.instance
     .collection('appUsers')
     .withConverter<DeleteAppUser>(
@@ -169,7 +177,7 @@ final deleteAppUserCollectionReference = FirebaseFirestore.instance
       toFirestore: (_, __) => throw UnimplementedError(),
     );
 
-/// Provides a reference to a appUser document for deleting.
+/// Creates a [DocumentReference] for a specific AppUser document.
 DocumentReference<DeleteAppUser> deleteAppUserDocumentReference({
   required String appUserId,
 }) =>

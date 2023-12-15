@@ -751,20 +751,24 @@ class UpdateEntity {
 
 class DeleteEntity {}
 
-/// Provides a reference to the entities collection for reading.
+/// Reference to the 'entities' collection with a converter for [ReadEntity].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents to [ReadEntity] objects.
 final readEntityCollectionReference =
     FirebaseFirestore.instance.collection('entities').withConverter<ReadEntity>(
           fromFirestore: (ds, _) => ReadEntity.fromDocumentSnapshot(ds),
           toFirestore: (_, __) => throw UnimplementedError(),
         );
 
-/// Provides a reference to a entity document for reading.
+/// Creates a [DocumentReference] for a specific Entity document.
 DocumentReference<ReadEntity> readEntityDocumentReference({
   required String entityId,
 }) =>
     readEntityCollectionReference.doc(entityId);
 
-/// Provides a reference to the entities collection for creating.
+/// Reference to the 'entities' collection with a converter for [CreateEntity].
+/// This enables type-safe create operations in Firestore, converting
+/// [CreateEntity] objects to Firestore document data.
 final createEntityCollectionReference = FirebaseFirestore.instance
     .collection('entities')
     .withConverter<CreateEntity>(
@@ -772,13 +776,15 @@ final createEntityCollectionReference = FirebaseFirestore.instance
       toFirestore: (obj, _) => obj.toJson(),
     );
 
-/// Provides a reference to a entity document for creating.
+/// Creates a [DocumentReference] for a specific Entity document.
 DocumentReference<CreateEntity> createEntityDocumentReference({
   required String entityId,
 }) =>
     createEntityCollectionReference.doc(entityId);
 
-/// Provides a reference to the entities collection for updating.
+/// Reference to the 'entities' collection with a converter for [UpdateEntity].
+/// This allows for type-safe update operations in Firestore, converting
+/// [UpdateEntity] objects to Firestore document data.
 final updateEntityCollectionReference = FirebaseFirestore.instance
     .collection('entities')
     .withConverter<UpdateEntity>(
@@ -786,13 +792,15 @@ final updateEntityCollectionReference = FirebaseFirestore.instance
       toFirestore: (obj, _) => obj.toJson(),
     );
 
-/// Provides a reference to a entity document for updating.
+/// Creates a [DocumentReference] for a specific Entity document.
 DocumentReference<UpdateEntity> updateEntityDocumentReference({
   required String entityId,
 }) =>
     updateEntityCollectionReference.doc(entityId);
 
-/// Provides a reference to the entities collection for deleting.
+/// Reference to the 'entities' collection with a converter for [DeleteEntity].
+/// This reference is used specifically for delete operations and does not
+/// support reading or writing data to Firestore.
 final deleteEntityCollectionReference = FirebaseFirestore.instance
     .collection('entities')
     .withConverter<DeleteEntity>(
@@ -800,7 +808,7 @@ final deleteEntityCollectionReference = FirebaseFirestore.instance
       toFirestore: (_, __) => throw UnimplementedError(),
     );
 
-/// Provides a reference to a entity document for deleting.
+/// Creates a [DocumentReference] for a specific Entity document.
 DocumentReference<DeleteEntity> deleteEntityDocumentReference({
   required String entityId,
 }) =>

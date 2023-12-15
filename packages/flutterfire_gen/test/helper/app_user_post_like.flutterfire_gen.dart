@@ -128,7 +128,9 @@ class UpdateAppUserPostLike {
 
 class DeleteAppUserPostLike {}
 
-/// Provides a reference to the appUserPostLikes collection for reading.
+/// Reference to the 'appUserPostLikes' collection with a converter for [ReadAppUserPostLike].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents to [ReadAppUserPostLike] objects.
 CollectionReference<ReadAppUserPostLike>
     readAppUserPostLikeCollectionReference({
   required String appUserId,
@@ -146,7 +148,7 @@ CollectionReference<ReadAppUserPostLike>
               toFirestore: (_, __) => throw UnimplementedError(),
             );
 
-/// Provides a reference to a appUserPostLike document for reading.
+/// Creates a [DocumentReference] for a specific AppUserPostLike document.
 DocumentReference<ReadAppUserPostLike> readAppUserPostLikeDocumentReference({
   required String appUserId,
   required String appUserPostId,
@@ -157,7 +159,9 @@ DocumentReference<ReadAppUserPostLike> readAppUserPostLikeDocumentReference({
       appUserPostId: appUserPostId,
     ).doc(appUserPostLikeId);
 
-/// Provides a reference to the appUserPostLikes collection for creating.
+/// Reference to the 'appUserPostLikes' collection with a converter for [CreateAppUserPostLike].
+/// This enables type-safe create operations in Firestore, converting
+/// [CreateAppUserPostLike] objects to Firestore document data.
 CollectionReference<CreateAppUserPostLike>
     createAppUserPostLikeCollectionReference({
   required String appUserId,
@@ -174,7 +178,7 @@ CollectionReference<CreateAppUserPostLike>
               toFirestore: (obj, _) => obj.toJson(),
             );
 
-/// Provides a reference to a appUserPostLike document for creating.
+/// Creates a [DocumentReference] for a specific AppUserPostLike document.
 DocumentReference<CreateAppUserPostLike>
     createAppUserPostLikeDocumentReference({
   required String appUserId,
@@ -186,7 +190,9 @@ DocumentReference<CreateAppUserPostLike>
           appUserPostId: appUserPostId,
         ).doc(appUserPostLikeId);
 
-/// Provides a reference to the appUserPostLikes collection for updating.
+/// Reference to the 'appUserPostLikes' collection with a converter for [UpdateAppUserPostLike].
+/// This allows for type-safe update operations in Firestore, converting
+/// [UpdateAppUserPostLike] objects to Firestore document data.
 CollectionReference<UpdateAppUserPostLike>
     updateAppUserPostLikeCollectionReference({
   required String appUserId,
@@ -203,7 +209,7 @@ CollectionReference<UpdateAppUserPostLike>
               toFirestore: (obj, _) => obj.toJson(),
             );
 
-/// Provides a reference to a appUserPostLike document for updating.
+/// Creates a [DocumentReference] for a specific AppUserPostLike document.
 DocumentReference<UpdateAppUserPostLike>
     updateAppUserPostLikeDocumentReference({
   required String appUserId,
@@ -215,7 +221,9 @@ DocumentReference<UpdateAppUserPostLike>
           appUserPostId: appUserPostId,
         ).doc(appUserPostLikeId);
 
-/// Provides a reference to the appUserPostLikes collection for deleting.
+/// Reference to the 'appUserPostLikes' collection with a converter for [DeleteAppUserPostLike].
+/// This reference is used specifically for delete operations and does not
+/// support reading or writing data to Firestore.
 CollectionReference<DeleteAppUserPostLike>
     deleteAppUserPostLikeCollectionReference({
   required String appUserId,
@@ -232,7 +240,7 @@ CollectionReference<DeleteAppUserPostLike>
               toFirestore: (_, __) => throw UnimplementedError(),
             );
 
-/// Provides a reference to a appUserPostLike document for deleting.
+/// Creates a [DocumentReference] for a specific AppUserPostLike document.
 DocumentReference<DeleteAppUserPostLike>
     deleteAppUserPostLikeDocumentReference({
   required String appUserId,

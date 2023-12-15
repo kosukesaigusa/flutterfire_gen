@@ -130,7 +130,9 @@ class UpdateAppUserPost {
 
 class DeleteAppUserPost {}
 
-/// Provides a reference to the appUserPosts collection for reading.
+/// Reference to the 'appUserPosts' collection with a converter for [ReadAppUserPost].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents to [ReadAppUserPost] objects.
 CollectionReference<ReadAppUserPost> readAppUserPostCollectionReference({
   required String appUserId,
 }) =>
@@ -143,7 +145,7 @@ CollectionReference<ReadAppUserPost> readAppUserPostCollectionReference({
           toFirestore: (_, __) => throw UnimplementedError(),
         );
 
-/// Provides a reference to a appUserPost document for reading.
+/// Creates a [DocumentReference] for a specific AppUserPost document.
 DocumentReference<ReadAppUserPost> readAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
@@ -152,7 +154,9 @@ DocumentReference<ReadAppUserPost> readAppUserPostDocumentReference({
       appUserId: appUserId,
     ).doc(appUserPostId);
 
-/// Provides a reference to the appUserPosts collection for creating.
+/// Reference to the 'appUserPosts' collection with a converter for [CreateAppUserPost].
+/// This enables type-safe create operations in Firestore, converting
+/// [CreateAppUserPost] objects to Firestore document data.
 CollectionReference<CreateAppUserPost> createAppUserPostCollectionReference({
   required String appUserId,
 }) =>
@@ -165,7 +169,7 @@ CollectionReference<CreateAppUserPost> createAppUserPostCollectionReference({
           toFirestore: (obj, _) => obj.toJson(),
         );
 
-/// Provides a reference to a appUserPost document for creating.
+/// Creates a [DocumentReference] for a specific AppUserPost document.
 DocumentReference<CreateAppUserPost> createAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
@@ -174,7 +178,9 @@ DocumentReference<CreateAppUserPost> createAppUserPostDocumentReference({
       appUserId: appUserId,
     ).doc(appUserPostId);
 
-/// Provides a reference to the appUserPosts collection for updating.
+/// Reference to the 'appUserPosts' collection with a converter for [UpdateAppUserPost].
+/// This allows for type-safe update operations in Firestore, converting
+/// [UpdateAppUserPost] objects to Firestore document data.
 CollectionReference<UpdateAppUserPost> updateAppUserPostCollectionReference({
   required String appUserId,
 }) =>
@@ -187,7 +193,7 @@ CollectionReference<UpdateAppUserPost> updateAppUserPostCollectionReference({
           toFirestore: (obj, _) => obj.toJson(),
         );
 
-/// Provides a reference to a appUserPost document for updating.
+/// Creates a [DocumentReference] for a specific AppUserPost document.
 DocumentReference<UpdateAppUserPost> updateAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
@@ -196,7 +202,9 @@ DocumentReference<UpdateAppUserPost> updateAppUserPostDocumentReference({
       appUserId: appUserId,
     ).doc(appUserPostId);
 
-/// Provides a reference to the appUserPosts collection for deleting.
+/// Reference to the 'appUserPosts' collection with a converter for [DeleteAppUserPost].
+/// This reference is used specifically for delete operations and does not
+/// support reading or writing data to Firestore.
 CollectionReference<DeleteAppUserPost> deleteAppUserPostCollectionReference({
   required String appUserId,
 }) =>
@@ -209,7 +217,7 @@ CollectionReference<DeleteAppUserPost> deleteAppUserPostCollectionReference({
           toFirestore: (_, __) => throw UnimplementedError(),
         );
 
-/// Provides a reference to a appUserPost document for deleting.
+/// Creates a [DocumentReference] for a specific AppUserPost document.
 DocumentReference<DeleteAppUserPost> deleteAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,

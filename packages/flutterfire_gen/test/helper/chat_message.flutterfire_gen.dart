@@ -226,7 +226,9 @@ class UpdateChatMessage {
 
 class DeleteChatMessage {}
 
-/// Provides a reference to the chatMessages collection for reading.
+/// Reference to the 'chatMessages' collection with a converter for [ReadChatMessage].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents to [ReadChatMessage] objects.
 CollectionReference<ReadChatMessage> readChatMessageCollectionReference({
   required String chatRoomId,
 }) =>
@@ -239,7 +241,7 @@ CollectionReference<ReadChatMessage> readChatMessageCollectionReference({
           toFirestore: (_, __) => throw UnimplementedError(),
         );
 
-/// Provides a reference to a chatMessage document for reading.
+/// Creates a [DocumentReference] for a specific ChatMessage document.
 DocumentReference<ReadChatMessage> readChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
@@ -248,7 +250,9 @@ DocumentReference<ReadChatMessage> readChatMessageDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
-/// Provides a reference to the chatMessages collection for creating.
+/// Reference to the 'chatMessages' collection with a converter for [CreateChatMessage].
+/// This enables type-safe create operations in Firestore, converting
+/// [CreateChatMessage] objects to Firestore document data.
 CollectionReference<CreateChatMessage> createChatMessageCollectionReference({
   required String chatRoomId,
 }) =>
@@ -261,7 +265,7 @@ CollectionReference<CreateChatMessage> createChatMessageCollectionReference({
           toFirestore: (obj, _) => obj.toJson(),
         );
 
-/// Provides a reference to a chatMessage document for creating.
+/// Creates a [DocumentReference] for a specific ChatMessage document.
 DocumentReference<CreateChatMessage> createChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
@@ -270,7 +274,9 @@ DocumentReference<CreateChatMessage> createChatMessageDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
-/// Provides a reference to the chatMessages collection for updating.
+/// Reference to the 'chatMessages' collection with a converter for [UpdateChatMessage].
+/// This allows for type-safe update operations in Firestore, converting
+/// [UpdateChatMessage] objects to Firestore document data.
 CollectionReference<UpdateChatMessage> updateChatMessageCollectionReference({
   required String chatRoomId,
 }) =>
@@ -283,7 +289,7 @@ CollectionReference<UpdateChatMessage> updateChatMessageCollectionReference({
           toFirestore: (obj, _) => obj.toJson(),
         );
 
-/// Provides a reference to a chatMessage document for updating.
+/// Creates a [DocumentReference] for a specific ChatMessage document.
 DocumentReference<UpdateChatMessage> updateChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
@@ -292,7 +298,9 @@ DocumentReference<UpdateChatMessage> updateChatMessageDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
-/// Provides a reference to the chatMessages collection for deleting.
+/// Reference to the 'chatMessages' collection with a converter for [DeleteChatMessage].
+/// This reference is used specifically for delete operations and does not
+/// support reading or writing data to Firestore.
 CollectionReference<DeleteChatMessage> deleteChatMessageCollectionReference({
   required String chatRoomId,
 }) =>
@@ -305,7 +313,7 @@ CollectionReference<DeleteChatMessage> deleteChatMessageCollectionReference({
           toFirestore: (_, __) => throw UnimplementedError(),
         );
 
-/// Provides a reference to a chatMessage document for deleting.
+/// Creates a [DocumentReference] for a specific ChatMessage document.
 DocumentReference<DeleteChatMessage> deleteChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,

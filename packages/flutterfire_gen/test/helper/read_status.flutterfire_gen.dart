@@ -99,7 +99,9 @@ class UpdateReadStatus {
 
 class DeleteReadStatus {}
 
-/// Provides a reference to the readStatuses collection for reading.
+/// Reference to the 'readStatuses' collection with a converter for [ReadReadStatus].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents to [ReadReadStatus] objects.
 CollectionReference<ReadReadStatus> readReadStatusCollectionReference({
   required String chatRoomId,
 }) =>
@@ -112,7 +114,7 @@ CollectionReference<ReadReadStatus> readReadStatusCollectionReference({
           toFirestore: (_, __) => throw UnimplementedError(),
         );
 
-/// Provides a reference to a readStatus document for reading.
+/// Creates a [DocumentReference] for a specific ReadStatus document.
 DocumentReference<ReadReadStatus> readReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
@@ -121,7 +123,9 @@ DocumentReference<ReadReadStatus> readReadStatusDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(readStatusId);
 
-/// Provides a reference to the readStatuses collection for creating.
+/// Reference to the 'readStatuses' collection with a converter for [CreateReadStatus].
+/// This enables type-safe create operations in Firestore, converting
+/// [CreateReadStatus] objects to Firestore document data.
 CollectionReference<CreateReadStatus> createReadStatusCollectionReference({
   required String chatRoomId,
 }) =>
@@ -134,7 +138,7 @@ CollectionReference<CreateReadStatus> createReadStatusCollectionReference({
           toFirestore: (obj, _) => obj.toJson(),
         );
 
-/// Provides a reference to a readStatus document for creating.
+/// Creates a [DocumentReference] for a specific ReadStatus document.
 DocumentReference<CreateReadStatus> createReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
@@ -143,7 +147,9 @@ DocumentReference<CreateReadStatus> createReadStatusDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(readStatusId);
 
-/// Provides a reference to the readStatuses collection for updating.
+/// Reference to the 'readStatuses' collection with a converter for [UpdateReadStatus].
+/// This allows for type-safe update operations in Firestore, converting
+/// [UpdateReadStatus] objects to Firestore document data.
 CollectionReference<UpdateReadStatus> updateReadStatusCollectionReference({
   required String chatRoomId,
 }) =>
@@ -156,7 +162,7 @@ CollectionReference<UpdateReadStatus> updateReadStatusCollectionReference({
           toFirestore: (obj, _) => obj.toJson(),
         );
 
-/// Provides a reference to a readStatus document for updating.
+/// Creates a [DocumentReference] for a specific ReadStatus document.
 DocumentReference<UpdateReadStatus> updateReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
@@ -165,7 +171,9 @@ DocumentReference<UpdateReadStatus> updateReadStatusDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(readStatusId);
 
-/// Provides a reference to the readStatuses collection for deleting.
+/// Reference to the 'readStatuses' collection with a converter for [DeleteReadStatus].
+/// This reference is used specifically for delete operations and does not
+/// support reading or writing data to Firestore.
 CollectionReference<DeleteReadStatus> deleteReadStatusCollectionReference({
   required String chatRoomId,
 }) =>
@@ -178,7 +186,7 @@ CollectionReference<DeleteReadStatus> deleteReadStatusCollectionReference({
           toFirestore: (_, __) => throw UnimplementedError(),
         );
 
-/// Provides a reference to a readStatus document for deleting.
+/// Creates a [DocumentReference] for a specific ReadStatus document.
 DocumentReference<DeleteReadStatus> deleteReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
