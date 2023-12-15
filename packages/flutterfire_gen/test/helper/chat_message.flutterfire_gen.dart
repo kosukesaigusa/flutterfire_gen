@@ -132,6 +132,11 @@ class ReadChatMessage {
   }
 }
 
+/// Represents the data structure for creating a new chatMessage document in Cloud Firestore.
+///
+/// This class is used to define the necessary data for creating a new chatMessage document.
+/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// automatically set to the server's timestamp.
 class CreateChatMessage {
   const CreateChatMessage({
     required this.senderId,
@@ -176,6 +181,12 @@ class CreateChatMessage {
   }
 }
 
+/// Represents the data structure for updating a chatMessage document in Cloud Firestore.
+///
+/// This class provides a way to specify which fields of a chatMessage document should
+/// be updated. Fields set to `null` will not be updated. It also automatically
+/// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
+/// to the server's timestamp upon updating.
 class UpdateChatMessage {
   const UpdateChatMessage({
     this.senderId,

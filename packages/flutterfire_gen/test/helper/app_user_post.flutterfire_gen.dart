@@ -80,6 +80,11 @@ class ReadAppUserPost {
   }
 }
 
+/// Represents the data structure for creating a new appUserPost document in Cloud Firestore.
+///
+/// This class is used to define the necessary data for creating a new appUserPost document.
+/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// automatically set to the server's timestamp.
 class CreateAppUserPost {
   const CreateAppUserPost({
     required this.content,
@@ -104,6 +109,12 @@ class CreateAppUserPost {
   }
 }
 
+/// Represents the data structure for updating a appUserPost document in Cloud Firestore.
+///
+/// This class provides a way to specify which fields of a appUserPost document should
+/// be updated. Fields set to `null` will not be updated. It also automatically
+/// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
+/// to the server's timestamp upon updating.
 class UpdateAppUserPost {
   const UpdateAppUserPost({
     this.content,

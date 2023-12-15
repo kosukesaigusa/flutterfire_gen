@@ -416,6 +416,11 @@ class ReadEntity {
   }
 }
 
+/// Represents the data structure for creating a new entity document in Cloud Firestore.
+///
+/// This class is used to define the necessary data for creating a new entity document.
+/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// automatically set to the server's timestamp.
 class CreateEntity {
   const CreateEntity({
     required this.text,
@@ -577,6 +582,12 @@ class CreateEntity {
   }
 }
 
+/// Represents the data structure for updating a entity document in Cloud Firestore.
+///
+/// This class provides a way to specify which fields of a entity document should
+/// be updated. Fields set to `null` will not be updated. It also automatically
+/// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
+/// to the server's timestamp upon updating.
 class UpdateEntity {
   const UpdateEntity({
     this.text,

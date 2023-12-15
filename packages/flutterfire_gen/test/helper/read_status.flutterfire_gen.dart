@@ -65,6 +65,11 @@ class ReadReadStatus {
   }
 }
 
+/// Represents the data structure for creating a new readStatus document in Cloud Firestore.
+///
+/// This class is used to define the necessary data for creating a new readStatus document.
+/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// automatically set to the server's timestamp.
 class CreateReadStatus {
   const CreateReadStatus();
 
@@ -81,6 +86,12 @@ class CreateReadStatus {
   }
 }
 
+/// Represents the data structure for updating a readStatus document in Cloud Firestore.
+///
+/// This class provides a way to specify which fields of a readStatus document should
+/// be updated. Fields set to `null` will not be updated. It also automatically
+/// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
+/// to the server's timestamp upon updating.
 class UpdateReadStatus {
   const UpdateReadStatus();
 

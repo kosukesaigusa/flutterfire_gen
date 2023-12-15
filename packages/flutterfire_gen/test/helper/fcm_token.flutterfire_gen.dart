@@ -72,6 +72,11 @@ class ReadFcmToken {
   }
 }
 
+/// Represents the data structure for creating a new fcmToken document in Cloud Firestore.
+///
+/// This class is used to define the necessary data for creating a new fcmToken document.
+/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// automatically set to the server's timestamp.
 class CreateFcmToken {
   const CreateFcmToken({
     required this.tokenAndDevices,
@@ -94,6 +99,12 @@ class CreateFcmToken {
   }
 }
 
+/// Represents the data structure for updating a fcmToken document in Cloud Firestore.
+///
+/// This class provides a way to specify which fields of a fcmToken document should
+/// be updated. Fields set to `null` will not be updated. It also automatically
+/// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
+/// to the server's timestamp upon updating.
 class UpdateFcmToken {
   const UpdateFcmToken({
     this.tokenAndDevices,

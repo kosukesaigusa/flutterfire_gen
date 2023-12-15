@@ -1,6 +1,7 @@
 import '../../configs/code_generation_config.dart';
 import '../../configs/field_config.dart';
 import '../constructor_template.dart';
+import 'doc_comment_template.dart';
 import 'to_json_template.dart';
 
 /// A template for a class to update documents in Firestore.
@@ -13,6 +14,7 @@ class UpdateClassTemplate {
 
   @override
   String toString() {
+    final docComment = UpdateClassDocCommentTemplate(config);
     final constructorTemplate = ConstructorTemplate(
       className: config.updateClassName,
       configs: _effectiveFieldConfigs.map((fieldConfig) {
@@ -30,7 +32,7 @@ class UpdateClassTemplate {
     final toJsonTemplate = ToJsonTemplate(config.fieldConfigs);
 
     return '''
-class ${config.updateClassName} {
+${docComment}class ${config.updateClassName} {
   $constructorTemplate
 
   $fields

@@ -83,6 +83,11 @@ class ReadTodo {
   }
 }
 
+/// Represents the data structure for creating a new todo document in Cloud Firestore.
+///
+/// This class is used to define the necessary data for creating a new todo document.
+/// `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields are
+/// automatically set to the server's timestamp.
 class CreateTodo {
   const CreateTodo({
     required this.title,
@@ -108,6 +113,12 @@ class CreateTodo {
   }
 }
 
+/// Represents the data structure for updating a todo document in Cloud Firestore.
+///
+/// This class provides a way to specify which fields of a todo document should
+/// be updated. Fields set to `null` will not be updated. It also automatically
+/// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
+/// to the server's timestamp upon updating.
 class UpdateTodo {
   const UpdateTodo({
     this.title,
