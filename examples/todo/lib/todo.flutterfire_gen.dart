@@ -228,14 +228,12 @@ DocumentReference<DeleteTodo> deleteTodoDocumentReference({
 ///
 /// This class is designed to abstract the complexities of direct Firestore
 /// usage and provide a straightforward API for todo document operations.
-
 class TodoQuery {
   /// Fetches a list of [ReadTodo] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
   /// if a [compare] function is given.
   /// You can customize the query by using the [queryBuilder] and control the
-
   Future<List<ReadTodo>> fetchDocuments({
     GetOptions? options,
     Query<ReadTodo>? Function(Query<ReadTodo> query)? queryBuilder,
@@ -258,7 +256,6 @@ class TodoQuery {
   /// This method returns a stream of [ReadTodo] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
-
   Stream<List<ReadTodo>> subscribeDocuments({
     Query<ReadTodo>? Function(Query<ReadTodo> query)? queryBuilder,
     int Function(ReadTodo lhs, ReadTodo rhs)? compare,
@@ -287,7 +284,6 @@ class TodoQuery {
   ///
   /// This method retrieves a specific document using the provided [todoId].
   /// You can control the data retrieval with [GetOptions].
-
   Future<ReadTodo?> fetchDocument({
     required String todoId,
     GetOptions? options,
@@ -302,7 +298,6 @@ class TodoQuery {
   ///
   /// This method returns a stream of a single [ReadTodo] document, which updates in
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
-
   Stream<ReadTodo?> subscribeDocument({
     required String todoId,
     bool includeMetadataChanges = false,
@@ -321,7 +316,6 @@ class TodoQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createTodo] data.
-
   Future<DocumentReference<CreateTodo>> add({
     required CreateTodo createTodo,
   }) =>
@@ -331,7 +325,6 @@ class TodoQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [updateTodo] data.
-
   Future<void> set({
     required String todoId,
     required CreateTodo createTodo,
@@ -346,7 +339,6 @@ class TodoQuery {
   /// This method partially updates the document identified by [todoId] with the
   /// provided [updateTodo] data.
   /// The update is based on the structure defined in `UpdateTodo.toJson()`.
-
   Future<void> update({
     required String todoId,
     required UpdateTodo updateTodo,
@@ -358,7 +350,6 @@ class TodoQuery {
   /// Deletes a [todo] document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [todoId].
-
   Future<void> delete({
     required String todoId,
   }) =>

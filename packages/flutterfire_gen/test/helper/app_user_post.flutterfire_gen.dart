@@ -256,14 +256,12 @@ DocumentReference<DeleteAppUserPost> deleteAppUserPostDocumentReference({
 ///
 /// This class is designed to abstract the complexities of direct Firestore
 /// usage and provide a straightforward API for appUserPost document operations.
-
 class AppUserPostQuery {
   /// Fetches a list of [ReadAppUserPost] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
   /// if a [compare] function is given.
   /// You can customize the query by using the [queryBuilder] and control the
-
   Future<List<ReadAppUserPost>> fetchDocuments({
     required String appUserId,
     GetOptions? options,
@@ -290,7 +288,6 @@ class AppUserPostQuery {
   /// This method returns a stream of [ReadAppUserPost] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
-
   Stream<List<ReadAppUserPost>> subscribeDocuments({
     required String appUserId,
     Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
@@ -323,7 +320,6 @@ class AppUserPostQuery {
   ///
   /// This method retrieves a specific document using the provided [appUserPostId].
   /// You can control the data retrieval with [GetOptions].
-
   Future<ReadAppUserPost?> fetchDocument({
     required String appUserId,
     required String appUserPostId,
@@ -340,7 +336,6 @@ class AppUserPostQuery {
   ///
   /// This method returns a stream of a single [ReadAppUserPost] document, which updates in
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
-
   Stream<ReadAppUserPost?> subscribeDocument({
     required String appUserId,
     required String appUserPostId,
@@ -361,7 +356,6 @@ class AppUserPostQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createAppUserPost] data.
-
   Future<DocumentReference<CreateAppUserPost>> add({
     required String appUserId,
     required CreateAppUserPost createAppUserPost,
@@ -374,7 +368,6 @@ class AppUserPostQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [updateAppUserPost] data.
-
   Future<void> set({
     required String appUserId,
     required String appUserPostId,
@@ -391,7 +384,6 @@ class AppUserPostQuery {
   /// This method partially updates the document identified by [appUserPostId] with the
   /// provided [updateAppUserPost] data.
   /// The update is based on the structure defined in `UpdateAppUserPost.toJson()`.
-
   Future<void> update({
     required String appUserId,
     required String appUserPostId,
@@ -405,7 +397,6 @@ class AppUserPostQuery {
   /// Deletes a [appUserPost] document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [appUserPostId].
-
   Future<void> delete({
     required String appUserId,
     required String appUserPostId,

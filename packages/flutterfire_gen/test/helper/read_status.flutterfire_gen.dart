@@ -225,14 +225,12 @@ DocumentReference<DeleteReadStatus> deleteReadStatusDocumentReference({
 ///
 /// This class is designed to abstract the complexities of direct Firestore
 /// usage and provide a straightforward API for readStatus document operations.
-
 class ReadStatusQuery {
   /// Fetches a list of [ReadReadStatus] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
   /// if a [compare] function is given.
   /// You can customize the query by using the [queryBuilder] and control the
-
   Future<List<ReadReadStatus>> fetchDocuments({
     required String chatRoomId,
     GetOptions? options,
@@ -258,7 +256,6 @@ class ReadStatusQuery {
   /// This method returns a stream of [ReadReadStatus] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
-
   Stream<List<ReadReadStatus>> subscribeDocuments({
     required String chatRoomId,
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
@@ -290,7 +287,6 @@ class ReadStatusQuery {
   ///
   /// This method retrieves a specific document using the provided [readStatusId].
   /// You can control the data retrieval with [GetOptions].
-
   Future<ReadReadStatus?> fetchDocument({
     required String chatRoomId,
     required String readStatusId,
@@ -307,7 +303,6 @@ class ReadStatusQuery {
   ///
   /// This method returns a stream of a single [ReadReadStatus] document, which updates in
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
-
   Stream<ReadReadStatus?> subscribeDocument({
     required String chatRoomId,
     required String readStatusId,
@@ -328,7 +323,6 @@ class ReadStatusQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createReadStatus] data.
-
   Future<DocumentReference<CreateReadStatus>> add({
     required String chatRoomId,
     required CreateReadStatus createReadStatus,
@@ -341,7 +335,6 @@ class ReadStatusQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [updateReadStatus] data.
-
   Future<void> set({
     required String chatRoomId,
     required String readStatusId,
@@ -358,7 +351,6 @@ class ReadStatusQuery {
   /// This method partially updates the document identified by [readStatusId] with the
   /// provided [updateReadStatus] data.
   /// The update is based on the structure defined in `UpdateReadStatus.toJson()`.
-
   Future<void> update({
     required String chatRoomId,
     required String readStatusId,
@@ -372,7 +364,6 @@ class ReadStatusQuery {
   /// Deletes a [readStatus] document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [readStatusId].
-
   Future<void> delete({
     required String chatRoomId,
     required String readStatusId,

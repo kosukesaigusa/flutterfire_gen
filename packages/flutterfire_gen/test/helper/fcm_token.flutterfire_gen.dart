@@ -216,14 +216,12 @@ DocumentReference<DeleteFcmToken> deleteFcmTokenDocumentReference({
 ///
 /// This class is designed to abstract the complexities of direct Firestore
 /// usage and provide a straightforward API for fcmToken document operations.
-
 class FcmTokenQuery {
   /// Fetches a list of [ReadFcmToken] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
   /// if a [compare] function is given.
   /// You can customize the query by using the [queryBuilder] and control the
-
   Future<List<ReadFcmToken>> fetchDocuments({
     GetOptions? options,
     Query<ReadFcmToken>? Function(Query<ReadFcmToken> query)? queryBuilder,
@@ -246,7 +244,6 @@ class FcmTokenQuery {
   /// This method returns a stream of [ReadFcmToken] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
-
   Stream<List<ReadFcmToken>> subscribeDocuments({
     Query<ReadFcmToken>? Function(Query<ReadFcmToken> query)? queryBuilder,
     int Function(ReadFcmToken lhs, ReadFcmToken rhs)? compare,
@@ -275,7 +272,6 @@ class FcmTokenQuery {
   ///
   /// This method retrieves a specific document using the provided [fcmTokenId].
   /// You can control the data retrieval with [GetOptions].
-
   Future<ReadFcmToken?> fetchDocument({
     required String fcmTokenId,
     GetOptions? options,
@@ -290,7 +286,6 @@ class FcmTokenQuery {
   ///
   /// This method returns a stream of a single [ReadFcmToken] document, which updates in
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
-
   Stream<ReadFcmToken?> subscribeDocument({
     required String fcmTokenId,
     bool includeMetadataChanges = false,
@@ -309,7 +304,6 @@ class FcmTokenQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createFcmToken] data.
-
   Future<DocumentReference<CreateFcmToken>> add({
     required CreateFcmToken createFcmToken,
   }) =>
@@ -319,7 +313,6 @@ class FcmTokenQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [updateFcmToken] data.
-
   Future<void> set({
     required String fcmTokenId,
     required CreateFcmToken createFcmToken,
@@ -334,7 +327,6 @@ class FcmTokenQuery {
   /// This method partially updates the document identified by [fcmTokenId] with the
   /// provided [updateFcmToken] data.
   /// The update is based on the structure defined in `UpdateFcmToken.toJson()`.
-
   Future<void> update({
     required String fcmTokenId,
     required UpdateFcmToken updateFcmToken,
@@ -346,7 +338,6 @@ class FcmTokenQuery {
   /// Deletes a [fcmToken] document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [fcmTokenId].
-
   Future<void> delete({
     required String fcmTokenId,
   }) =>

@@ -844,14 +844,12 @@ DocumentReference<DeleteEntity> deleteEntityDocumentReference({
 ///
 /// This class is designed to abstract the complexities of direct Firestore
 /// usage and provide a straightforward API for entity document operations.
-
 class EntityQuery {
   /// Fetches a list of [ReadEntity] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
   /// if a [compare] function is given.
   /// You can customize the query by using the [queryBuilder] and control the
-
   Future<List<ReadEntity>> fetchDocuments({
     GetOptions? options,
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
@@ -874,7 +872,6 @@ class EntityQuery {
   /// This method returns a stream of [ReadEntity] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
-
   Stream<List<ReadEntity>> subscribeDocuments({
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
     int Function(ReadEntity lhs, ReadEntity rhs)? compare,
@@ -903,7 +900,6 @@ class EntityQuery {
   ///
   /// This method retrieves a specific document using the provided [entityId].
   /// You can control the data retrieval with [GetOptions].
-
   Future<ReadEntity?> fetchDocument({
     required String entityId,
     GetOptions? options,
@@ -918,7 +914,6 @@ class EntityQuery {
   ///
   /// This method returns a stream of a single [ReadEntity] document, which updates in
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
-
   Stream<ReadEntity?> subscribeDocument({
     required String entityId,
     bool includeMetadataChanges = false,
@@ -937,7 +932,6 @@ class EntityQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createEntity] data.
-
   Future<DocumentReference<CreateEntity>> add({
     required CreateEntity createEntity,
   }) =>
@@ -947,7 +941,6 @@ class EntityQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [updateEntity] data.
-
   Future<void> set({
     required String entityId,
     required CreateEntity createEntity,
@@ -962,7 +955,6 @@ class EntityQuery {
   /// This method partially updates the document identified by [entityId] with the
   /// provided [updateEntity] data.
   /// The update is based on the structure defined in `UpdateEntity.toJson()`.
-
   Future<void> update({
     required String entityId,
     required UpdateEntity updateEntity,
@@ -974,7 +966,6 @@ class EntityQuery {
   /// Deletes a [entity] document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [entityId].
-
   Future<void> delete({
     required String entityId,
   }) =>

@@ -352,14 +352,12 @@ DocumentReference<DeleteChatMessage> deleteChatMessageDocumentReference({
 ///
 /// This class is designed to abstract the complexities of direct Firestore
 /// usage and provide a straightforward API for chatMessage document operations.
-
 class ChatMessageQuery {
   /// Fetches a list of [ReadChatMessage] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
   /// if a [compare] function is given.
   /// You can customize the query by using the [queryBuilder] and control the
-
   Future<List<ReadChatMessage>> fetchDocuments({
     required String chatRoomId,
     GetOptions? options,
@@ -386,7 +384,6 @@ class ChatMessageQuery {
   /// This method returns a stream of [ReadChatMessage] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
-
   Stream<List<ReadChatMessage>> subscribeDocuments({
     required String chatRoomId,
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
@@ -419,7 +416,6 @@ class ChatMessageQuery {
   ///
   /// This method retrieves a specific document using the provided [chatMessageId].
   /// You can control the data retrieval with [GetOptions].
-
   Future<ReadChatMessage?> fetchDocument({
     required String chatRoomId,
     required String chatMessageId,
@@ -436,7 +432,6 @@ class ChatMessageQuery {
   ///
   /// This method returns a stream of a single [ReadChatMessage] document, which updates in
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
-
   Stream<ReadChatMessage?> subscribeDocument({
     required String chatRoomId,
     required String chatMessageId,
@@ -457,7 +452,6 @@ class ChatMessageQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createChatMessage] data.
-
   Future<DocumentReference<CreateChatMessage>> add({
     required String chatRoomId,
     required CreateChatMessage createChatMessage,
@@ -470,7 +464,6 @@ class ChatMessageQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [updateChatMessage] data.
-
   Future<void> set({
     required String chatRoomId,
     required String chatMessageId,
@@ -487,7 +480,6 @@ class ChatMessageQuery {
   /// This method partially updates the document identified by [chatMessageId] with the
   /// provided [updateChatMessage] data.
   /// The update is based on the structure defined in `UpdateChatMessage.toJson()`.
-
   Future<void> update({
     required String chatRoomId,
     required String chatMessageId,
@@ -501,7 +493,6 @@ class ChatMessageQuery {
   /// Deletes a [chatMessage] document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [chatMessageId].
-
   Future<void> delete({
     required String chatRoomId,
     required String chatMessageId,

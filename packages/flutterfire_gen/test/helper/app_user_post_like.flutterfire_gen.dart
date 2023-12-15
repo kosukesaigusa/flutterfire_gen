@@ -282,14 +282,12 @@ DocumentReference<DeleteAppUserPostLike>
 ///
 /// This class is designed to abstract the complexities of direct Firestore
 /// usage and provide a straightforward API for appUserPostLike document operations.
-
 class AppUserPostLikeQuery {
   /// Fetches a list of [ReadAppUserPostLike] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
   /// if a [compare] function is given.
   /// You can customize the query by using the [queryBuilder] and control the
-
   Future<List<ReadAppUserPostLike>> fetchDocuments({
     required String appUserId,
     required String appUserPostId,
@@ -318,7 +316,6 @@ class AppUserPostLikeQuery {
   /// This method returns a stream of [ReadAppUserPostLike] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
-
   Stream<List<ReadAppUserPostLike>> subscribeDocuments({
     required String appUserId,
     required String appUserPostId,
@@ -353,7 +350,6 @@ class AppUserPostLikeQuery {
   ///
   /// This method retrieves a specific document using the provided [appUserPostLikeId].
   /// You can control the data retrieval with [GetOptions].
-
   Future<ReadAppUserPostLike?> fetchDocument({
     required String appUserId,
     required String appUserPostId,
@@ -372,7 +368,6 @@ class AppUserPostLikeQuery {
   ///
   /// This method returns a stream of a single [ReadAppUserPostLike] document, which updates in
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
-
   Stream<ReadAppUserPostLike?> subscribeDocument({
     required String appUserId,
     required String appUserPostId,
@@ -395,7 +390,6 @@ class AppUserPostLikeQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createAppUserPostLike] data.
-
   Future<DocumentReference<CreateAppUserPostLike>> add({
     required String appUserId,
     required String appUserPostId,
@@ -410,7 +404,6 @@ class AppUserPostLikeQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [updateAppUserPostLike] data.
-
   Future<void> set({
     required String appUserId,
     required String appUserPostId,
@@ -429,7 +422,6 @@ class AppUserPostLikeQuery {
   /// This method partially updates the document identified by [appUserPostLikeId] with the
   /// provided [updateAppUserPostLike] data.
   /// The update is based on the structure defined in `UpdateAppUserPostLike.toJson()`.
-
   Future<void> update({
     required String appUserId,
     required String appUserPostId,
@@ -445,7 +437,6 @@ class AppUserPostLikeQuery {
   /// Deletes a [appUserPostLike] document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [appUserPostLikeId].
-
   Future<void> delete({
     required String appUserId,
     required String appUserPostId,
