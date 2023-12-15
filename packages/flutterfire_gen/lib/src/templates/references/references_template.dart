@@ -1,6 +1,7 @@
 import '../../configs/code_generation_config.dart';
 import '../../configs/reference_class_type.dart';
 import '../path_segment_parameters_template.dart';
+import 'doc_comment_template.dart';
 import 'with_converter_template.dart';
 
 ///
@@ -25,9 +26,11 @@ class ReferencesTemplate {
 
   String _collectionReferenceTemplate(ReferenceClassType referenceClassType) {
     final buffer = StringBuffer()
-      ..writeln(
-        '/// Provides a reference to the ${config.collectionName} '
-        'collection for $referenceClassType.',
+      ..write(
+        ReferenceDocCommentTemplate(
+          config: config,
+          referenceClassType: referenceClassType,
+        ).forCollectionReference(),
       )
       ..write(_collectionReference(referenceClassType))
       ..write('FirebaseFirestore.instance');
@@ -54,9 +57,11 @@ class ReferencesTemplate {
 
   String _documentReferenceTemplate(ReferenceClassType referenceClassType) {
     final buffer = StringBuffer()
-      ..writeln(
-        '/// Provides a reference to a ${config.documentName} '
-        'document for $referenceClassType.',
+      ..write(
+        ReferenceDocCommentTemplate(
+          config: config,
+          referenceClassType: referenceClassType,
+        ).forDocumentReference(),
       )
       ..writeln(_documentReference(referenceClassType));
     return buffer.toString();
