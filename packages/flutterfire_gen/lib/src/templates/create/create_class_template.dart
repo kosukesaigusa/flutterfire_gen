@@ -2,6 +2,7 @@ import '../../configs/code_generation_config.dart';
 import '../../configs/field_config.dart';
 import '../../utils/dart_type_util.dart';
 import '../constructor_template.dart';
+import 'doc_comment_template.dart';
 import 'to_json_template.dart';
 
 /// A template for a class to create documents in Firestore.
@@ -14,6 +15,7 @@ class CreateClassTemplate {
 
   @override
   String toString() {
+    final docComment = CreateClassDocCommentTemplate(config);
     final constructorTemplate = ConstructorTemplate(
       className: config.createClassName,
       configs: effectiveFieldConfigs.map((fieldConfig) {
@@ -35,7 +37,7 @@ class CreateClassTemplate {
     final toJsonTemplate = ToJsonTemplate(config.fieldConfigs);
 
     return '''
-class ${config.createClassName} {
+${docComment}class ${config.createClassName} {
   $constructorTemplate
 
   $fields
