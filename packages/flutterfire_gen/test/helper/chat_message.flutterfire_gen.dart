@@ -333,6 +333,49 @@ DocumentReference<DeleteChatMessage> deleteChatMessageDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
+sealed class BatchWriteChatMessage {
+  const BatchWriteChatMessage();
+}
+
+final class BatchCreateChatMessage extends BatchWriteChatMessage {
+  const BatchCreateChatMessage({
+    required this.chatRoomId,
+    required this.chatMessageId,
+    required this.createChatMessage,
+  });
+
+  final String chatRoomId;
+
+  final String chatMessageId;
+
+  final CreateChatMessage createChatMessage;
+}
+
+final class BatchUpdateChatMessage extends BatchWriteChatMessage {
+  const BatchUpdateChatMessage({
+    required this.chatRoomId,
+    required this.chatMessageId,
+    required this.updateChatMessage,
+  });
+
+  final String chatRoomId;
+
+  final String chatMessageId;
+
+  final UpdateChatMessage updateChatMessage;
+}
+
+final class BatchDeleteChatMessage extends BatchWriteChatMessage {
+  const BatchDeleteChatMessage({
+    required this.chatRoomId,
+    required this.chatMessageId,
+  });
+
+  final String chatRoomId;
+
+  final String chatMessageId;
+}
+
 /// A service class for managing chatMessage documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
@@ -501,4 +544,45 @@ class ChatMessageQuery {
         chatRoomId: chatRoomId,
         chatMessageId: chatMessageId,
       ).delete();
+
+  Future<void> batchWrite(List<BatchWriteChatMessage> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreateChatMessage(
+            chatRoomId: final chatRoomId,
+            chatMessageId: final chatMessageId,
+            createChatMessage: final createChatMessage,
+          ):
+          batch.set(
+            createChatMessageDocumentReference(
+              chatRoomId: chatRoomId,
+              chatMessageId: chatMessageId,
+            ),
+            createChatMessage,
+          );
+        case BatchUpdateChatMessage(
+            chatRoomId: final chatRoomId,
+            chatMessageId: final chatMessageId,
+            updateChatMessage: final updateChatMessage,
+          ):
+          batch.update(
+            updateChatMessageDocumentReference(
+              chatRoomId: chatRoomId,
+              chatMessageId: chatMessageId,
+            ),
+            updateChatMessage.toJson(),
+          );
+        case BatchDeleteChatMessage(
+            chatRoomId: final chatRoomId,
+            chatMessageId: final chatMessageId
+          ):
+          batch.delete(deleteChatMessageDocumentReference(
+            chatRoomId: chatRoomId,
+            chatMessageId: chatMessageId,
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }

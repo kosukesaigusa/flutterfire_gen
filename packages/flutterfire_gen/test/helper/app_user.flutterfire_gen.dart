@@ -194,6 +194,40 @@ DocumentReference<DeleteAppUser> deleteAppUserDocumentReference({
 }) =>
     deleteAppUserCollectionReference.doc(appUserId);
 
+sealed class BatchWriteAppUser {
+  const BatchWriteAppUser();
+}
+
+final class BatchCreateAppUser extends BatchWriteAppUser {
+  const BatchCreateAppUser({
+    required this.appUserId,
+    required this.createAppUser,
+  });
+
+  final String appUserId;
+
+  final CreateAppUser createAppUser;
+}
+
+final class BatchUpdateAppUser extends BatchWriteAppUser {
+  const BatchUpdateAppUser({
+    required this.appUserId,
+    required this.updateAppUser,
+  });
+
+  final String appUserId;
+
+  final UpdateAppUser updateAppUser;
+}
+
+final class BatchDeleteAppUser extends BatchWriteAppUser {
+  const BatchDeleteAppUser({
+    required this.appUserId,
+  });
+
+  final String appUserId;
+}
+
 /// A service class for managing appUser documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
@@ -341,4 +375,37 @@ class AppUserQuery {
       deleteAppUserDocumentReference(
         appUserId: appUserId,
       ).delete();
+
+  Future<void> batchWrite(List<BatchWriteAppUser> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreateAppUser(
+            appUserId: final appUserId,
+            createAppUser: final createAppUser,
+          ):
+          batch.set(
+            createAppUserDocumentReference(
+              appUserId: appUserId,
+            ),
+            createAppUser,
+          );
+        case BatchUpdateAppUser(
+            appUserId: final appUserId,
+            updateAppUser: final updateAppUser,
+          ):
+          batch.update(
+            updateAppUserDocumentReference(
+              appUserId: appUserId,
+            ),
+            updateAppUser.toJson(),
+          );
+        case BatchDeleteAppUser(appUserId: final appUserId):
+          batch.delete(deleteAppUserDocumentReference(
+            appUserId: appUserId,
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }

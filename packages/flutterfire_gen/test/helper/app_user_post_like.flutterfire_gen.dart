@@ -263,6 +263,58 @@ DocumentReference<DeleteAppUserPostLike>
           appUserPostId: appUserPostId,
         ).doc(appUserPostLikeId);
 
+sealed class BatchWriteAppUserPostLike {
+  const BatchWriteAppUserPostLike();
+}
+
+final class BatchCreateAppUserPostLike extends BatchWriteAppUserPostLike {
+  const BatchCreateAppUserPostLike({
+    required this.appUserId,
+    required this.appUserPostId,
+    required this.appUserPostLikeId,
+    required this.createAppUserPostLike,
+  });
+
+  final String appUserId;
+
+  final String appUserPostId;
+
+  final String appUserPostLikeId;
+
+  final CreateAppUserPostLike createAppUserPostLike;
+}
+
+final class BatchUpdateAppUserPostLike extends BatchWriteAppUserPostLike {
+  const BatchUpdateAppUserPostLike({
+    required this.appUserId,
+    required this.appUserPostId,
+    required this.appUserPostLikeId,
+    required this.updateAppUserPostLike,
+  });
+
+  final String appUserId;
+
+  final String appUserPostId;
+
+  final String appUserPostLikeId;
+
+  final UpdateAppUserPostLike updateAppUserPostLike;
+}
+
+final class BatchDeleteAppUserPostLike extends BatchWriteAppUserPostLike {
+  const BatchDeleteAppUserPostLike({
+    required this.appUserId,
+    required this.appUserPostId,
+    required this.appUserPostLikeId,
+  });
+
+  final String appUserId;
+
+  final String appUserPostId;
+
+  final String appUserPostLikeId;
+}
+
 /// A service class for managing appUserPostLike documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
@@ -447,4 +499,51 @@ class AppUserPostLikeQuery {
         appUserPostId: appUserPostId,
         appUserPostLikeId: appUserPostLikeId,
       ).delete();
+
+  Future<void> batchWrite(List<BatchWriteAppUserPostLike> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreateAppUserPostLike(
+            appUserId: final appUserId,
+            appUserPostId: final appUserPostId,
+            appUserPostLikeId: final appUserPostLikeId,
+            createAppUserPostLike: final createAppUserPostLike,
+          ):
+          batch.set(
+            createAppUserPostLikeDocumentReference(
+              appUserId: appUserId,
+              appUserPostId: appUserPostId,
+              appUserPostLikeId: appUserPostLikeId,
+            ),
+            createAppUserPostLike,
+          );
+        case BatchUpdateAppUserPostLike(
+            appUserId: final appUserId,
+            appUserPostId: final appUserPostId,
+            appUserPostLikeId: final appUserPostLikeId,
+            updateAppUserPostLike: final updateAppUserPostLike,
+          ):
+          batch.update(
+            updateAppUserPostLikeDocumentReference(
+              appUserId: appUserId,
+              appUserPostId: appUserPostId,
+              appUserPostLikeId: appUserPostLikeId,
+            ),
+            updateAppUserPostLike.toJson(),
+          );
+        case BatchDeleteAppUserPostLike(
+            appUserId: final appUserId,
+            appUserPostId: final appUserPostId,
+            appUserPostLikeId: final appUserPostLikeId
+          ):
+          batch.delete(deleteAppUserPostLikeDocumentReference(
+            appUserId: appUserId,
+            appUserPostId: appUserPostId,
+            appUserPostLikeId: appUserPostLikeId,
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }

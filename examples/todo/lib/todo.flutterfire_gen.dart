@@ -209,6 +209,40 @@ DocumentReference<DeleteTodo> deleteTodoDocumentReference({
 }) =>
     deleteTodoCollectionReference.doc(todoId);
 
+sealed class BatchWriteTodo {
+  const BatchWriteTodo();
+}
+
+final class BatchCreateTodo extends BatchWriteTodo {
+  const BatchCreateTodo({
+    required this.todoId,
+    required this.createTodo,
+  });
+
+  final String todoId;
+
+  final CreateTodo createTodo;
+}
+
+final class BatchUpdateTodo extends BatchWriteTodo {
+  const BatchUpdateTodo({
+    required this.todoId,
+    required this.updateTodo,
+  });
+
+  final String todoId;
+
+  final UpdateTodo updateTodo;
+}
+
+final class BatchDeleteTodo extends BatchWriteTodo {
+  const BatchDeleteTodo({
+    required this.todoId,
+  });
+
+  final String todoId;
+}
+
 /// A service class for managing todo documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
@@ -356,4 +390,37 @@ class TodoQuery {
       deleteTodoDocumentReference(
         todoId: todoId,
       ).delete();
+
+  Future<void> batchWrite(List<BatchWriteTodo> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreateTodo(
+            todoId: final todoId,
+            createTodo: final createTodo,
+          ):
+          batch.set(
+            createTodoDocumentReference(
+              todoId: todoId,
+            ),
+            createTodo,
+          );
+        case BatchUpdateTodo(
+            todoId: final todoId,
+            updateTodo: final updateTodo,
+          ):
+          batch.update(
+            updateTodoDocumentReference(
+              todoId: todoId,
+            ),
+            updateTodo.toJson(),
+          );
+        case BatchDeleteTodo(todoId: final todoId):
+          batch.delete(deleteTodoDocumentReference(
+            todoId: todoId,
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }

@@ -825,6 +825,40 @@ DocumentReference<DeleteEntity> deleteEntityDocumentReference({
 }) =>
     deleteEntityCollectionReference.doc(entityId);
 
+sealed class BatchWriteEntity {
+  const BatchWriteEntity();
+}
+
+final class BatchCreateEntity extends BatchWriteEntity {
+  const BatchCreateEntity({
+    required this.entityId,
+    required this.createEntity,
+  });
+
+  final String entityId;
+
+  final CreateEntity createEntity;
+}
+
+final class BatchUpdateEntity extends BatchWriteEntity {
+  const BatchUpdateEntity({
+    required this.entityId,
+    required this.updateEntity,
+  });
+
+  final String entityId;
+
+  final UpdateEntity updateEntity;
+}
+
+final class BatchDeleteEntity extends BatchWriteEntity {
+  const BatchDeleteEntity({
+    required this.entityId,
+  });
+
+  final String entityId;
+}
+
 /// A service class for managing entity documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
@@ -972,4 +1006,37 @@ class EntityQuery {
       deleteEntityDocumentReference(
         entityId: entityId,
       ).delete();
+
+  Future<void> batchWrite(List<BatchWriteEntity> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreateEntity(
+            entityId: final entityId,
+            createEntity: final createEntity,
+          ):
+          batch.set(
+            createEntityDocumentReference(
+              entityId: entityId,
+            ),
+            createEntity,
+          );
+        case BatchUpdateEntity(
+            entityId: final entityId,
+            updateEntity: final updateEntity,
+          ):
+          batch.update(
+            updateEntityDocumentReference(
+              entityId: entityId,
+            ),
+            updateEntity.toJson(),
+          );
+        case BatchDeleteEntity(entityId: final entityId):
+          batch.delete(deleteEntityDocumentReference(
+            entityId: entityId,
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }

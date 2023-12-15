@@ -227,6 +227,43 @@ DocumentReference<DeleteAppUserPostLikeTask>
 }) =>
         deleteAppUserPostLikeTaskCollectionReference.doc(appUserPostLikeTaskId);
 
+sealed class BatchWriteAppUserPostLikeTask {
+  const BatchWriteAppUserPostLikeTask();
+}
+
+final class BatchCreateAppUserPostLikeTask
+    extends BatchWriteAppUserPostLikeTask {
+  const BatchCreateAppUserPostLikeTask({
+    required this.appUserPostLikeTaskId,
+    required this.createAppUserPostLikeTask,
+  });
+
+  final String appUserPostLikeTaskId;
+
+  final CreateAppUserPostLikeTask createAppUserPostLikeTask;
+}
+
+final class BatchUpdateAppUserPostLikeTask
+    extends BatchWriteAppUserPostLikeTask {
+  const BatchUpdateAppUserPostLikeTask({
+    required this.appUserPostLikeTaskId,
+    required this.updateAppUserPostLikeTask,
+  });
+
+  final String appUserPostLikeTaskId;
+
+  final UpdateAppUserPostLikeTask updateAppUserPostLikeTask;
+}
+
+final class BatchDeleteAppUserPostLikeTask
+    extends BatchWriteAppUserPostLikeTask {
+  const BatchDeleteAppUserPostLikeTask({
+    required this.appUserPostLikeTaskId,
+  });
+
+  final String appUserPostLikeTaskId;
+}
+
 /// A service class for managing appUserPostLikeTask documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
@@ -383,4 +420,39 @@ class AppUserPostLikeTaskQuery {
       deleteAppUserPostLikeTaskDocumentReference(
         appUserPostLikeTaskId: appUserPostLikeTaskId,
       ).delete();
+
+  Future<void> batchWrite(List<BatchWriteAppUserPostLikeTask> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreateAppUserPostLikeTask(
+            appUserPostLikeTaskId: final appUserPostLikeTaskId,
+            createAppUserPostLikeTask: final createAppUserPostLikeTask,
+          ):
+          batch.set(
+            createAppUserPostLikeTaskDocumentReference(
+              appUserPostLikeTaskId: appUserPostLikeTaskId,
+            ),
+            createAppUserPostLikeTask,
+          );
+        case BatchUpdateAppUserPostLikeTask(
+            appUserPostLikeTaskId: final appUserPostLikeTaskId,
+            updateAppUserPostLikeTask: final updateAppUserPostLikeTask,
+          ):
+          batch.update(
+            updateAppUserPostLikeTaskDocumentReference(
+              appUserPostLikeTaskId: appUserPostLikeTaskId,
+            ),
+            updateAppUserPostLikeTask.toJson(),
+          );
+        case BatchDeleteAppUserPostLikeTask(
+            appUserPostLikeTaskId: final appUserPostLikeTaskId
+          ):
+          batch.delete(deleteAppUserPostLikeTaskDocumentReference(
+            appUserPostLikeTaskId: appUserPostLikeTaskId,
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }

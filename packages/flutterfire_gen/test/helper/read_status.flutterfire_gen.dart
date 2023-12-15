@@ -206,6 +206,49 @@ DocumentReference<DeleteReadStatus> deleteReadStatusDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(readStatusId);
 
+sealed class BatchWriteReadStatus {
+  const BatchWriteReadStatus();
+}
+
+final class BatchCreateReadStatus extends BatchWriteReadStatus {
+  const BatchCreateReadStatus({
+    required this.chatRoomId,
+    required this.readStatusId,
+    required this.createReadStatus,
+  });
+
+  final String chatRoomId;
+
+  final String readStatusId;
+
+  final CreateReadStatus createReadStatus;
+}
+
+final class BatchUpdateReadStatus extends BatchWriteReadStatus {
+  const BatchUpdateReadStatus({
+    required this.chatRoomId,
+    required this.readStatusId,
+    required this.updateReadStatus,
+  });
+
+  final String chatRoomId;
+
+  final String readStatusId;
+
+  final UpdateReadStatus updateReadStatus;
+}
+
+final class BatchDeleteReadStatus extends BatchWriteReadStatus {
+  const BatchDeleteReadStatus({
+    required this.chatRoomId,
+    required this.readStatusId,
+  });
+
+  final String chatRoomId;
+
+  final String readStatusId;
+}
+
 /// A service class for managing readStatus documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
@@ -372,4 +415,45 @@ class ReadStatusQuery {
         chatRoomId: chatRoomId,
         readStatusId: readStatusId,
       ).delete();
+
+  Future<void> batchWrite(List<BatchWriteReadStatus> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreateReadStatus(
+            chatRoomId: final chatRoomId,
+            readStatusId: final readStatusId,
+            createReadStatus: final createReadStatus,
+          ):
+          batch.set(
+            createReadStatusDocumentReference(
+              chatRoomId: chatRoomId,
+              readStatusId: readStatusId,
+            ),
+            createReadStatus,
+          );
+        case BatchUpdateReadStatus(
+            chatRoomId: final chatRoomId,
+            readStatusId: final readStatusId,
+            updateReadStatus: final updateReadStatus,
+          ):
+          batch.update(
+            updateReadStatusDocumentReference(
+              chatRoomId: chatRoomId,
+              readStatusId: readStatusId,
+            ),
+            updateReadStatus.toJson(),
+          );
+        case BatchDeleteReadStatus(
+            chatRoomId: final chatRoomId,
+            readStatusId: final readStatusId
+          ):
+          batch.delete(deleteReadStatusDocumentReference(
+            chatRoomId: chatRoomId,
+            readStatusId: readStatusId,
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }

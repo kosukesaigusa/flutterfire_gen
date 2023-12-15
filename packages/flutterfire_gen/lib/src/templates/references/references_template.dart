@@ -75,7 +75,7 @@ class ReferencesTemplate {
       return 'final $varName = ';
     } else {
       final documentIdParametersDefinition =
-          DocumentIdParametersTemplate.parameterDefinition(
+          DocumentIdParametersTemplate.methodParameterDefinition(
         config.firestoreDocumentPath,
       );
       return '$typeName $varName ({$documentIdParametersDefinition}) => ';
@@ -98,7 +98,7 @@ $typeName $documentReferenceVarName({
 ''';
     } else {
       final documentIdParametersDefinition =
-          DocumentIdParametersTemplate.parameterDefinition(
+          DocumentIdParametersTemplate.methodParameterDefinition(
         config.firestoreDocumentPath,
       );
       final documentIdParametersArgumentInvocation =

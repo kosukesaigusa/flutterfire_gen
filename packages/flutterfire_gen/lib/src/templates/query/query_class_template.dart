@@ -13,19 +13,70 @@ class QueryClassTemplate {
 
   @override
   String toString() {
-    final documentIdParametersDefinition =
-        DocumentIdParametersTemplate.parameterDefinition(
+    final documentIdConstructorParametersDefinition =
+        DocumentIdParametersTemplate.constructorParameterDefinition(
+      config.firestoreDocumentPath,
+    );
+    final documentIdMethodParametersDefinition =
+        DocumentIdParametersTemplate.methodParameterDefinition(
       config.firestoreDocumentPath,
     );
     final documentIdParametersArgumentInvocation =
         DocumentIdParametersTemplate.argumentInvocation(
       config.firestoreDocumentPath,
     );
+    final documentIdFieldDefinitions =
+        DocumentIdParametersTemplate.fieldDefinition(
+      config.firestoreDocumentPath,
+    );
+    final caseParameter = DocumentIdParametersTemplate.caseParameter(
+      config.firestoreDocumentPath,
+    );
     final docCommentTemplate = QueryClassDocCommentTemplate(config);
     return '''
+sealed class BatchWrite${config.capitalizedDocumentName} {
+  const BatchWrite${config.capitalizedDocumentName}();
+}
+
+final class BatchCreate${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
+  const BatchCreate${config.capitalizedDocumentName}({
+    $documentIdConstructorParametersDefinition
+    required this.${config.documentId},
+    required this.${config.createClassInstanceName},
+});
+
+  $documentIdFieldDefinitions
+  final String ${config.documentId};
+
+  final Create${config.capitalizedDocumentName} ${config.createClassInstanceName};
+}
+
+final class BatchUpdate${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
+  const BatchUpdate${config.capitalizedDocumentName}({
+    $documentIdConstructorParametersDefinition
+    required this.${config.documentId},
+    required this.${config.updateClassInstanceName},
+  });
+
+  $documentIdFieldDefinitions
+  final String ${config.documentId};
+
+  final Update${config.capitalizedDocumentName} ${config.updateClassInstanceName};
+}
+
+final class BatchDelete${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
+  const BatchDelete${config.capitalizedDocumentName}({
+    $documentIdConstructorParametersDefinition
+    required this.${config.documentId},
+  });
+
+  $documentIdFieldDefinitions
+  final String ${config.documentId};
+}
+
 ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
   ${docCommentTemplate.forFetchDocumentsMethod()}Future<List<${config.readClassName}>> fetchDocuments({
-    $documentIdParametersDefinition
+    $documentIdMethodParametersDefinition
     GetOptions? options,
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
     int Function(${config.readClassName} lhs, ${config.readClassName} rhs)? compare,
@@ -43,7 +94,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
   }
 
   ${docCommentTemplate.forSubscribeDocumentsMethod()}Stream<List<${config.readClassName}>> subscribeDocuments({
-    $documentIdParametersDefinition
+    $documentIdMethodParametersDefinition
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
     int Function(${config.readClassName} lhs, ${config.readClassName} rhs)? compare,
     bool includeMetadataChanges = false,
@@ -68,7 +119,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
   }
 
   ${docCommentTemplate.forFetchDocumentMethod()}Future<${config.readClassName}?> fetchDocument({
-    $documentIdParametersDefinition
+    $documentIdMethodParametersDefinition
     required String ${config.documentId},
     GetOptions? options,
   }) async {
@@ -81,7 +132,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
   }
 
   ${docCommentTemplate.forSubscribeDocumentMethod()}Stream<${config.readClassName}?> subscribeDocument({
-    $documentIdParametersDefinition
+    $documentIdMethodParametersDefinition
     required String ${config.documentId},
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
@@ -98,13 +149,13 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
   }
 
   ${docCommentTemplate.forAddMethod()}Future<DocumentReference<${config.createClassName}>> add({
-    $documentIdParametersDefinition
+    $documentIdMethodParametersDefinition
     required ${config.createClassName} ${config.createClassInstanceName},
   }) =>
       ${_collectionReference(ReferenceClassType.create)}.add(${config.createClassInstanceName});
 
   ${docCommentTemplate.forSetMethod()}Future<void> set({
-    $documentIdParametersDefinition
+    $documentIdMethodParametersDefinition
     required String ${config.documentId},
     required ${config.createClassName} ${config.createClassInstanceName},
     SetOptions? options,
@@ -115,7 +166,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
       ).set(${config.createClassInstanceName}, options);
 
   ${docCommentTemplate.forUpdateMethod()}Future<void> update({
-    $documentIdParametersDefinition
+    $documentIdMethodParametersDefinition
     required String ${config.documentId},
     required ${config.updateClassName} ${config.updateClassInstanceName},
   }) =>
@@ -125,13 +176,54 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
       ).update(${config.updateClassInstanceName}.toJson());
 
   ${docCommentTemplate.forDeleteMethod()}Future<void> delete({
-    $documentIdParametersDefinition
+    $documentIdMethodParametersDefinition
     required String ${config.documentId},
   }) =>
       ${config.deleteDocumentReferenceName}(
         $documentIdParametersArgumentInvocation
         ${config.documentId}: ${config.documentId},
       ).delete();
+
+  Future<void> batchWrite(List<BatchWrite${config.capitalizedDocumentName}> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreate${config.capitalizedDocumentName}(
+            $caseParameter
+            ${config.documentId}: final ${config.documentId},
+            create${config.capitalizedDocumentName}: final ${config.createClassInstanceName},
+          ):
+          batch.set(
+            ${config.createDocumentReferenceName}(
+              $documentIdParametersArgumentInvocation
+              ${config.documentId}: ${config.documentId},
+            ),
+            ${config.createClassInstanceName},
+          );
+        case BatchUpdate${config.capitalizedDocumentName}(
+            $caseParameter
+            ${config.documentId}: final ${config.documentId},
+            update${config.capitalizedDocumentName}: final ${config.updateClassInstanceName},
+          ):
+          batch.update(
+            ${config.updateDocumentReferenceName}(
+              $documentIdParametersArgumentInvocation
+              ${config.documentId}: ${config.documentId},
+            ),
+            ${config.updateClassInstanceName}.toJson(),
+          );
+        case BatchDelete${config.capitalizedDocumentName}(
+            $caseParameter
+            ${config.documentId}: final ${config.documentId}
+          ):
+          batch.delete(${config.deleteDocumentReferenceName}(
+            $documentIdParametersArgumentInvocation
+            ${config.documentId}: ${config.documentId},
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }
 ''';
   }

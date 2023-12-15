@@ -20,7 +20,7 @@ final todoQueryProvider = AutoDisposeProvider<TodoQuery>.internal(
 );
 
 typedef TodoQueryRef = AutoDisposeProviderRef<TodoQuery>;
-String _$todoListHash() => r'19b016d1a3f08d0452a2e29a114c990231d87856';
+String _$todoListHash() => r'7e2efd65e4e1a89f54ae7649669702bd20701b10';
 
 /// See also [TodoList].
 @ProviderFor(TodoList)

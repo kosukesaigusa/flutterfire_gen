@@ -58,16 +58,11 @@ class TodoListPage extends ConsumerWidget {
                           todoId: todo.todoId,
                           isCompleted: value,
                         );
-                    ref.invalidate(todoListProvider);
                   },
                 ),
                 trailing: IconButton(
-                  onPressed: () async {
-                    await ref
-                        .read(todoListProvider.notifier)
-                        .delete(todo.todoId);
-                    ref.invalidate(todoListProvider);
-                  },
+                  onPressed: () =>
+                      ref.read(todoListProvider.notifier).delete(todo.todoId),
                   icon: const Icon(Icons.delete),
                 ),
               );
@@ -77,14 +72,28 @@ class TodoListPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text(err.toString())),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await ref
-              .read(todoListProvider.notifier)
-              .addTodo('Todo ${DateTime.now()}');
-          ref.invalidate(todoListProvider);
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: () => ref.read(todoListProvider.notifier).completeAll(),
+            child: const Icon(Icons.check),
+          ),
+          const SizedBox(height: 4),
+          FloatingActionButton(
+            onPressed: () => ref.read(todoListProvider.notifier).deleteAll(),
+            child: const Icon(Icons.delete),
+          ),
+          const SizedBox(height: 4),
+          FloatingActionButton(
+            onPressed: () async {
+              await ref
+                  .read(todoListProvider.notifier)
+                  .addTodo('Todo ${DateTime.now()}');
+            },
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }

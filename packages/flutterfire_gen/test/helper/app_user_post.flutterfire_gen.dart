@@ -237,6 +237,49 @@ DocumentReference<DeleteAppUserPost> deleteAppUserPostDocumentReference({
       appUserId: appUserId,
     ).doc(appUserPostId);
 
+sealed class BatchWriteAppUserPost {
+  const BatchWriteAppUserPost();
+}
+
+final class BatchCreateAppUserPost extends BatchWriteAppUserPost {
+  const BatchCreateAppUserPost({
+    required this.appUserId,
+    required this.appUserPostId,
+    required this.createAppUserPost,
+  });
+
+  final String appUserId;
+
+  final String appUserPostId;
+
+  final CreateAppUserPost createAppUserPost;
+}
+
+final class BatchUpdateAppUserPost extends BatchWriteAppUserPost {
+  const BatchUpdateAppUserPost({
+    required this.appUserId,
+    required this.appUserPostId,
+    required this.updateAppUserPost,
+  });
+
+  final String appUserId;
+
+  final String appUserPostId;
+
+  final UpdateAppUserPost updateAppUserPost;
+}
+
+final class BatchDeleteAppUserPost extends BatchWriteAppUserPost {
+  const BatchDeleteAppUserPost({
+    required this.appUserId,
+    required this.appUserPostId,
+  });
+
+  final String appUserId;
+
+  final String appUserPostId;
+}
+
 /// A service class for managing appUserPost documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
@@ -405,4 +448,45 @@ class AppUserPostQuery {
         appUserId: appUserId,
         appUserPostId: appUserPostId,
       ).delete();
+
+  Future<void> batchWrite(List<BatchWriteAppUserPost> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreateAppUserPost(
+            appUserId: final appUserId,
+            appUserPostId: final appUserPostId,
+            createAppUserPost: final createAppUserPost,
+          ):
+          batch.set(
+            createAppUserPostDocumentReference(
+              appUserId: appUserId,
+              appUserPostId: appUserPostId,
+            ),
+            createAppUserPost,
+          );
+        case BatchUpdateAppUserPost(
+            appUserId: final appUserId,
+            appUserPostId: final appUserPostId,
+            updateAppUserPost: final updateAppUserPost,
+          ):
+          batch.update(
+            updateAppUserPostDocumentReference(
+              appUserId: appUserId,
+              appUserPostId: appUserPostId,
+            ),
+            updateAppUserPost.toJson(),
+          );
+        case BatchDeleteAppUserPost(
+            appUserId: final appUserId,
+            appUserPostId: final appUserPostId
+          ):
+          batch.delete(deleteAppUserPostDocumentReference(
+            appUserId: appUserId,
+            appUserPostId: appUserPostId,
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }

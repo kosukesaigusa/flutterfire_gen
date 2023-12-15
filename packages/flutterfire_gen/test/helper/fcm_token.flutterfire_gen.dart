@@ -197,6 +197,40 @@ DocumentReference<DeleteFcmToken> deleteFcmTokenDocumentReference({
 }) =>
     deleteFcmTokenCollectionReference.doc(fcmTokenId);
 
+sealed class BatchWriteFcmToken {
+  const BatchWriteFcmToken();
+}
+
+final class BatchCreateFcmToken extends BatchWriteFcmToken {
+  const BatchCreateFcmToken({
+    required this.fcmTokenId,
+    required this.createFcmToken,
+  });
+
+  final String fcmTokenId;
+
+  final CreateFcmToken createFcmToken;
+}
+
+final class BatchUpdateFcmToken extends BatchWriteFcmToken {
+  const BatchUpdateFcmToken({
+    required this.fcmTokenId,
+    required this.updateFcmToken,
+  });
+
+  final String fcmTokenId;
+
+  final UpdateFcmToken updateFcmToken;
+}
+
+final class BatchDeleteFcmToken extends BatchWriteFcmToken {
+  const BatchDeleteFcmToken({
+    required this.fcmTokenId,
+  });
+
+  final String fcmTokenId;
+}
+
 /// A service class for managing fcmToken documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
@@ -344,4 +378,37 @@ class FcmTokenQuery {
       deleteFcmTokenDocumentReference(
         fcmTokenId: fcmTokenId,
       ).delete();
+
+  Future<void> batchWrite(List<BatchWriteFcmToken> batchWriteTasks) {
+    final batch = FirebaseFirestore.instance.batch();
+    for (final task in batchWriteTasks) {
+      switch (task) {
+        case BatchCreateFcmToken(
+            fcmTokenId: final fcmTokenId,
+            createFcmToken: final createFcmToken,
+          ):
+          batch.set(
+            createFcmTokenDocumentReference(
+              fcmTokenId: fcmTokenId,
+            ),
+            createFcmToken,
+          );
+        case BatchUpdateFcmToken(
+            fcmTokenId: final fcmTokenId,
+            updateFcmToken: final updateFcmToken,
+          ):
+          batch.update(
+            updateFcmTokenDocumentReference(
+              fcmTokenId: fcmTokenId,
+            ),
+            updateFcmToken.toJson(),
+          );
+        case BatchDeleteFcmToken(fcmTokenId: final fcmTokenId):
+          batch.delete(deleteFcmTokenDocumentReference(
+            fcmTokenId: fcmTokenId,
+          ));
+      }
+    }
+    return batch.commit();
+  }
 }
