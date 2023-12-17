@@ -44,7 +44,7 @@ dev_dependencies:
   build_runner: latest
 
   # The code generator.
-  flutterfire_gen: ^0.2.0-dev.5
+  flutterfire_gen: latest
 ```
 
 - [flutterfire_gen](https://pub.dev/packages/flutterfire_gen)
