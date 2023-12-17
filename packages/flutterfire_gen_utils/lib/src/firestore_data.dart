@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// A class that represents an actual value or `FieldValue` that can be stored
-/// in Firestore.
+/// Represents a class for storing data in Firestore, either as an actual value
+/// or `FieldValue`.
+///
+/// This sealed class is the base for classes that encapsulate Firestore data,
+/// allowing storage of both actual values and Firestore `FieldValue` types.
 sealed class FirestoreData<T> {
   /// Creates a [FirestoreData].
   const FirestoreData();
 
-  /// Creates a [FirestoreData] from a [FieldValue].
+  /// Retrieves the `FieldValue` representation of the data.
   FieldValue get fieldValue {
     return switch (this) {
       FieldValueData(fieldValue: final fieldValue) => fieldValue,
@@ -14,7 +17,7 @@ sealed class FirestoreData<T> {
     };
   }
 
-  /// Creates a [FirestoreData] from an actual value.
+  /// Retrieves the data, whether as a `FieldValue` or actual value.
   T get actualValue {
     return switch (this) {
       FieldValueData(fieldValue: final _) => throw UnimplementedError(),
@@ -31,7 +34,10 @@ sealed class FirestoreData<T> {
   }
 }
 
-/// A class that represents a `FieldValue` that can be stored in Firestore.
+/// Represents a `FieldValue` that can be stored in Firestore.
+///
+/// This class encapsulates a Firestore `FieldValue`, allowing its use in
+/// Firestore operations.
 final class FieldValueData<T> extends FirestoreData<T> {
   /// Creates a [FieldValueData].
   const FieldValueData(this.fieldValue);
@@ -40,9 +46,16 @@ final class FieldValueData<T> extends FirestoreData<T> {
   final FieldValue fieldValue;
 }
 
-/// A class that represents an actual value that can be stored in Firestore.
+/// Represents an actual value that can be stored in Firestore.
+///
+/// This class encapsulates an actual value, allowing its storage and retrieval
+/// from Firestore.
 final class ActualValue<T> extends FirestoreData<T> {
-  /// Creates an [ActualValue].
+  /// Creates an [ActualValue] instance with the given actual value.
+  ///
+  /// Parameters:
+  ///
+  /// - [actualValue] The actual value to be stored in Firestore.
   const ActualValue(this.actualValue);
 
   @override

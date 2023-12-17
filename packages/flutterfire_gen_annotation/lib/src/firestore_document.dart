@@ -1,6 +1,28 @@
-/// An annotation to define Cloud Firestore document.
+/// An annotation to define a Cloud Firestore document class.
+///
+/// Apply this annotation to a Dart class to define its correspondence with a
+/// Firestore document. It enables the specification of the document path,
+/// prefixes for generated class names, and other Firestore-related \
+/// configurations.
 class FirestoreDocument {
-  /// Creates a [FirestoreDocument].
+  /// Creates a [FirestoreDocument] annotation.
+  ///
+  /// Parameters:
+  ///
+  /// - [path] The path to the Firestore document.
+  /// - [readClassPrefix] Optional prefix for classes representing read
+  /// operations.
+  /// - [createClassPrefix] Optional prefix for classes representing create
+  /// operations.
+  /// - [updateClassPrefix] Optional prefix for classes representing update
+  /// operations.
+  /// - [deleteClassPrefix] Optional prefix for classes representing delete
+  /// operations.
+  /// - [includePathField] Whether to include a `path` field in the generated
+  /// class.
+  /// - [includeDocumentReferenceField] Whether to include a `DocumentReference`
+  /// field.
+  /// - [generateCopyWith] Whether to generate a `copyWith` method in the class.
   const FirestoreDocument({
     required this.path,
     this.readClassPrefix,

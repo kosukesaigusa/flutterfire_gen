@@ -1,19 +1,33 @@
-/// Annotation to use when creating a document with a server timestamp.
+/// Annotation to automatically use `FieldValue.serverTimestamp()` when creating
+/// a document.
+///
+/// Apply this annotation to a field in a Firestore document class to
+/// automatically set the field's value to the server's current timestamp when
+/// creating the document.
 const alwaysUseFieldValueServerTimestampWhenCreating =
     AlwaysUseFieldValueServerTimestampWhenCreating();
 
-/// Annotation to use when creating a document with a server timestamp.
+/// Represents the annotation to automatically use
+/// `FieldValue.serverTimestamp()` when creating a document.
 class AlwaysUseFieldValueServerTimestampWhenCreating {
-  /// Creates a [AlwaysUseFieldValueServerTimestampWhenCreating].
+  /// Creates a [AlwaysUseFieldValueServerTimestampWhenCreating] annotation
+  /// instance.
   const AlwaysUseFieldValueServerTimestampWhenCreating();
 }
 
-/// Annotation to use when updating a document with a server timestamp.
+/// Annotation to automatically use `FieldValue.serverTimestamp()` when updating
+/// a document.
+///
+/// Apply this annotation to a field in a Firestore document class to
+/// automatically set the field's value to the server's current timestamp when
+/// updating the document.
 const alwaysUseFieldValueServerTimestampWhenUpdating =
     AlwaysUseFieldValueServerTimestampWhenUpdating();
 
-/// Annotation to use when updating a document with a server timestamp.
+/// Represents the annotation to automatically use
+/// `FieldValue.serverTimestamp()` when updating a document.
 class AlwaysUseFieldValueServerTimestampWhenUpdating {
-  /// Creates a [AlwaysUseFieldValueServerTimestampWhenUpdating].
+  /// Creates a [AlwaysUseFieldValueServerTimestampWhenUpdating] annotation
+  /// instance.
   const AlwaysUseFieldValueServerTimestampWhenUpdating();
 }
