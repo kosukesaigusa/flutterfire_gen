@@ -49,7 +49,7 @@ class ReadClassTemplate {
 
     final fromJson = FromJsonTemplate(config);
 
-    final fromDocumentSnapshot = FromDocumentSnapshotTemplate(config: config);
+    final fromDocumentSnapshot = FromDocumentSnapshotTemplate(config);
 
     final copyWith = config.generateCopyWith ? CopyWithTemplate(config) : '';
 

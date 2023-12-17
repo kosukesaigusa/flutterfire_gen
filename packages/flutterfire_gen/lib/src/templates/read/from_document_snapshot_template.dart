@@ -1,11 +1,22 @@
 import '../../configs/code_generation_config.dart';
 
-/// A template for a class to read documents from Firestore.
+/// A template for generating a factory method to create instances from
+/// Firestore document snapshots.
+///
+/// This template creates a `fromDocumentSnapshot` factory method in a class
+/// representing a Firestore document. The method converts a Firestore
+/// `DocumentSnapshot` into an instance of the class, handling field extraction
+/// and conversion.
 class FromDocumentSnapshotTemplate {
-  /// Creates a [FromDocumentSnapshotTemplate] with the given [config].
-  const FromDocumentSnapshotTemplate({required this.config});
+  /// Creates a new instance of [FromDocumentSnapshotTemplate] with the provided
+  /// configuration.
+  ///
+  /// Parameters:
+  ///
+  /// - [config] Configuration details for the Firestore document class.
+  const FromDocumentSnapshotTemplate(this.config);
 
-  /// The configuration for the document.
+  /// Configuration details for the Firestore document class.
   final CodeGenerationConfig config;
 
   @override
@@ -23,7 +34,8 @@ factory ${config.readClassName}.fromDocumentSnapshot(DocumentSnapshot ds) {
 ''';
   }
 
-  /// Returns the document reference field if it should be included.
+  /// Returns the document reference field definition if it is configured to be
+  /// included.
   String _documentReferenceField() {
     if (!config.includeDocumentReferenceField) {
       return '';

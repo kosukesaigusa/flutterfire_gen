@@ -1,11 +1,22 @@
 import '../../configs/code_generation_config.dart';
 
-/// A template for a copyWith method for a document class.
+/// A template for generating the `copyWith` method for a Firestore document
+/// class.
+///
+/// This template is used to create a `copyWith` method in classes representing
+/// Firestore documents. The `copyWith` method allows for creating a new
+/// instance of the class with modified fields, based on the provided
+/// parameters.
 class CopyWithTemplate {
+  /// Creates a new instance of [CopyWithTemplate].
   ///
+  /// Parameters:
+  ///
+  /// - [config] Configuration for code generation, including class and field
+  /// details.
   const CopyWithTemplate(this.config);
 
-  ///
+  /// Configuration details for generating the `copyWith` method.
   final CodeGenerationConfig config;
 
   @override
