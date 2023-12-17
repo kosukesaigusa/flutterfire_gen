@@ -1,3 +1,10 @@
+## 0.3.0-dev.1
+
+* Enable to set `schema_definition_class_prefix`, `read_class_prefix`, `create_class_prefix`, `update_class_prefix`, `delete_class_prefix`, `read_class_suffix`, `create_class_suffix`, `update_class_suffix`, `delete_class_suffix` to customize schema definition and generated class names.
+* Update generated `CollectionReference` variable name.
+* Update doc comments.
+* Refactor codes.
+
 ## 0.2.0-dev.5
 
 * Update generated codes' doc comments.

@@ -1,3 +1,8 @@
+## 0.3.0-dev.1
+
+* Update doc comments.
+* Refactor codes.
+
 ## 0.2.0-dev.1
 
 * Refactor entire codes.
