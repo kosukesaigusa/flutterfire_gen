@@ -8,8 +8,8 @@ part of 'todo.dart';
 // Generator: FlutterFireGen
 // **************************************************************************
 
-class ReadTodo {
-  const ReadTodo({
+class Todo {
+  const Todo({
     required this.title,
     required this.isCompleted,
     required this.createdAt,
@@ -31,47 +31,46 @@ class ReadTodo {
 
   final String path;
 
-  final DocumentReference<ReadTodo> todoReference;
+  final DocumentReference<Todo> todoReference;
 
-  factory ReadTodo.fromJson(Map<String, dynamic> json) {
+  factory Todo.fromJson(Map<String, dynamic> json) {
     final extendedJson = <String, dynamic>{
       ...json,
     };
-    return ReadTodo(
+    return Todo(
       title: extendedJson['title'] as String,
       isCompleted: extendedJson['isCompleted'] as bool? ?? false,
       createdAt: (extendedJson['createdAt'] as Timestamp?)?.toDate(),
       updatedAt: (extendedJson['updatedAt'] as Timestamp?)?.toDate(),
       todoId: extendedJson['todoId'] as String,
       path: extendedJson['path'] as String,
-      todoReference:
-          extendedJson['todoReference'] as DocumentReference<ReadTodo>,
+      todoReference: extendedJson['todoReference'] as DocumentReference<Todo>,
     );
   }
 
-  factory ReadTodo.fromDocumentSnapshot(DocumentSnapshot ds) {
+  factory Todo.fromDocumentSnapshot(DocumentSnapshot ds) {
     final data = ds.data()! as Map<String, dynamic>;
-    return ReadTodo.fromJson(<String, dynamic>{
+    return Todo.fromJson(<String, dynamic>{
       ...data,
       'todoId': ds.id,
       'path': ds.reference.path,
       'todoReference': ds.reference.parent.doc(ds.id).withConverter(
-            fromFirestore: (ds, _) => ReadTodo.fromDocumentSnapshot(ds),
+            fromFirestore: (ds, _) => Todo.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
     });
   }
 
-  ReadTodo copyWith({
+  Todo copyWith({
     String? title,
     bool? isCompleted,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? todoId,
     String? path,
-    DocumentReference<ReadTodo>? todoReference,
+    DocumentReference<Todo>? todoReference,
   }) {
-    return ReadTodo(
+    return Todo(
       title: title ?? this.title,
       isCompleted: isCompleted ?? this.isCompleted,
       createdAt: createdAt ?? this.createdAt,
@@ -153,17 +152,17 @@ class UpdateTodo {
 /// Represents the data structure for deleting a todo document in Cloud Firestore.
 class DeleteTodo {}
 
-/// Reference to the 'todos' collection with a converter for [ReadTodo].
+/// Reference to the 'todos' collection with a converter for [Todo].
 /// This allows for type-safe read operations from Firestore, converting
-/// Firestore documents to [ReadTodo] objects.
+/// Firestore documents to [Todo] objects.
 final readTodoCollectionReference =
-    FirebaseFirestore.instance.collection('todos').withConverter<ReadTodo>(
-          fromFirestore: (ds, _) => ReadTodo.fromDocumentSnapshot(ds),
+    FirebaseFirestore.instance.collection('todos').withConverter<Todo>(
+          fromFirestore: (ds, _) => Todo.fromDocumentSnapshot(ds),
           toFirestore: (_, __) => throw UnimplementedError(),
         );
 
 /// Creates a [DocumentReference] for a specific Todo document.
-DocumentReference<ReadTodo> readTodoDocumentReference({
+DocumentReference<Todo> readTodoDocumentReference({
   required String todoId,
 }) =>
     readTodoCollectionReference.doc(todoId);
@@ -278,10 +277,10 @@ final class BatchDeleteTodo extends BatchWriteTodo {
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
 /// operations on todo documents.
 ///
-/// It includes methods to fetch and subscribe to single or multiple [ReadTodo]
+/// It includes methods to fetch and subscribe to single or multiple [Todo]
 /// documents, as well as methods to add, set, update, and delete documents.
 ///
-/// The class uses Firebase Firestore as the backend, assuming [ReadTodo],
+/// The class uses Firebase Firestore as the backend, assuming [Todo],
 /// [CreateTodo], [UpdateTodo] are models representing the data.
 ///
 /// Usage:
@@ -293,17 +292,17 @@ final class BatchDeleteTodo extends BatchWriteTodo {
 /// This class is designed to abstract the complexities of direct Firestore
 /// usage and provide a straightforward API for todo document operations.
 class TodoQuery {
-  /// Fetches a list of [ReadTodo] documents from Cloud Firestore.
+  /// Fetches a list of [Todo] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
   /// if a [compare] function is given.
   /// You can customize the query by using the [queryBuilder] and control the
-  Future<List<ReadTodo>> fetchDocuments({
+  Future<List<Todo>> fetchDocuments({
     GetOptions? options,
-    Query<ReadTodo>? Function(Query<ReadTodo> query)? queryBuilder,
-    int Function(ReadTodo lhs, ReadTodo rhs)? compare,
+    Query<Todo>? Function(Query<Todo> query)? queryBuilder,
+    int Function(Todo lhs, Todo rhs)? compare,
   }) async {
-    Query<ReadTodo> query = readTodoCollectionReference;
+    Query<Todo> query = readTodoCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -315,18 +314,18 @@ class TodoQuery {
     return result;
   }
 
-  /// Subscribes to a stream of [ReadTodo] documents from Cloud Firestore.
+  /// Subscribes to a stream of [Todo] documents from Cloud Firestore.
   ///
-  /// This method returns a stream of [ReadTodo] documents, which updates in
+  /// This method returns a stream of [Todo] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
-  Stream<List<ReadTodo>> subscribeDocuments({
-    Query<ReadTodo>? Function(Query<ReadTodo> query)? queryBuilder,
-    int Function(ReadTodo lhs, ReadTodo rhs)? compare,
+  Stream<List<Todo>> subscribeDocuments({
+    Query<Todo>? Function(Query<Todo> query)? queryBuilder,
+    int Function(Todo lhs, Todo rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadTodo> query = readTodoCollectionReference;
+    Query<Todo> query = readTodoCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -344,11 +343,11 @@ class TodoQuery {
     });
   }
 
-  /// Fetches a single [ReadTodo] document from Cloud Firestore by its ID.
+  /// Fetches a single [Todo] document from Cloud Firestore by its ID.
   ///
   /// This method retrieves a specific document using the provided [todoId].
   /// You can control the data retrieval with [GetOptions].
-  Future<ReadTodo?> fetchDocument({
+  Future<Todo?> fetchDocument({
     required String todoId,
     GetOptions? options,
   }) async {
@@ -358,11 +357,11 @@ class TodoQuery {
     return ds.data();
   }
 
-  /// Subscribes to a stream of a single [ReadTodo] document from Cloud Firestore by its ID.
+  /// Subscribes to a stream of a single [Todo] document from Cloud Firestore by its ID.
   ///
-  /// This method returns a stream of a single [ReadTodo] document, which updates in
+  /// This method returns a stream of a single [Todo] document, which updates in
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
-  Stream<ReadTodo?> subscribeDocument({
+  Stream<Todo?> subscribeDocument({
     required String todoId,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,

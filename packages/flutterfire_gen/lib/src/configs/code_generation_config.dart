@@ -7,13 +7,39 @@ import 'reference_class_type.dart';
 class CodeGenerationConfig {
   /// Creates a Firestore document configuration.
   CodeGenerationConfig({
+    required String path,
+    required this.baseClassName,
+    required this.readClassPrefix,
+    required this.createClassPrefix,
+    required this.updateClassPrefix,
+    required this.deleteClassPrefix,
     required this.includePathField,
     required this.includeDocumentReferenceField,
     required this.generateCopyWith,
-    required String path,
-    required this.baseClassName,
     required this.fieldConfigs,
   }) : firestoreDocumentPath = FirestoreDocumentPath(path);
+
+  ///
+  final FirestoreDocumentPath firestoreDocumentPath;
+
+  /// The base class name for the document.
+  final String baseClassName;
+
+  /// The prefix for the class name of entities created based on documents read
+  /// from Cloud Firestore.
+  final String readClassPrefix;
+
+  /// The prefix for the class name of data structure for creating a new
+  /// document in Cloud Firestore.
+  final String createClassPrefix;
+
+  /// The prefix for the class name of data structure for updating a document in
+  /// Cloud Firestore.
+  final String updateClassPrefix;
+
+  /// The prefix for the class name of data structure for deleting a  document
+  /// in Cloud Firestore.
+  final String deleteClassPrefix;
 
   /// Whether to include a path field in the document class.
   final bool includePathField;
@@ -23,12 +49,6 @@ class CodeGenerationConfig {
 
   /// Whether to generate a copyWith method for the document class.
   final bool generateCopyWith;
-
-  ///
-  final FirestoreDocumentPath firestoreDocumentPath;
-
-  /// The base class name for the document.
-  final String baseClassName;
 
   /// The name of collection of the document.
   String get collectionName => firestoreDocumentPath.endPair.collectionName;
@@ -46,25 +66,28 @@ class CodeGenerationConfig {
   String get capitalizedDocumentName => documentName.capitalize();
 
   /// The name of the document class for reading.
-  String get readClassName => 'Read$baseClassName';
+  String get readClassName => '$readClassPrefix$baseClassName';
 
   /// The name of the document class for creating.
-  String get createClassName => 'Create$baseClassName';
+  String get createClassName => '$createClassPrefix$baseClassName';
 
   /// The name of the document class for updating.
-  String get updateClassName => 'Update$baseClassName';
+  String get updateClassName => '$updateClassPrefix$baseClassName';
 
   /// The name of the document class for deleting.
-  String get deleteClassName => 'Delete$baseClassName';
+  String get deleteClassName => '$deleteClassPrefix$baseClassName';
 
   /// The name of the instance variable for the document class for creating.
-  String get createClassInstanceName => 'create$baseClassName';
+  String get createClassInstanceName =>
+      '${createClassPrefix.decapitalize()}$baseClassName';
 
   /// The name of the instance variable for the document class for updating.
-  String get updateClassInstanceName => 'update$baseClassName';
+  String get updateClassInstanceName =>
+      '${updateClassPrefix.decapitalize()}$baseClassName';
 
   /// The name of the instance variable for the document class for deleting.
-  String get deleteClassInstanceName => 'delete$baseClassName';
+  String get deleteClassInstanceName =>
+      '${deleteClassPrefix.decapitalize()}$baseClassName';
 
   /// The document ID field name.
   String get documentId => firestoreDocumentPath.endPair.documentId;

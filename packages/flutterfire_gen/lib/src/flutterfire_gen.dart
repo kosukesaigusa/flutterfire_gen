@@ -13,6 +13,7 @@ import 'templates/read/read_class_template.dart';
 import 'templates/references/references_template.dart';
 import 'templates/update/update_class_template.dart';
 import 'utils/dart_object_util.dart';
+import 'utils/string.dart';
 
 /// A generator for [FirestoreDocument] annotation.
 class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
@@ -36,11 +37,26 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
       );
     }
 
+    if (!element.name
+        .startsWith(_buildYamlConfig.schemaDefinitionClassPrefix)) {
+      throw InvalidGenerationSourceError(
+        '${element.name} must start with '
+        "'${_buildYamlConfig.schemaDefinitionClassPrefix}'. "
+        'Because you set schema_definition_class_prefix to '
+        "'${_buildYamlConfig.schemaDefinitionClassPrefix}' in build.yaml. "
+        'Failing element: ${element.name}',
+        element: element,
+      );
+    }
+
+    final baseClassName = element.name
+        .replaceFirst(_buildYamlConfig.schemaDefinitionClassPrefix, '');
+
     final annotation = const TypeChecker.fromRuntime(FirestoreDocument)
         .firstAnnotationOf(element, throwOnUnresolved: false)!;
 
     final config = CodeGenerationConfig(
-      baseClassName: element.name,
+      baseClassName: baseClassName,
       path: annotation.decodeField(
         'path',
         decode: (obj) => obj.toStringValue()!,
@@ -49,6 +65,26 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
           'Failing element: ${element.name}',
           element: element,
         ),
+      ),
+      readClassPrefix: annotation.decodeField(
+        'readClassPrefix',
+        decode: (obj) => obj.toStringValue()!.capitalize(),
+        orElse: _buildYamlConfig.readClassPrefix.capitalize,
+      ),
+      createClassPrefix: annotation.decodeField(
+        'createClassPrefix',
+        decode: (obj) => obj.toStringValue()!.capitalize(),
+        orElse: _buildYamlConfig.createClassPrefix.capitalize,
+      ),
+      updateClassPrefix: annotation.decodeField(
+        'updateClassPrefix',
+        decode: (obj) => obj.toStringValue()!.capitalize(),
+        orElse: _buildYamlConfig.updateClassPrefix.capitalize,
+      ),
+      deleteClassPrefix: annotation.decodeField(
+        'deleteClassPrefix',
+        decode: (obj) => obj.toStringValue()!.capitalize(),
+        orElse: _buildYamlConfig.deleteClassPrefix.capitalize,
       ),
       includePathField: annotation.decodeField(
         'includePathField',

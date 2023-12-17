@@ -11,8 +11,7 @@ TodoQuery todoQuery(TodoQueryRef _) => TodoQuery();
 @riverpod
 class TodoList extends _$TodoList {
   @override
-  Future<List<ReadTodo>> build() =>
-      ref.watch(todoQueryProvider).fetchDocuments();
+  Future<List<Todo>> build() => ref.watch(todoQueryProvider).fetchDocuments();
 
   Future<void> addTodo(String title) async {
     await ref.read(todoQueryProvider).add(createTodo: CreateTodo(title: title));
@@ -62,8 +61,9 @@ class TodoList extends _$TodoList {
 }
 
 @FirestoreDocument(path: 'todos/{todoId}')
-class Todo {
-  const Todo({
+// ignore: unused_element
+class _$Todo {
+  const _$Todo({
     required this.title,
     required this.isCompleted,
     required this.createdAt,

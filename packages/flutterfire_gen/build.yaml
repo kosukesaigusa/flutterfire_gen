@@ -24,6 +24,6 @@ builders:
     build_to: source
     defaults:
       options:
-        includePathField: true
-        includeDocumentReferenceField: true
-        generateCopyWith: true
+        include_path_field: true
+        include_document_reference_field: true
+        generate_copy_with: true
