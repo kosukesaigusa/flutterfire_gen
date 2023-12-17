@@ -312,6 +312,51 @@ Future<void> updateCompletionStatus({
 
 ### Advanced
 
+#### Customize schema definition class and generated class names
+
+上記までの例ではスキーマ定義を `Todo` というクラス名で行い、read, create, update, delete 操作のためのクラスの接頭辞として、それぞれ `Read`, `Create`, `Update`, `Delete` が付されたものが生成されるようになっていました。
+
+が、
+
+- `Todo` という最もそれらしいクラス名をスキーマ定義のために使用してしまうため、他で使用できないこと
+- `ReadTodo`, `CreateTodo`, `UpdateTodo`, `DeleteTodo` のようなクラス名を強制されずにカスタマイズしたいケースもあること
+
+に対応するために、`build.yaml` で下記のようにすることで、スキーマ定義のクラス名と生成されるクラス名を一律でカスタマイズできるようになっています。
+
+```yaml
+targets:
+  $default:
+    builders:
+      flutterfire_gen:
+        options:
+          schema_definition_class_prefix: "_$" # Defaults to ""
+          read_class_prefix: "" # Defaults to "Read"
+          create_class_prefix: "Create" # Defaults to "Create"
+          update_class_prefix: "Update" # Defaults to "Update"
+          delete_class_prefix: "Delete" # Defaults to "Delete"
+          read_class_suffix: "Dto" # Defaults to ""
+          create_class_suffix: "Data" # Defaults to ""
+          update_class_suffix: "Interface" # Defaults to ""
+          delete_class_suffix: "EtCetera" # Defaults to ""
+```
+
+生成後のコードの接頭辞や接尾辞は `@FirestoreDocument` アノテーションで個別に設定することもできます。
+
+```dart
+@FirestoreDocument(
+  path: 'todos/{todoId}',
+  readClassPrefix: '',
+  createClassPrefix: 'Create',
+  updateClassPrefix: 'Update',
+  deleteClassPrefix: 'Delete',
+  readClassSuffix: 'Dto',
+  createClassSuffix: 'Data',
+  updateClassSuffix: 'Interface',
+  deleteClassSuffix: 'EtCetera',
+)
+class _$Todo { /** 省略 */ }
+```
+
 #### JsonConverter
 
 [json_annotation](https://pub.dev/packages/json_annotation) パッケージの `JsonConverter` を適用することも可能です。

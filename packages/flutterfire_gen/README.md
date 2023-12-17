@@ -306,6 +306,51 @@ Here too, just as with creation, `FieldValue.serverTimestamp()` is automatically
 
 ### Advanced
 
+#### Customize Schema Definition Class and Generated Class Names
+
+In the examples provided so far, the schema definition was done using the class name `Todo`, and prefixes such as `Read`, `Create`, `Update`, and `Delete` were automatically added to classes generated for read, create, update, and delete operations respectively.
+
+However, to address the following concerns:
+
+- The most suitable class name `Todo` being used for schema definition, which restricts its use elsewhere.
+- The desire to customize class names like `ReadTodo`, `CreateTodo`, `UpdateTodo`, `DeleteTodo` without being forced into a specific naming convention.
+
+We have introduced a feature where you can uniformly customize the schema definition class name and the names of the generated classes through `build.yaml` as follows:
+
+```yaml
+targets:
+  $default:
+    builders:
+      flutterfire_gen:
+        options:
+          schema_definition_class_prefix: "_$" # Defaults to ""
+          read_class_prefix: "" # Defaults to "Read"
+          create_class_prefix: "Create" # Defaults to "Create"
+          update_class_prefix: "Update" # Defaults to "Update"
+          delete_class_prefix: "Delete" # Defaults to "Delete"
+          read_class_suffix: "Dto" # Defaults to ""
+          create_class_suffix: "Data" # Defaults to ""
+          update_class_suffix: "Interface" # Defaults to ""
+          delete_class_suffix: "EtCetera" # Defaults to ""
+```
+
+The prefixes and suffixes for the generated code can also be individually set using the `@FirestoreDocument` annotation as follows:
+
+```dart
+@FirestoreDocument(
+  path: 'todos/{todoId}',
+  readClassPrefix: '',
+  createClassPrefix: 'Create',
+  updateClassPrefix: 'Update',
+  deleteClassPrefix: 'Delete',
+  readClassSuffix: 'Dto',
+  createClassSuffix: 'Data',
+  updateClassSuffix: 'Interface',
+  deleteClassSuffix: 'EtCetera',
+)
+class _$Todo { /** omitted */ }
+```
+
 #### JsonConverter
 
 It is also possible to apply the `JsonConverter` from the [json_annotation](https://pub.dev/packages/json_annotation) package.
