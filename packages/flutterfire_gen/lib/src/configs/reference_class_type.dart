@@ -12,18 +12,4 @@ enum ReferenceClassType {
   /// A reference class for deleting.
   delete,
   ;
-
-  @override
-  String toString() {
-    switch (this) {
-      case ReferenceClassType.read:
-        return 'reading';
-      case ReferenceClassType.create:
-        return 'creating';
-      case ReferenceClassType.update:
-        return 'updating';
-      case ReferenceClassType.delete:
-        return 'deleting';
-    }
-  }
 }
