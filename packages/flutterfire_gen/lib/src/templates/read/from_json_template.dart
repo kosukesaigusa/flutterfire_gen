@@ -18,11 +18,11 @@ class FromJsonTemplate {
     final jsonPostProcessors =
         JsonPostProcessorTemplate.fromJson(config.fieldConfigs);
     final additionalFields = [
-      "${config.documentId}: extendedJson['${config.documentId}'] as String",
-      if (config.includePathField) "path: extendedJson['path'] as String",
+      "${config.documentId}: extendedJson['${config.documentId}'] as String,",
+      if (config.includePathField) "path: extendedJson['path'] as String,",
       if (config.includeDocumentReferenceField)
         "${config.documentReferenceFieldName}: extendedJson['${config.documentReferenceFieldName}'] as ${config.readDocumentReferenceTypeName},",
-    ].join(',\n');
+    ].join('\n');
     return '''
 factory ${config.readClassName}.fromJson(Map<String, dynamic> json) {
     final extendedJson = <String, dynamic>{
