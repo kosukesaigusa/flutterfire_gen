@@ -250,6 +250,7 @@ class UpdateChatMessage {
   }
 }
 
+/// Represents the data structure for deleting a chatMessage document in Cloud Firestore.
 class DeleteChatMessage {}
 
 /// Reference to the 'chatMessages' collection with a converter for [ReadChatMessage].

@@ -850,6 +850,7 @@ class UpdateEntity {
   }
 }
 
+/// Represents the data structure for deleting a entity document in Cloud Firestore.
 class DeleteEntity {}
 
 /// Reference to the 'entities' collection with a converter for [ReadEntity].

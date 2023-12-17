@@ -160,6 +160,7 @@ class UpdateAppUserPostLikeTask {
   }
 }
 
+/// Represents the data structure for deleting a appUserPostLikeTask document in Cloud Firestore.
 class DeleteAppUserPostLikeTask {}
 
 /// Reference to the 'appUserPostLikeTasks' collection with a converter for [ReadAppUserPostLikeTask].

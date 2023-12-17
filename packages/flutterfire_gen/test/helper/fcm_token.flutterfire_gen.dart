@@ -132,6 +132,7 @@ class UpdateFcmToken {
   }
 }
 
+/// Represents the data structure for deleting a fcmToken document in Cloud Firestore.
 class DeleteFcmToken {}
 
 /// Reference to the 'fcmTokens' collection with a converter for [ReadFcmToken].

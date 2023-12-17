@@ -72,7 +72,7 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
       ..writeln(ReadClassTemplate(config))
       ..writeln(CreateClassTemplate(config))
       ..writeln(UpdateClassTemplate(config))
-      ..writeln(DeleteClassTemplate(config.deleteClassName))
+      ..writeln(DeleteClassTemplate(config))
       ..writeln(ReferencesTemplate(config))
       ..writeln(QueryClassTemplate(config));
 

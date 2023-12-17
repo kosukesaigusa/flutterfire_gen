@@ -108,6 +108,7 @@ class UpdateReadStatus {
   }
 }
 
+/// Represents the data structure for deleting a readStatus document in Cloud Firestore.
 class DeleteReadStatus {}
 
 /// Reference to the 'readStatuses' collection with a converter for [ReadReadStatus].

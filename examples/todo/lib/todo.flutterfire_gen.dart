@@ -150,6 +150,7 @@ class UpdateTodo {
   }
 }
 
+/// Represents the data structure for deleting a todo document in Cloud Firestore.
 class DeleteTodo {}
 
 /// Reference to the 'todos' collection with a converter for [ReadTodo].

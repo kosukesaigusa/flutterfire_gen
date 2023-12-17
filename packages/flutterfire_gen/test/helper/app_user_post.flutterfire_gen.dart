@@ -141,6 +141,7 @@ class UpdateAppUserPost {
   }
 }
 
+/// Represents the data structure for deleting a appUserPost document in Cloud Firestore.
 class DeleteAppUserPost {}
 
 /// Reference to the 'appUserPosts' collection with a converter for [ReadAppUserPost].

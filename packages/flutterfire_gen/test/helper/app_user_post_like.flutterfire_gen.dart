@@ -138,6 +138,7 @@ class UpdateAppUserPostLike {
   }
 }
 
+/// Represents the data structure for deleting a appUserPostLike document in Cloud Firestore.
 class DeleteAppUserPostLike {}
 
 /// Reference to the 'appUserPostLikes' collection with a converter for [ReadAppUserPostLike].

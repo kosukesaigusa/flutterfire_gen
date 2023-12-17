@@ -130,6 +130,7 @@ class UpdateAppUser {
   }
 }
 
+/// Represents the data structure for deleting a appUser document in Cloud Firestore.
 class DeleteAppUser {}
 
 /// Reference to the 'appUsers' collection with a converter for [ReadAppUser].
