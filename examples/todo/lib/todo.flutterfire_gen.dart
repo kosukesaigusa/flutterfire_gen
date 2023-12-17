@@ -155,7 +155,7 @@ class DeleteTodo {}
 /// Reference to the 'todos' collection with a converter for [Todo].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [Todo] objects.
-final readTodoCollectionReference =
+final readTodosCollectionReference =
     FirebaseFirestore.instance.collection('todos').withConverter<Todo>(
           fromFirestore: (ds, _) => Todo.fromDocumentSnapshot(ds),
           toFirestore: (_, __) => throw UnimplementedError(),
@@ -165,12 +165,12 @@ final readTodoCollectionReference =
 DocumentReference<Todo> readTodoDocumentReference({
   required String todoId,
 }) =>
-    readTodoCollectionReference.doc(todoId);
+    readTodosCollectionReference.doc(todoId);
 
 /// Reference to the 'todos' collection with a converter for [CreateTodo].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateTodo] objects to Firestore document data.
-final createTodoCollectionReference =
+final createTodosCollectionReference =
     FirebaseFirestore.instance.collection('todos').withConverter<CreateTodo>(
           fromFirestore: (_, __) => throw UnimplementedError(),
           toFirestore: (obj, _) => obj.toJson(),
@@ -180,12 +180,12 @@ final createTodoCollectionReference =
 DocumentReference<CreateTodo> createTodoDocumentReference({
   required String todoId,
 }) =>
-    createTodoCollectionReference.doc(todoId);
+    createTodosCollectionReference.doc(todoId);
 
 /// Reference to the 'todos' collection with a converter for [UpdateTodo].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateTodo] objects to Firestore document data.
-final updateTodoCollectionReference =
+final updateTodosCollectionReference =
     FirebaseFirestore.instance.collection('todos').withConverter<UpdateTodo>(
           fromFirestore: (_, __) => throw UnimplementedError(),
           toFirestore: (obj, _) => obj.toJson(),
@@ -195,12 +195,12 @@ final updateTodoCollectionReference =
 DocumentReference<UpdateTodo> updateTodoDocumentReference({
   required String todoId,
 }) =>
-    updateTodoCollectionReference.doc(todoId);
+    updateTodosCollectionReference.doc(todoId);
 
 /// Reference to the 'todos' collection with a converter for [DeleteTodo].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
-final deleteTodoCollectionReference =
+final deleteTodosCollectionReference =
     FirebaseFirestore.instance.collection('todos').withConverter<DeleteTodo>(
           fromFirestore: (_, __) => throw UnimplementedError(),
           toFirestore: (_, __) => throw UnimplementedError(),
@@ -210,7 +210,7 @@ final deleteTodoCollectionReference =
 DocumentReference<DeleteTodo> deleteTodoDocumentReference({
   required String todoId,
 }) =>
-    deleteTodoCollectionReference.doc(todoId);
+    deleteTodosCollectionReference.doc(todoId);
 
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
@@ -302,7 +302,7 @@ class TodoQuery {
     Query<Todo>? Function(Query<Todo> query)? queryBuilder,
     int Function(Todo lhs, Todo rhs)? compare,
   }) async {
-    Query<Todo> query = readTodoCollectionReference;
+    Query<Todo> query = readTodosCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -325,7 +325,7 @@ class TodoQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<Todo> query = readTodoCollectionReference;
+    Query<Todo> query = readTodosCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -382,7 +382,7 @@ class TodoQuery {
   Future<DocumentReference<CreateTodo>> add({
     required CreateTodo createTodo,
   }) =>
-      createTodoCollectionReference.add(createTodo);
+      createTodosCollectionReference.add(createTodo);
 
   /// Sets a todo document to Cloud Firestore.
   ///
@@ -427,20 +427,23 @@ class TodoQuery {
   /// without applying any changes, providing atomicity.
   ///
   /// Parameters:
-  ///   - [batchWriteTasks] A list of [BatchWriteTodo] objects, each representing a specific
-  ///     write operation (create, update, or delete) for Todo documents.
+  ///
+  /// - [batchWriteTasks] A list of [BatchWriteTodo] objects, each representing a specific
+  /// write operation (create, update, or delete) for Todo documents.
   ///
   /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
   /// Firestore operation. This includes:
-  ///   - Creating new documents for tasks of type [BatchCreateTodo].
-  ///   - Updating existing documents for tasks of type [BatchUpdateTodo].
-  ///   - Deleting documents for tasks of type [BatchDeleteTodo].
+  ///
+  /// - Creating new documents for tasks of type [BatchCreateTodo].
+  /// - Updating existing documents for tasks of type [BatchUpdateTodo].
+  /// - Deleting documents for tasks of type [BatchDeleteTodo].
   ///
   /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
   ///
   /// Throws:
-  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-  ///     operations within the batch.
+  ///
+  /// - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  /// operations within the batch.
   Future<void> batchWrite(List<BatchWriteTodo> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

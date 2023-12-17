@@ -1,11 +1,22 @@
 import '../../configs/code_generation_config.dart';
 
+/// A template for generating documentation comments for a Firestore query
+/// class.
 ///
+/// This template is used to create standardized documentation comments for a
+/// class that manages Firestore document operations. It provides detailed
+/// comments for various CRUD (Create, Read, Update, Delete) methods in the
+/// class.
 class QueryClassDocCommentTemplate {
+  /// Creates a new instance of [QueryClassDocCommentTemplate].
   ///
+  /// Parameters:
+  ///
+  /// - [config] Configuration for code generation, including details about the
+  /// Firestore document and operations.
   const QueryClassDocCommentTemplate(this.config);
 
-  ///
+  /// Configurations used for generating the documentation comments.
   final CodeGenerationConfig config;
 
   /// Returns the doc comment for the query class.
@@ -175,20 +186,23 @@ class QueryClassDocCommentTemplate {
 /// without applying any changes, providing atomicity.
 ///
 /// Parameters:
-///   - [batchWriteTasks] A list of [BatchWrite${config.capitalizedDocumentName}] objects, each representing a specific
-///     write operation (create, update, or delete) for ${config.capitalizedDocumentName} documents.
+/// 
+/// - [batchWriteTasks] A list of [BatchWrite${config.capitalizedDocumentName}] objects, each representing a specific
+/// write operation (create, update, or delete) for ${config.capitalizedDocumentName} documents.
 ///
 /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
 /// Firestore operation. This includes:
-///   - Creating new documents for tasks of type [BatchCreate${config.capitalizedDocumentName}].
-///   - Updating existing documents for tasks of type [BatchUpdate${config.capitalizedDocumentName}].
-///   - Deleting documents for tasks of type [BatchDelete${config.capitalizedDocumentName}].
+/// 
+/// - Creating new documents for tasks of type [BatchCreate${config.capitalizedDocumentName}].
+/// - Updating existing documents for tasks of type [BatchUpdate${config.capitalizedDocumentName}].
+/// - Deleting documents for tasks of type [BatchDelete${config.capitalizedDocumentName}].
 ///
 /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
 ///
 /// Throws:
-///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-///     operations within the batch.
+/// 
+/// - Firestore exceptions if the batch commit fails or if there are issues with the individual 
+/// operations within the batch.
 ''';
   }
 }

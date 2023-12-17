@@ -1,18 +1,30 @@
 import '../../configs/code_generation_config.dart';
 import '../../configs/reference_class_type.dart';
 
+/// A template for generating documentation comments for Firestore reference
+/// classes.
 ///
+/// This class is used to create documentation comments for classes that
+/// represent Firestore references, such as collection and document references.
+/// It provides specific comments based on the type of reference (read, create,
+/// update, delete).
 class ReferenceDocCommentTemplate {
+  /// Creates a new instance of [ReferenceDocCommentTemplate].
   ///
+  /// Parameters:
+  ///
+  /// - [config] Configuration for code generation, including document details.
+  /// - [referenceClassType] The type of reference class (read, create, update,
+  /// delete).
   ReferenceDocCommentTemplate({
     required this.config,
     required this.referenceClassType,
   });
 
-  /// Configurations for code generation.
+  /// Configurations used for generating the documentation comments.
   final CodeGenerationConfig config;
 
-  /// The type of reference class.
+  /// The type of reference class (read, create, update, delete).
   final ReferenceClassType referenceClassType;
 
   /// Returns the doc comment for the [referenceClassType] collection reference.

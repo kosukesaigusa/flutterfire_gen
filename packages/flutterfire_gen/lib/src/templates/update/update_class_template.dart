@@ -4,12 +4,21 @@ import '../constructor_template.dart';
 import 'doc_comment_template.dart';
 import 'to_json_template.dart';
 
-/// A template for a class to update documents in Firestore.
+/// A template for generating a class used for updating Firestore documents.
+///
+/// This class constructs the necessary Dart code for a class that represents
+/// the structure and data required for updating Firestore documents. It
+/// includes the class definition, constructor, fields, and a `toJson` method.
 class UpdateClassTemplate {
-  /// Creates a [UpdateClassTemplate].
+  /// Creates a new instance of [UpdateClassTemplate].
+  ///
+  /// Parameters:
+  ///
+  /// - [config] Configuration for code generation, including details about the
+  /// Firestore document to be updated.
   const UpdateClassTemplate(this.config);
 
-  /// Configurations for code generation.
+  /// Configurations used for generating the update class.
   final CodeGenerationConfig config;
 
   @override
@@ -42,7 +51,6 @@ ${docComment}class ${config.updateClassName} {
 ''';
   }
 
-  ///
   List<FieldConfig> get _effectiveFieldConfigs => config.fieldConfigs
       .where(
         (fieldConfig) =>

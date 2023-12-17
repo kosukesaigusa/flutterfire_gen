@@ -856,7 +856,7 @@ class DeleteEntity {}
 /// Reference to the 'entities' collection with a converter for [ReadEntity].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadEntity] objects.
-final readEntityCollectionReference =
+final readEntitiesCollectionReference =
     FirebaseFirestore.instance.collection('entities').withConverter<ReadEntity>(
           fromFirestore: (ds, _) => ReadEntity.fromDocumentSnapshot(ds),
           toFirestore: (_, __) => throw UnimplementedError(),
@@ -866,12 +866,12 @@ final readEntityCollectionReference =
 DocumentReference<ReadEntity> readEntityDocumentReference({
   required String entityId,
 }) =>
-    readEntityCollectionReference.doc(entityId);
+    readEntitiesCollectionReference.doc(entityId);
 
 /// Reference to the 'entities' collection with a converter for [CreateEntity].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateEntity] objects to Firestore document data.
-final createEntityCollectionReference = FirebaseFirestore.instance
+final createEntitiesCollectionReference = FirebaseFirestore.instance
     .collection('entities')
     .withConverter<CreateEntity>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -882,12 +882,12 @@ final createEntityCollectionReference = FirebaseFirestore.instance
 DocumentReference<CreateEntity> createEntityDocumentReference({
   required String entityId,
 }) =>
-    createEntityCollectionReference.doc(entityId);
+    createEntitiesCollectionReference.doc(entityId);
 
 /// Reference to the 'entities' collection with a converter for [UpdateEntity].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateEntity] objects to Firestore document data.
-final updateEntityCollectionReference = FirebaseFirestore.instance
+final updateEntitiesCollectionReference = FirebaseFirestore.instance
     .collection('entities')
     .withConverter<UpdateEntity>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -898,12 +898,12 @@ final updateEntityCollectionReference = FirebaseFirestore.instance
 DocumentReference<UpdateEntity> updateEntityDocumentReference({
   required String entityId,
 }) =>
-    updateEntityCollectionReference.doc(entityId);
+    updateEntitiesCollectionReference.doc(entityId);
 
 /// Reference to the 'entities' collection with a converter for [DeleteEntity].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
-final deleteEntityCollectionReference = FirebaseFirestore.instance
+final deleteEntitiesCollectionReference = FirebaseFirestore.instance
     .collection('entities')
     .withConverter<DeleteEntity>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -914,7 +914,7 @@ final deleteEntityCollectionReference = FirebaseFirestore.instance
 DocumentReference<DeleteEntity> deleteEntityDocumentReference({
   required String entityId,
 }) =>
-    deleteEntityCollectionReference.doc(entityId);
+    deleteEntitiesCollectionReference.doc(entityId);
 
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
@@ -1006,7 +1006,7 @@ class EntityQuery {
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
     int Function(ReadEntity lhs, ReadEntity rhs)? compare,
   }) async {
-    Query<ReadEntity> query = readEntityCollectionReference;
+    Query<ReadEntity> query = readEntitiesCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -1029,7 +1029,7 @@ class EntityQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadEntity> query = readEntityCollectionReference;
+    Query<ReadEntity> query = readEntitiesCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -1086,7 +1086,7 @@ class EntityQuery {
   Future<DocumentReference<CreateEntity>> add({
     required CreateEntity createEntity,
   }) =>
-      createEntityCollectionReference.add(createEntity);
+      createEntitiesCollectionReference.add(createEntity);
 
   /// Sets a entity document to Cloud Firestore.
   ///
@@ -1131,20 +1131,23 @@ class EntityQuery {
   /// without applying any changes, providing atomicity.
   ///
   /// Parameters:
-  ///   - [batchWriteTasks] A list of [BatchWriteEntity] objects, each representing a specific
-  ///     write operation (create, update, or delete) for Entity documents.
+  ///
+  /// - [batchWriteTasks] A list of [BatchWriteEntity] objects, each representing a specific
+  /// write operation (create, update, or delete) for Entity documents.
   ///
   /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
   /// Firestore operation. This includes:
-  ///   - Creating new documents for tasks of type [BatchCreateEntity].
-  ///   - Updating existing documents for tasks of type [BatchUpdateEntity].
-  ///   - Deleting documents for tasks of type [BatchDeleteEntity].
+  ///
+  /// - Creating new documents for tasks of type [BatchCreateEntity].
+  /// - Updating existing documents for tasks of type [BatchUpdateEntity].
+  /// - Deleting documents for tasks of type [BatchDeleteEntity].
   ///
   /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
   ///
   /// Throws:
-  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-  ///     operations within the batch.
+  ///
+  /// - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  /// operations within the batch.
   Future<void> batchWrite(List<BatchWriteEntity> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

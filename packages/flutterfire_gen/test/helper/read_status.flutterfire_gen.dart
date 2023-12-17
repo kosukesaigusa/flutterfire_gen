@@ -114,7 +114,7 @@ class DeleteReadStatus {}
 /// Reference to the 'readStatuses' collection with a converter for [ReadReadStatus].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadReadStatus] objects.
-CollectionReference<ReadReadStatus> readReadStatusCollectionReference({
+CollectionReference<ReadReadStatus> readReadStatusesCollectionReference({
   required String chatRoomId,
 }) =>
     FirebaseFirestore.instance
@@ -131,14 +131,14 @@ DocumentReference<ReadReadStatus> readReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
 }) =>
-    readReadStatusCollectionReference(
+    readReadStatusesCollectionReference(
       chatRoomId: chatRoomId,
     ).doc(readStatusId);
 
 /// Reference to the 'readStatuses' collection with a converter for [CreateReadStatus].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateReadStatus] objects to Firestore document data.
-CollectionReference<CreateReadStatus> createReadStatusCollectionReference({
+CollectionReference<CreateReadStatus> createReadStatusesCollectionReference({
   required String chatRoomId,
 }) =>
     FirebaseFirestore.instance
@@ -155,14 +155,14 @@ DocumentReference<CreateReadStatus> createReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
 }) =>
-    createReadStatusCollectionReference(
+    createReadStatusesCollectionReference(
       chatRoomId: chatRoomId,
     ).doc(readStatusId);
 
 /// Reference to the 'readStatuses' collection with a converter for [UpdateReadStatus].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateReadStatus] objects to Firestore document data.
-CollectionReference<UpdateReadStatus> updateReadStatusCollectionReference({
+CollectionReference<UpdateReadStatus> updateReadStatusesCollectionReference({
   required String chatRoomId,
 }) =>
     FirebaseFirestore.instance
@@ -179,14 +179,14 @@ DocumentReference<UpdateReadStatus> updateReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
 }) =>
-    updateReadStatusCollectionReference(
+    updateReadStatusesCollectionReference(
       chatRoomId: chatRoomId,
     ).doc(readStatusId);
 
 /// Reference to the 'readStatuses' collection with a converter for [DeleteReadStatus].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
-CollectionReference<DeleteReadStatus> deleteReadStatusCollectionReference({
+CollectionReference<DeleteReadStatus> deleteReadStatusesCollectionReference({
   required String chatRoomId,
 }) =>
     FirebaseFirestore.instance
@@ -203,7 +203,7 @@ DocumentReference<DeleteReadStatus> deleteReadStatusDocumentReference({
   required String chatRoomId,
   required String readStatusId,
 }) =>
-    deleteReadStatusCollectionReference(
+    deleteReadStatusesCollectionReference(
       chatRoomId: chatRoomId,
     ).doc(readStatusId);
 
@@ -307,7 +307,7 @@ class ReadStatusQuery {
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     int Function(ReadReadStatus lhs, ReadReadStatus rhs)? compare,
   }) async {
-    Query<ReadReadStatus> query = readReadStatusCollectionReference(
+    Query<ReadReadStatus> query = readReadStatusesCollectionReference(
       chatRoomId: chatRoomId,
     );
     if (queryBuilder != null) {
@@ -333,7 +333,7 @@ class ReadStatusQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadReadStatus> query = readReadStatusCollectionReference(
+    Query<ReadReadStatus> query = readReadStatusesCollectionReference(
       chatRoomId: chatRoomId,
     );
     if (queryBuilder != null) {
@@ -397,7 +397,7 @@ class ReadStatusQuery {
     required String chatRoomId,
     required CreateReadStatus createReadStatus,
   }) =>
-      createReadStatusCollectionReference(
+      createReadStatusesCollectionReference(
         chatRoomId: chatRoomId,
       ).add(createReadStatus);
 
@@ -450,20 +450,23 @@ class ReadStatusQuery {
   /// without applying any changes, providing atomicity.
   ///
   /// Parameters:
-  ///   - [batchWriteTasks] A list of [BatchWriteReadStatus] objects, each representing a specific
-  ///     write operation (create, update, or delete) for ReadStatus documents.
+  ///
+  /// - [batchWriteTasks] A list of [BatchWriteReadStatus] objects, each representing a specific
+  /// write operation (create, update, or delete) for ReadStatus documents.
   ///
   /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
   /// Firestore operation. This includes:
-  ///   - Creating new documents for tasks of type [BatchCreateReadStatus].
-  ///   - Updating existing documents for tasks of type [BatchUpdateReadStatus].
-  ///   - Deleting documents for tasks of type [BatchDeleteReadStatus].
+  ///
+  /// - Creating new documents for tasks of type [BatchCreateReadStatus].
+  /// - Updating existing documents for tasks of type [BatchUpdateReadStatus].
+  /// - Deleting documents for tasks of type [BatchDeleteReadStatus].
   ///
   /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
   ///
   /// Throws:
-  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-  ///     operations within the batch.
+  ///
+  /// - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  /// operations within the batch.
   Future<void> batchWrite(List<BatchWriteReadStatus> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

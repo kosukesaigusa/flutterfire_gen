@@ -1,11 +1,21 @@
 import '../../configs/code_generation_config.dart';
 
+/// A template for generating documentation comments for a class used for
+/// creating Firestore documents.
 ///
+/// This template creates a documentation comment that describes the purpose
+/// and usage of the generated class for creating new Firestore documents.
+/// It includes information about fields that are automatically set to the
+/// server's timestamp.
 class CreateClassDocCommentTemplate {
+  /// Creates a new instance of [CreateClassDocCommentTemplate].
   ///
+  /// Parameters:
+  ///
+  /// - [config] Configuration for code generation, including document details.
   CreateClassDocCommentTemplate(this.config);
 
-  /// Configurations for code generation.
+  /// Configurations used for generating the documentation comment.
   final CodeGenerationConfig config;
 
   @override

@@ -4,12 +4,23 @@ import '../path_segment_parameters_template.dart';
 import 'doc_comment_template.dart';
 import 'with_converter_template.dart';
 
+/// A template for generating Firestore reference classes for document and
+/// collection operations.
 ///
+/// This class constructs the necessary Dart code for Firestore collection and
+/// document reference classes. These classes are used to interact with
+/// Firestore for CRUD operations on documents, including fetching, subscribing,
+/// updating, and deleting.
 class ReferencesTemplate {
-  /// Creates a [ReferencesTemplate].
+  /// Creates a new instance of [ReferencesTemplate].
+  ///
+  /// Parameters:
+  ///
+  /// - [config] Configuration for code generation, including details about the
+  /// Firestore document and collection operations.
   const ReferencesTemplate(this.config);
 
-  /// Configurations for code generation.
+  /// Configurations used for generating reference classes.
   final CodeGenerationConfig config;
 
   @override

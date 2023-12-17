@@ -147,7 +147,7 @@ class DeleteAppUserPost {}
 /// Reference to the 'appUserPosts' collection with a converter for [ReadAppUserPost].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadAppUserPost] objects.
-CollectionReference<ReadAppUserPost> readAppUserPostCollectionReference({
+CollectionReference<ReadAppUserPost> readAppUserPostsCollectionReference({
   required String appUserId,
 }) =>
     FirebaseFirestore.instance
@@ -164,14 +164,14 @@ DocumentReference<ReadAppUserPost> readAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
-    readAppUserPostCollectionReference(
+    readAppUserPostsCollectionReference(
       appUserId: appUserId,
     ).doc(appUserPostId);
 
 /// Reference to the 'appUserPosts' collection with a converter for [CreateAppUserPost].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateAppUserPost] objects to Firestore document data.
-CollectionReference<CreateAppUserPost> createAppUserPostCollectionReference({
+CollectionReference<CreateAppUserPost> createAppUserPostsCollectionReference({
   required String appUserId,
 }) =>
     FirebaseFirestore.instance
@@ -188,14 +188,14 @@ DocumentReference<CreateAppUserPost> createAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
-    createAppUserPostCollectionReference(
+    createAppUserPostsCollectionReference(
       appUserId: appUserId,
     ).doc(appUserPostId);
 
 /// Reference to the 'appUserPosts' collection with a converter for [UpdateAppUserPost].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateAppUserPost] objects to Firestore document data.
-CollectionReference<UpdateAppUserPost> updateAppUserPostCollectionReference({
+CollectionReference<UpdateAppUserPost> updateAppUserPostsCollectionReference({
   required String appUserId,
 }) =>
     FirebaseFirestore.instance
@@ -212,14 +212,14 @@ DocumentReference<UpdateAppUserPost> updateAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
-    updateAppUserPostCollectionReference(
+    updateAppUserPostsCollectionReference(
       appUserId: appUserId,
     ).doc(appUserPostId);
 
 /// Reference to the 'appUserPosts' collection with a converter for [DeleteAppUserPost].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
-CollectionReference<DeleteAppUserPost> deleteAppUserPostCollectionReference({
+CollectionReference<DeleteAppUserPost> deleteAppUserPostsCollectionReference({
   required String appUserId,
 }) =>
     FirebaseFirestore.instance
@@ -236,7 +236,7 @@ DocumentReference<DeleteAppUserPost> deleteAppUserPostDocumentReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
-    deleteAppUserPostCollectionReference(
+    deleteAppUserPostsCollectionReference(
       appUserId: appUserId,
     ).doc(appUserPostId);
 
@@ -341,7 +341,7 @@ class AppUserPostQuery {
         queryBuilder,
     int Function(ReadAppUserPost lhs, ReadAppUserPost rhs)? compare,
   }) async {
-    Query<ReadAppUserPost> query = readAppUserPostCollectionReference(
+    Query<ReadAppUserPost> query = readAppUserPostsCollectionReference(
       appUserId: appUserId,
     );
     if (queryBuilder != null) {
@@ -368,7 +368,7 @@ class AppUserPostQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadAppUserPost> query = readAppUserPostCollectionReference(
+    Query<ReadAppUserPost> query = readAppUserPostsCollectionReference(
       appUserId: appUserId,
     );
     if (queryBuilder != null) {
@@ -432,7 +432,7 @@ class AppUserPostQuery {
     required String appUserId,
     required CreateAppUserPost createAppUserPost,
   }) =>
-      createAppUserPostCollectionReference(
+      createAppUserPostsCollectionReference(
         appUserId: appUserId,
       ).add(createAppUserPost);
 
@@ -485,20 +485,23 @@ class AppUserPostQuery {
   /// without applying any changes, providing atomicity.
   ///
   /// Parameters:
-  ///   - [batchWriteTasks] A list of [BatchWriteAppUserPost] objects, each representing a specific
-  ///     write operation (create, update, or delete) for AppUserPost documents.
+  ///
+  /// - [batchWriteTasks] A list of [BatchWriteAppUserPost] objects, each representing a specific
+  /// write operation (create, update, or delete) for AppUserPost documents.
   ///
   /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
   /// Firestore operation. This includes:
-  ///   - Creating new documents for tasks of type [BatchCreateAppUserPost].
-  ///   - Updating existing documents for tasks of type [BatchUpdateAppUserPost].
-  ///   - Deleting documents for tasks of type [BatchDeleteAppUserPost].
+  ///
+  /// - Creating new documents for tasks of type [BatchCreateAppUserPost].
+  /// - Updating existing documents for tasks of type [BatchUpdateAppUserPost].
+  /// - Deleting documents for tasks of type [BatchDeleteAppUserPost].
   ///
   /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
   ///
   /// Throws:
-  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-  ///     operations within the batch.
+  ///
+  /// - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  /// operations within the batch.
   Future<void> batchWrite(List<BatchWriteAppUserPost> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

@@ -136,7 +136,7 @@ class DeleteAppUser {}
 /// Reference to the 'appUsers' collection with a converter for [ReadAppUser].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadAppUser] objects.
-final readAppUserCollectionReference = FirebaseFirestore.instance
+final readAppUsersCollectionReference = FirebaseFirestore.instance
     .collection('appUsers')
     .withConverter<ReadAppUser>(
       fromFirestore: (ds, _) => ReadAppUser.fromDocumentSnapshot(ds),
@@ -147,12 +147,12 @@ final readAppUserCollectionReference = FirebaseFirestore.instance
 DocumentReference<ReadAppUser> readAppUserDocumentReference({
   required String appUserId,
 }) =>
-    readAppUserCollectionReference.doc(appUserId);
+    readAppUsersCollectionReference.doc(appUserId);
 
 /// Reference to the 'appUsers' collection with a converter for [CreateAppUser].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateAppUser] objects to Firestore document data.
-final createAppUserCollectionReference = FirebaseFirestore.instance
+final createAppUsersCollectionReference = FirebaseFirestore.instance
     .collection('appUsers')
     .withConverter<CreateAppUser>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -163,12 +163,12 @@ final createAppUserCollectionReference = FirebaseFirestore.instance
 DocumentReference<CreateAppUser> createAppUserDocumentReference({
   required String appUserId,
 }) =>
-    createAppUserCollectionReference.doc(appUserId);
+    createAppUsersCollectionReference.doc(appUserId);
 
 /// Reference to the 'appUsers' collection with a converter for [UpdateAppUser].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateAppUser] objects to Firestore document data.
-final updateAppUserCollectionReference = FirebaseFirestore.instance
+final updateAppUsersCollectionReference = FirebaseFirestore.instance
     .collection('appUsers')
     .withConverter<UpdateAppUser>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -179,12 +179,12 @@ final updateAppUserCollectionReference = FirebaseFirestore.instance
 DocumentReference<UpdateAppUser> updateAppUserDocumentReference({
   required String appUserId,
 }) =>
-    updateAppUserCollectionReference.doc(appUserId);
+    updateAppUsersCollectionReference.doc(appUserId);
 
 /// Reference to the 'appUsers' collection with a converter for [DeleteAppUser].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
-final deleteAppUserCollectionReference = FirebaseFirestore.instance
+final deleteAppUsersCollectionReference = FirebaseFirestore.instance
     .collection('appUsers')
     .withConverter<DeleteAppUser>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -195,7 +195,7 @@ final deleteAppUserCollectionReference = FirebaseFirestore.instance
 DocumentReference<DeleteAppUser> deleteAppUserDocumentReference({
   required String appUserId,
 }) =>
-    deleteAppUserCollectionReference.doc(appUserId);
+    deleteAppUsersCollectionReference.doc(appUserId);
 
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
@@ -287,7 +287,7 @@ class AppUserQuery {
     Query<ReadAppUser>? Function(Query<ReadAppUser> query)? queryBuilder,
     int Function(ReadAppUser lhs, ReadAppUser rhs)? compare,
   }) async {
-    Query<ReadAppUser> query = readAppUserCollectionReference;
+    Query<ReadAppUser> query = readAppUsersCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -310,7 +310,7 @@ class AppUserQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadAppUser> query = readAppUserCollectionReference;
+    Query<ReadAppUser> query = readAppUsersCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -367,7 +367,7 @@ class AppUserQuery {
   Future<DocumentReference<CreateAppUser>> add({
     required CreateAppUser createAppUser,
   }) =>
-      createAppUserCollectionReference.add(createAppUser);
+      createAppUsersCollectionReference.add(createAppUser);
 
   /// Sets a appUser document to Cloud Firestore.
   ///
@@ -412,20 +412,23 @@ class AppUserQuery {
   /// without applying any changes, providing atomicity.
   ///
   /// Parameters:
-  ///   - [batchWriteTasks] A list of [BatchWriteAppUser] objects, each representing a specific
-  ///     write operation (create, update, or delete) for AppUser documents.
+  ///
+  /// - [batchWriteTasks] A list of [BatchWriteAppUser] objects, each representing a specific
+  /// write operation (create, update, or delete) for AppUser documents.
   ///
   /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
   /// Firestore operation. This includes:
-  ///   - Creating new documents for tasks of type [BatchCreateAppUser].
-  ///   - Updating existing documents for tasks of type [BatchUpdateAppUser].
-  ///   - Deleting documents for tasks of type [BatchDeleteAppUser].
+  ///
+  /// - Creating new documents for tasks of type [BatchCreateAppUser].
+  /// - Updating existing documents for tasks of type [BatchUpdateAppUser].
+  /// - Deleting documents for tasks of type [BatchDeleteAppUser].
   ///
   /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
   ///
   /// Throws:
-  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-  ///     operations within the batch.
+  ///
+  /// - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  /// operations within the batch.
   Future<void> batchWrite(List<BatchWriteAppUser> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

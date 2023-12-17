@@ -256,7 +256,7 @@ class DeleteChatMessage {}
 /// Reference to the 'chatMessages' collection with a converter for [ReadChatMessage].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadChatMessage] objects.
-CollectionReference<ReadChatMessage> readChatMessageCollectionReference({
+CollectionReference<ReadChatMessage> readChatMessagesCollectionReference({
   required String chatRoomId,
 }) =>
     FirebaseFirestore.instance
@@ -273,14 +273,14 @@ DocumentReference<ReadChatMessage> readChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
 }) =>
-    readChatMessageCollectionReference(
+    readChatMessagesCollectionReference(
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
 /// Reference to the 'chatMessages' collection with a converter for [CreateChatMessage].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateChatMessage] objects to Firestore document data.
-CollectionReference<CreateChatMessage> createChatMessageCollectionReference({
+CollectionReference<CreateChatMessage> createChatMessagesCollectionReference({
   required String chatRoomId,
 }) =>
     FirebaseFirestore.instance
@@ -297,14 +297,14 @@ DocumentReference<CreateChatMessage> createChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
 }) =>
-    createChatMessageCollectionReference(
+    createChatMessagesCollectionReference(
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
 /// Reference to the 'chatMessages' collection with a converter for [UpdateChatMessage].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateChatMessage] objects to Firestore document data.
-CollectionReference<UpdateChatMessage> updateChatMessageCollectionReference({
+CollectionReference<UpdateChatMessage> updateChatMessagesCollectionReference({
   required String chatRoomId,
 }) =>
     FirebaseFirestore.instance
@@ -321,14 +321,14 @@ DocumentReference<UpdateChatMessage> updateChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
 }) =>
-    updateChatMessageCollectionReference(
+    updateChatMessagesCollectionReference(
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
 /// Reference to the 'chatMessages' collection with a converter for [DeleteChatMessage].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
-CollectionReference<DeleteChatMessage> deleteChatMessageCollectionReference({
+CollectionReference<DeleteChatMessage> deleteChatMessagesCollectionReference({
   required String chatRoomId,
 }) =>
     FirebaseFirestore.instance
@@ -345,7 +345,7 @@ DocumentReference<DeleteChatMessage> deleteChatMessageDocumentReference({
   required String chatRoomId,
   required String chatMessageId,
 }) =>
-    deleteChatMessageCollectionReference(
+    deleteChatMessagesCollectionReference(
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
@@ -450,7 +450,7 @@ class ChatMessageQuery {
         queryBuilder,
     int Function(ReadChatMessage lhs, ReadChatMessage rhs)? compare,
   }) async {
-    Query<ReadChatMessage> query = readChatMessageCollectionReference(
+    Query<ReadChatMessage> query = readChatMessagesCollectionReference(
       chatRoomId: chatRoomId,
     );
     if (queryBuilder != null) {
@@ -477,7 +477,7 @@ class ChatMessageQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadChatMessage> query = readChatMessageCollectionReference(
+    Query<ReadChatMessage> query = readChatMessagesCollectionReference(
       chatRoomId: chatRoomId,
     );
     if (queryBuilder != null) {
@@ -541,7 +541,7 @@ class ChatMessageQuery {
     required String chatRoomId,
     required CreateChatMessage createChatMessage,
   }) =>
-      createChatMessageCollectionReference(
+      createChatMessagesCollectionReference(
         chatRoomId: chatRoomId,
       ).add(createChatMessage);
 
@@ -594,20 +594,23 @@ class ChatMessageQuery {
   /// without applying any changes, providing atomicity.
   ///
   /// Parameters:
-  ///   - [batchWriteTasks] A list of [BatchWriteChatMessage] objects, each representing a specific
-  ///     write operation (create, update, or delete) for ChatMessage documents.
+  ///
+  /// - [batchWriteTasks] A list of [BatchWriteChatMessage] objects, each representing a specific
+  /// write operation (create, update, or delete) for ChatMessage documents.
   ///
   /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
   /// Firestore operation. This includes:
-  ///   - Creating new documents for tasks of type [BatchCreateChatMessage].
-  ///   - Updating existing documents for tasks of type [BatchUpdateChatMessage].
-  ///   - Deleting documents for tasks of type [BatchDeleteChatMessage].
+  ///
+  /// - Creating new documents for tasks of type [BatchCreateChatMessage].
+  /// - Updating existing documents for tasks of type [BatchUpdateChatMessage].
+  /// - Deleting documents for tasks of type [BatchDeleteChatMessage].
   ///
   /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
   ///
   /// Throws:
-  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-  ///     operations within the batch.
+  ///
+  /// - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  /// operations within the batch.
   Future<void> batchWrite(List<BatchWriteChatMessage> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

@@ -138,7 +138,7 @@ class DeleteFcmToken {}
 /// Reference to the 'fcmTokens' collection with a converter for [ReadFcmToken].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadFcmToken] objects.
-final readFcmTokenCollectionReference = FirebaseFirestore.instance
+final readFcmTokensCollectionReference = FirebaseFirestore.instance
     .collection('fcmTokens')
     .withConverter<ReadFcmToken>(
       fromFirestore: (ds, _) => ReadFcmToken.fromDocumentSnapshot(ds),
@@ -149,12 +149,12 @@ final readFcmTokenCollectionReference = FirebaseFirestore.instance
 DocumentReference<ReadFcmToken> readFcmTokenDocumentReference({
   required String fcmTokenId,
 }) =>
-    readFcmTokenCollectionReference.doc(fcmTokenId);
+    readFcmTokensCollectionReference.doc(fcmTokenId);
 
 /// Reference to the 'fcmTokens' collection with a converter for [CreateFcmToken].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateFcmToken] objects to Firestore document data.
-final createFcmTokenCollectionReference = FirebaseFirestore.instance
+final createFcmTokensCollectionReference = FirebaseFirestore.instance
     .collection('fcmTokens')
     .withConverter<CreateFcmToken>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -165,12 +165,12 @@ final createFcmTokenCollectionReference = FirebaseFirestore.instance
 DocumentReference<CreateFcmToken> createFcmTokenDocumentReference({
   required String fcmTokenId,
 }) =>
-    createFcmTokenCollectionReference.doc(fcmTokenId);
+    createFcmTokensCollectionReference.doc(fcmTokenId);
 
 /// Reference to the 'fcmTokens' collection with a converter for [UpdateFcmToken].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateFcmToken] objects to Firestore document data.
-final updateFcmTokenCollectionReference = FirebaseFirestore.instance
+final updateFcmTokensCollectionReference = FirebaseFirestore.instance
     .collection('fcmTokens')
     .withConverter<UpdateFcmToken>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -181,12 +181,12 @@ final updateFcmTokenCollectionReference = FirebaseFirestore.instance
 DocumentReference<UpdateFcmToken> updateFcmTokenDocumentReference({
   required String fcmTokenId,
 }) =>
-    updateFcmTokenCollectionReference.doc(fcmTokenId);
+    updateFcmTokensCollectionReference.doc(fcmTokenId);
 
 /// Reference to the 'fcmTokens' collection with a converter for [DeleteFcmToken].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
-final deleteFcmTokenCollectionReference = FirebaseFirestore.instance
+final deleteFcmTokensCollectionReference = FirebaseFirestore.instance
     .collection('fcmTokens')
     .withConverter<DeleteFcmToken>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -197,7 +197,7 @@ final deleteFcmTokenCollectionReference = FirebaseFirestore.instance
 DocumentReference<DeleteFcmToken> deleteFcmTokenDocumentReference({
   required String fcmTokenId,
 }) =>
-    deleteFcmTokenCollectionReference.doc(fcmTokenId);
+    deleteFcmTokensCollectionReference.doc(fcmTokenId);
 
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
@@ -289,7 +289,7 @@ class FcmTokenQuery {
     Query<ReadFcmToken>? Function(Query<ReadFcmToken> query)? queryBuilder,
     int Function(ReadFcmToken lhs, ReadFcmToken rhs)? compare,
   }) async {
-    Query<ReadFcmToken> query = readFcmTokenCollectionReference;
+    Query<ReadFcmToken> query = readFcmTokensCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -312,7 +312,7 @@ class FcmTokenQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadFcmToken> query = readFcmTokenCollectionReference;
+    Query<ReadFcmToken> query = readFcmTokensCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -369,7 +369,7 @@ class FcmTokenQuery {
   Future<DocumentReference<CreateFcmToken>> add({
     required CreateFcmToken createFcmToken,
   }) =>
-      createFcmTokenCollectionReference.add(createFcmToken);
+      createFcmTokensCollectionReference.add(createFcmToken);
 
   /// Sets a fcmToken document to Cloud Firestore.
   ///
@@ -414,20 +414,23 @@ class FcmTokenQuery {
   /// without applying any changes, providing atomicity.
   ///
   /// Parameters:
-  ///   - [batchWriteTasks] A list of [BatchWriteFcmToken] objects, each representing a specific
-  ///     write operation (create, update, or delete) for FcmToken documents.
+  ///
+  /// - [batchWriteTasks] A list of [BatchWriteFcmToken] objects, each representing a specific
+  /// write operation (create, update, or delete) for FcmToken documents.
   ///
   /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
   /// Firestore operation. This includes:
-  ///   - Creating new documents for tasks of type [BatchCreateFcmToken].
-  ///   - Updating existing documents for tasks of type [BatchUpdateFcmToken].
-  ///   - Deleting documents for tasks of type [BatchDeleteFcmToken].
+  ///
+  /// - Creating new documents for tasks of type [BatchCreateFcmToken].
+  /// - Updating existing documents for tasks of type [BatchUpdateFcmToken].
+  /// - Deleting documents for tasks of type [BatchDeleteFcmToken].
   ///
   /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
   ///
   /// Throws:
-  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-  ///     operations within the batch.
+  ///
+  /// - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  /// operations within the batch.
   Future<void> batchWrite(List<BatchWriteFcmToken> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

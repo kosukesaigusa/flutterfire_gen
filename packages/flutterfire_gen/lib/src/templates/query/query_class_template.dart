@@ -3,12 +3,22 @@ import '../../configs/reference_class_type.dart';
 import '../path_segment_parameters_template.dart';
 import 'doc_comment_template.dart';
 
-/// Returns Query class template.
+/// A template for generating a query class for Firestore document operations.
+///
+/// This class constructs the necessary Dart code for a query class that
+/// encapsulates various operations on Firestore documents, such as fetching,
+/// subscribing, adding, setting, updating, and deleting. The query class
+/// provides a simplified and structured way to interact with Firestore.
 class QueryClassTemplate {
-  /// Creates a [QueryClassTemplate].
+  /// Creates a new instance of [QueryClassTemplate].
+  ///
+  /// Parameters:
+  ///
+  /// - [config] Configuration for code generation, including details about the
+  /// Firestore document and operations.
   const QueryClassTemplate(this.config);
 
-  /// Configurations for code generation.
+  /// Configurations used for generating the query class.
   final CodeGenerationConfig config;
 
   @override
@@ -232,8 +242,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
   }
 
   String _collectionReference(ReferenceClassType referenceClassType) {
-    final name =
-        '${referenceClassType.name}${config.baseClassName}CollectionReference';
+    final name = config.collectionReferenceName(referenceClassType);
     final ancestors = config.firestoreDocumentPath.ancestors;
     if (config.firestoreDocumentPath.ancestors.isEmpty) {
       return name;

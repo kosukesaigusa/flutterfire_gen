@@ -5,8 +5,21 @@ import '../utils/dart_type_util.dart';
 
 /// A utility class responsible for generating Dart code for deserializing a
 /// specific class field from a JSON object.
+///
+/// This class is used to generate the code snippet necessary to deserialize
+/// a field from JSON into its corresponding Dart type, considering any special
+/// configurations like default values or custom JSON converters.
 class FromJsonFieldParser {
+  /// Creates a new [FromJsonFieldParser] instance.
   ///
+  /// Parameters:
+  ///
+  /// - [name] The name of the field in the class.
+  /// - [dartType] The Dart type of the field.
+  /// - [defaultValueString] The default value of the field, represented as a
+  /// string.
+  /// - [jsonConverterConfig] Configuration for custom JSON conversion of the
+  /// field.
   const FromJsonFieldParser({
     required this.name,
     required this.dartType,
@@ -21,9 +34,15 @@ class FromJsonFieldParser {
   final DartType dartType;
 
   /// The default value of the field, represented as a string.
+  ///
+  /// This value is used in the generated code to provide a default when the
+  /// JSON object does not contain the field.
   final String? defaultValueString;
 
-  /// Configuration for converting the field to and from JSON.
+  /// Configuration for custom JSON conversion of the field.
+  ///
+  /// If provided, this configuration is used to customize the deserialization
+  /// of the field from JSON.
   final JsonConverterConfig? jsonConverterConfig;
 
   @override
@@ -40,20 +59,15 @@ class FromJsonFieldParser {
   /// Generates a Dart code snippet for deserializing a field from a JSON
   /// object.
   ///
-  /// This method recursively constructs Dart code to deserialize complex types
-  /// like List or Map from a JSON object. The resulting string is meant to be
-  /// used in a `fromJson` factory method.
+  /// Parameters:
   ///
   /// - [dartType] The type of the field to be deserialized.
+  /// - [defaultValueString] A default value for the field, if any.
+  /// - [jsonConverterConfig] Configuration for custom JSON conversion.
   /// - [isFirstLoop] A flag to indicate whether this is the first recursive
   /// call.
-  /// - [defaultValueString] A default value for the field, if any.
-  /// - [jsonConverterConfig] Configuration for converting complex types.
   /// - [parsedKey] The key used in parsing, useful in recursion for nested
   /// types.
-  ///
-  /// Returns a string of Dart code that can deserialize a field of type
-  /// [dartType] from a JSON object.
   String _generateFromJsonCodeSnippet(
     DartType dartType, {
     required bool isFirstLoop,

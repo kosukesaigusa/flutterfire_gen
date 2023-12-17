@@ -2,6 +2,7 @@
 
 import '../../configs/code_generation_config.dart';
 import '../../configs/field_config.dart';
+import '../../configs/reference_class_type.dart';
 import '../../parser/from_json_field_parser.dart';
 import '../json/json_post_processor_template.dart';
 
@@ -21,7 +22,7 @@ class FromJsonTemplate {
       "${config.documentId}: extendedJson['${config.documentId}'] as String,",
       if (config.includePathField) "path: extendedJson['path'] as String,",
       if (config.includeDocumentReferenceField)
-        "${config.documentReferenceFieldName}: extendedJson['${config.documentReferenceFieldName}'] as ${config.readDocumentReferenceTypeName},",
+        "${config.documentReferenceFieldName}: extendedJson['${config.documentReferenceFieldName}'] as ${config.documentReferenceTypeName(ReferenceClassType.read)},",
     ].join('\n');
     return '''
 factory ${config.readClassName}.fromJson(Map<String, dynamic> json) {

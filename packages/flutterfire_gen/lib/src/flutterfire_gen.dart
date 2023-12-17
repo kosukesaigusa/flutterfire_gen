@@ -16,11 +16,22 @@ import 'utils/dart_object_util.dart';
 import 'utils/string.dart';
 
 /// A generator for [FirestoreDocument] annotation.
+///
+/// This class is responsible for generating Dart code for classes annotated
+/// with [FirestoreDocument]. It produces the necessary classes and methods
+/// for interacting with Firestore, based on the provided configuration and
+/// annotations. This includes generating classes for CRUD operations, query
+/// handling, and Firestore references.
 class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
   /// Creates a new instance of [FlutterFireGen].
+  ///
+  /// Parameters:
+  ///
+  /// - [_buildYamlConfig] Configuration for code generation provided in
+  /// `build.yaml`.
   FlutterFireGen(this._buildYamlConfig);
 
-  /// A [BuildYamlConfig] instance.
+  /// A [BuildYamlConfig] instance containing configuration from `build.yaml`.
   final BuildYamlConfig _buildYamlConfig;
 
   @override

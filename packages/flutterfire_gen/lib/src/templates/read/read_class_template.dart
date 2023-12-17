@@ -1,4 +1,5 @@
 import '../../configs/code_generation_config.dart';
+import '../../configs/reference_class_type.dart';
 import '../constructor_template.dart';
 import '../field_template.dart';
 import 'copy_with_template.dart';
@@ -42,7 +43,7 @@ class ReadClassTemplate {
         if (config.includePathField) 'path': 'String',
         if (config.includeDocumentReferenceField)
           config.documentReferenceFieldName:
-              config.readDocumentReferenceTypeName,
+              config.documentReferenceTypeName(ReferenceClassType.read),
       },
     );
 

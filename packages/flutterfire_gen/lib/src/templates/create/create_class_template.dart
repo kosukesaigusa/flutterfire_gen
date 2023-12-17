@@ -5,12 +5,25 @@ import '../constructor_template.dart';
 import 'doc_comment_template.dart';
 import 'to_json_template.dart';
 
-/// A template for a class to create documents in Firestore.
+/// A template for generating a class used for creating documents in Firestore.
+///
+/// This class constructs the necessary Dart code for a class that represents
+/// the structure of a Firestore document for creation purposes. It includes
+/// the class definition, constructor, fields, and a `toJson` method.
+///
+/// The generated class is used to define the data structure for creating new
+/// documents in Firestore, and includes handling for default values and field
+/// value conversions.
 class CreateClassTemplate {
-  /// Creates a [CreateClassTemplate].
+  /// Creates a new instance of [CreateClassTemplate].
+  ///
+  /// Parameters:
+  ///
+  /// - [config] Configuration for code generation, including details about the
+  /// Firestore document and field configurations.
   const CreateClassTemplate(this.config);
 
-  /// Configurations for code generation.
+  /// Configurations used for generating the class.
   final CodeGenerationConfig config;
 
   @override

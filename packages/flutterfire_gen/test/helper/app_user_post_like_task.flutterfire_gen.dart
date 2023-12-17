@@ -166,7 +166,7 @@ class DeleteAppUserPostLikeTask {}
 /// Reference to the 'appUserPostLikeTasks' collection with a converter for [ReadAppUserPostLikeTask].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadAppUserPostLikeTask] objects.
-final readAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
+final readAppUserPostLikeTasksCollectionReference = FirebaseFirestore.instance
     .collection('appUserPostLikeTasks')
     .withConverter<ReadAppUserPostLikeTask>(
       fromFirestore: (ds, _) =>
@@ -179,12 +179,12 @@ DocumentReference<ReadAppUserPostLikeTask>
     readAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
 }) =>
-        readAppUserPostLikeTaskCollectionReference.doc(appUserPostLikeTaskId);
+        readAppUserPostLikeTasksCollectionReference.doc(appUserPostLikeTaskId);
 
 /// Reference to the 'appUserPostLikeTasks' collection with a converter for [CreateAppUserPostLikeTask].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateAppUserPostLikeTask] objects to Firestore document data.
-final createAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
+final createAppUserPostLikeTasksCollectionReference = FirebaseFirestore.instance
     .collection('appUserPostLikeTasks')
     .withConverter<CreateAppUserPostLikeTask>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -196,12 +196,13 @@ DocumentReference<CreateAppUserPostLikeTask>
     createAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
 }) =>
-        createAppUserPostLikeTaskCollectionReference.doc(appUserPostLikeTaskId);
+        createAppUserPostLikeTasksCollectionReference
+            .doc(appUserPostLikeTaskId);
 
 /// Reference to the 'appUserPostLikeTasks' collection with a converter for [UpdateAppUserPostLikeTask].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateAppUserPostLikeTask] objects to Firestore document data.
-final updateAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
+final updateAppUserPostLikeTasksCollectionReference = FirebaseFirestore.instance
     .collection('appUserPostLikeTasks')
     .withConverter<UpdateAppUserPostLikeTask>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -213,12 +214,13 @@ DocumentReference<UpdateAppUserPostLikeTask>
     updateAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
 }) =>
-        updateAppUserPostLikeTaskCollectionReference.doc(appUserPostLikeTaskId);
+        updateAppUserPostLikeTasksCollectionReference
+            .doc(appUserPostLikeTaskId);
 
 /// Reference to the 'appUserPostLikeTasks' collection with a converter for [DeleteAppUserPostLikeTask].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
-final deleteAppUserPostLikeTaskCollectionReference = FirebaseFirestore.instance
+final deleteAppUserPostLikeTasksCollectionReference = FirebaseFirestore.instance
     .collection('appUserPostLikeTasks')
     .withConverter<DeleteAppUserPostLikeTask>(
       fromFirestore: (_, __) => throw UnimplementedError(),
@@ -230,7 +232,8 @@ DocumentReference<DeleteAppUserPostLikeTask>
     deleteAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
 }) =>
-        deleteAppUserPostLikeTaskCollectionReference.doc(appUserPostLikeTaskId);
+        deleteAppUserPostLikeTasksCollectionReference
+            .doc(appUserPostLikeTaskId);
 
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
@@ -329,7 +332,7 @@ class AppUserPostLikeTaskQuery {
         compare,
   }) async {
     Query<ReadAppUserPostLikeTask> query =
-        readAppUserPostLikeTaskCollectionReference;
+        readAppUserPostLikeTasksCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -356,7 +359,7 @@ class AppUserPostLikeTaskQuery {
     bool excludePendingWrites = false,
   }) {
     Query<ReadAppUserPostLikeTask> query =
-        readAppUserPostLikeTaskCollectionReference;
+        readAppUserPostLikeTasksCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -413,7 +416,7 @@ class AppUserPostLikeTaskQuery {
   Future<DocumentReference<CreateAppUserPostLikeTask>> add({
     required CreateAppUserPostLikeTask createAppUserPostLikeTask,
   }) =>
-      createAppUserPostLikeTaskCollectionReference
+      createAppUserPostLikeTasksCollectionReference
           .add(createAppUserPostLikeTask);
 
   /// Sets a appUserPostLikeTask document to Cloud Firestore.
@@ -459,20 +462,23 @@ class AppUserPostLikeTaskQuery {
   /// without applying any changes, providing atomicity.
   ///
   /// Parameters:
-  ///   - [batchWriteTasks] A list of [BatchWriteAppUserPostLikeTask] objects, each representing a specific
-  ///     write operation (create, update, or delete) for AppUserPostLikeTask documents.
+  ///
+  /// - [batchWriteTasks] A list of [BatchWriteAppUserPostLikeTask] objects, each representing a specific
+  /// write operation (create, update, or delete) for AppUserPostLikeTask documents.
   ///
   /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
   /// Firestore operation. This includes:
-  ///   - Creating new documents for tasks of type [BatchCreateAppUserPostLikeTask].
-  ///   - Updating existing documents for tasks of type [BatchUpdateAppUserPostLikeTask].
-  ///   - Deleting documents for tasks of type [BatchDeleteAppUserPostLikeTask].
+  ///
+  /// - Creating new documents for tasks of type [BatchCreateAppUserPostLikeTask].
+  /// - Updating existing documents for tasks of type [BatchUpdateAppUserPostLikeTask].
+  /// - Deleting documents for tasks of type [BatchDeleteAppUserPostLikeTask].
   ///
   /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
   ///
   /// Throws:
-  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-  ///     operations within the batch.
+  ///
+  /// - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  /// operations within the batch.
   Future<void> batchWrite(List<BatchWriteAppUserPostLikeTask> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {

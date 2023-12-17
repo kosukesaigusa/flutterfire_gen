@@ -145,7 +145,7 @@ class DeleteAppUserPostLike {}
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadAppUserPostLike] objects.
 CollectionReference<ReadAppUserPostLike>
-    readAppUserPostLikeCollectionReference({
+    readAppUserPostLikesCollectionReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
@@ -167,7 +167,7 @@ DocumentReference<ReadAppUserPostLike> readAppUserPostLikeDocumentReference({
   required String appUserPostId,
   required String appUserPostLikeId,
 }) =>
-    readAppUserPostLikeCollectionReference(
+    readAppUserPostLikesCollectionReference(
       appUserId: appUserId,
       appUserPostId: appUserPostId,
     ).doc(appUserPostLikeId);
@@ -176,7 +176,7 @@ DocumentReference<ReadAppUserPostLike> readAppUserPostLikeDocumentReference({
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateAppUserPostLike] objects to Firestore document data.
 CollectionReference<CreateAppUserPostLike>
-    createAppUserPostLikeCollectionReference({
+    createAppUserPostLikesCollectionReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
@@ -198,7 +198,7 @@ DocumentReference<CreateAppUserPostLike>
   required String appUserPostId,
   required String appUserPostLikeId,
 }) =>
-        createAppUserPostLikeCollectionReference(
+        createAppUserPostLikesCollectionReference(
           appUserId: appUserId,
           appUserPostId: appUserPostId,
         ).doc(appUserPostLikeId);
@@ -207,7 +207,7 @@ DocumentReference<CreateAppUserPostLike>
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateAppUserPostLike] objects to Firestore document data.
 CollectionReference<UpdateAppUserPostLike>
-    updateAppUserPostLikeCollectionReference({
+    updateAppUserPostLikesCollectionReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
@@ -229,7 +229,7 @@ DocumentReference<UpdateAppUserPostLike>
   required String appUserPostId,
   required String appUserPostLikeId,
 }) =>
-        updateAppUserPostLikeCollectionReference(
+        updateAppUserPostLikesCollectionReference(
           appUserId: appUserId,
           appUserPostId: appUserPostId,
         ).doc(appUserPostLikeId);
@@ -238,7 +238,7 @@ DocumentReference<UpdateAppUserPostLike>
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
 CollectionReference<DeleteAppUserPostLike>
-    deleteAppUserPostLikeCollectionReference({
+    deleteAppUserPostLikesCollectionReference({
   required String appUserId,
   required String appUserPostId,
 }) =>
@@ -260,7 +260,7 @@ DocumentReference<DeleteAppUserPostLike>
   required String appUserPostId,
   required String appUserPostLikeId,
 }) =>
-        deleteAppUserPostLikeCollectionReference(
+        deleteAppUserPostLikesCollectionReference(
           appUserId: appUserId,
           appUserPostId: appUserPostId,
         ).doc(appUserPostLikeId);
@@ -376,7 +376,7 @@ class AppUserPostLikeQuery {
         queryBuilder,
     int Function(ReadAppUserPostLike lhs, ReadAppUserPostLike rhs)? compare,
   }) async {
-    Query<ReadAppUserPostLike> query = readAppUserPostLikeCollectionReference(
+    Query<ReadAppUserPostLike> query = readAppUserPostLikesCollectionReference(
       appUserId: appUserId,
       appUserPostId: appUserPostId,
     );
@@ -405,7 +405,7 @@ class AppUserPostLikeQuery {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    Query<ReadAppUserPostLike> query = readAppUserPostLikeCollectionReference(
+    Query<ReadAppUserPostLike> query = readAppUserPostLikesCollectionReference(
       appUserId: appUserId,
       appUserPostId: appUserPostId,
     );
@@ -475,7 +475,7 @@ class AppUserPostLikeQuery {
     required String appUserPostId,
     required CreateAppUserPostLike createAppUserPostLike,
   }) =>
-      createAppUserPostLikeCollectionReference(
+      createAppUserPostLikesCollectionReference(
         appUserId: appUserId,
         appUserPostId: appUserPostId,
       ).add(createAppUserPostLike);
@@ -535,20 +535,23 @@ class AppUserPostLikeQuery {
   /// without applying any changes, providing atomicity.
   ///
   /// Parameters:
-  ///   - [batchWriteTasks] A list of [BatchWriteAppUserPostLike] objects, each representing a specific
-  ///     write operation (create, update, or delete) for AppUserPostLike documents.
+  ///
+  /// - [batchWriteTasks] A list of [BatchWriteAppUserPostLike] objects, each representing a specific
+  /// write operation (create, update, or delete) for AppUserPostLike documents.
   ///
   /// The function iterates over each task in [batchWriteTasks] and performs the corresponding
   /// Firestore operation. This includes:
-  ///   - Creating new documents for tasks of type [BatchCreateAppUserPostLike].
-  ///   - Updating existing documents for tasks of type [BatchUpdateAppUserPostLike].
-  ///   - Deleting documents for tasks of type [BatchDeleteAppUserPostLike].
+  ///
+  /// - Creating new documents for tasks of type [BatchCreateAppUserPostLike].
+  /// - Updating existing documents for tasks of type [BatchUpdateAppUserPostLike].
+  /// - Deleting documents for tasks of type [BatchDeleteAppUserPostLike].
   ///
   /// Returns a `Future<void>` that completes when the batch operation is committed successfully.
   ///
   /// Throws:
-  ///   - Firestore exceptions if the batch commit fails or if there are issues with the individual
-  ///     operations within the batch.
+  ///
+  /// - Firestore exceptions if the batch commit fails or if there are issues with the individual
+  /// operations within the batch.
   Future<void> batchWrite(List<BatchWriteAppUserPostLike> batchWriteTasks) {
     final batch = FirebaseFirestore.instance.batch();
     for (final task in batchWriteTasks) {
