@@ -53,17 +53,17 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
       includePathField: annotation.decodeField(
         'includePathField',
         decode: (obj) => obj.toBoolValue() ?? false,
-        orElse: () => _buildYamlConfig.includePathField ?? false,
+        orElse: () => _buildYamlConfig.includePathField,
       ),
       includeDocumentReferenceField: annotation.decodeField(
         'includeDocumentReferenceField',
         decode: (obj) => obj.toBoolValue() ?? false,
-        orElse: () => _buildYamlConfig.includeDocumentReferenceField ?? false,
+        orElse: () => _buildYamlConfig.includeDocumentReferenceField,
       ),
       generateCopyWith: annotation.decodeField(
         'generateCopyWith',
         decode: (obj) => obj.toBoolValue() ?? false,
-        orElse: () => _buildYamlConfig.generateCopyWith ?? false,
+        orElse: () => _buildYamlConfig.generateCopyWith,
       ),
       fieldConfigs: element.fields.map(parseFieldElement).toList(),
     );
