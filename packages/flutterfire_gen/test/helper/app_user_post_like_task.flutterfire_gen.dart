@@ -96,7 +96,9 @@ class CreateAppUserPostLikeTask {
   });
 
   final String appUserId;
+
   final String appUserPostId;
+
   final String appUserPostLikeId;
 
   Map<String, dynamic> toJson() {
@@ -133,7 +135,9 @@ class UpdateAppUserPostLikeTask {
   });
 
   final String? appUserId;
+
   final String? appUserPostId;
+
   final String? appUserPostLikeId;
 
   Map<String, dynamic> toJson() {

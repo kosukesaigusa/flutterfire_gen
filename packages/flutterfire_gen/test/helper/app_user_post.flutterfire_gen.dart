@@ -92,6 +92,7 @@ class CreateAppUserPost {
   });
 
   final String content;
+
   final FirestoreData<List<int>> numbers;
 
   Map<String, dynamic> toJson() {
@@ -122,6 +123,7 @@ class UpdateAppUserPost {
   });
 
   final String? content;
+
   final FirestoreData<List<int>>? numbers;
 
   Map<String, dynamic> toJson() {

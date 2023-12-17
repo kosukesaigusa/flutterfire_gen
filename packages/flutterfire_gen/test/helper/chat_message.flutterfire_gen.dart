@@ -150,13 +150,20 @@ class CreateChatMessage {
   });
 
   final String senderId;
+
   final Map<String, dynamic> map;
+
   final Map<String, Map<String, String>> nestedMap;
+
   final Map<String, Map<int, List<Map<String, Map<String, dynamic>>>>>
       deeplyNestedMap;
+
   final ChatMessageType chatMessageType;
+
   final String content;
+
   final List<String>? imageUrls;
+
   final bool? isDeleted;
 
   Map<String, dynamic> toJson() {
@@ -201,14 +208,22 @@ class UpdateChatMessage {
   });
 
   final String? senderId;
+
   final Map<String, dynamic>? map;
+
   final Map<String, Map<String, String>>? nestedMap;
+
   final Map<String, Map<int, List<Map<String, Map<String, dynamic>>>>>?
       deeplyNestedMap;
+
   final ChatMessageType? chatMessageType;
+
   final String? content;
+
   final List<String>? imageUrls;
+
   final bool? isDeleted;
+
   final DateTime? createdAt;
 
   Map<String, dynamic> toJson() {

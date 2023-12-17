@@ -112,6 +112,7 @@ class UpdateFcmToken {
   });
 
   final FirestoreData<List<TokenAndDevice>>? tokenAndDevices;
+
   final DateTime? createdAt;
 
   Map<String, dynamic> toJson() {

@@ -95,6 +95,7 @@ class CreateTodo {
   });
 
   final String title;
+
   final bool? isCompleted;
 
   Map<String, dynamic> toJson() {
@@ -127,7 +128,9 @@ class UpdateTodo {
   });
 
   final String? title;
+
   final bool? isCompleted;
+
   final DateTime? createdAt;
 
   Map<String, dynamic> toJson() {

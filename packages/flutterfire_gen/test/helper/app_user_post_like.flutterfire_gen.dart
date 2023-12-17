@@ -119,6 +119,7 @@ class UpdateAppUserPostLike {
   });
 
   final String? likedByAppUserId;
+
   final DateTime? likedAt;
 
   Map<String, dynamic> toJson() {

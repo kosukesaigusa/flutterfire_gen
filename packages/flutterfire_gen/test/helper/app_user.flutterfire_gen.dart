@@ -83,6 +83,7 @@ class CreateAppUser {
   });
 
   final String name;
+
   final String imageUrl;
 
   Map<String, dynamic> toJson() {
@@ -112,6 +113,7 @@ class UpdateAppUser {
   });
 
   final String? name;
+
   final String? imageUrl;
 
   Map<String, dynamic> toJson() {

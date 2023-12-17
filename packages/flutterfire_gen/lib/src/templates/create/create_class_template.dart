@@ -32,7 +32,7 @@ class CreateClassTemplate {
             fieldConfig.createDefaultValueString != null,
         wrapByFirestoreData: fieldConfig.allowFieldValue,
       )} ${fieldConfig.name};';
-    }).join('\n');
+    }).join('\n\n');
 
     final toJsonTemplate = ToJsonTemplate(config.fieldConfigs);
 

@@ -472,50 +472,95 @@ class CreateEntity {
   });
 
   final String text;
+
   final String? textWithDefault;
+
   final String? nullableText;
+
   final int integer;
+
   final int integerWithDefault;
+
   final int? nullableInteger;
+
   final double doubleNumber;
+
   final double doubleNumberWithDefault;
+
   final double? nullableDoubleNumber;
+
   final bool isBool;
+
   final bool isBoolWithDefault;
+
   final bool? nullableIsBool;
+
   final List<String> texts;
+
   final List<String> textsWithDefault;
+
   final List<String>? nullableTexts;
+
   final Map<String, dynamic> map;
+
   final Map<String, dynamic> mapWithDefault;
+
   final Map<String, dynamic>? nullableMap;
+
   final Map<String, String> stringMap;
+
   final Map<String, String> stringMapWithDefault;
+
   final Map<String, String>? nullableStringMap;
+
   final Map<String, Map<String, int>> nestedMap;
+
   final Map<String, Map<String, int>> nestedMapWithDefault;
+
   final Map<String, Map<String, int>>? nullableNestedMap;
+
   final Map<String, List<int>> listMap;
+
   final Map<String, List<int>> listMapWithDefault;
+
   final Map<String, List<int>>? nullableListMap;
+
   final List<Map<String, int>> mapList;
+
   final List<Map<String, int>> mapListWithDefault;
+
   final List<Map<String, int>>? nullableMapList;
+
   final GeoPoint geoPoint;
+
   final GeoPoint geoPointWithDefault;
+
   final GeoPoint? nullableGeoPoint;
+
   final DateTime dateTime;
+
   final DateTime? nullableDateTime;
+
   final Timestamp timestamp;
+
   final Timestamp? nullableTimestamp;
+
   final DocumentReference<Object?> documentReference;
+
   final DocumentReference<Object?>? nullableDocumentReference;
+
   final Foo foo;
+
   final Foo fooWithDefault;
+
   final Foo? nullableFoo;
+
   final Foo? nullableFooWithDefaultAnnotation;
+
   final FirestoreData<int> fieldValueAllowedInt;
+
   final FirestoreData<int>? fieldValueAllowedNullableInt;
+
   final FirestoreData<int>? fieldValueAllowedNullableIntWithDefaultAnnotation;
 
   Map<String, dynamic> toJson() {
@@ -639,50 +684,95 @@ class UpdateEntity {
   });
 
   final String? text;
+
   final String? textWithDefault;
+
   final String? nullableText;
+
   final int? integer;
+
   final int? integerWithDefault;
+
   final int? nullableInteger;
+
   final double? doubleNumber;
+
   final double? doubleNumberWithDefault;
+
   final double? nullableDoubleNumber;
+
   final bool? isBool;
+
   final bool? isBoolWithDefault;
+
   final bool? nullableIsBool;
+
   final List<String>? texts;
+
   final List<String>? textsWithDefault;
+
   final List<String>? nullableTexts;
+
   final Map<String, dynamic>? map;
+
   final Map<String, dynamic>? mapWithDefault;
+
   final Map<String, dynamic>? nullableMap;
+
   final Map<String, String>? stringMap;
+
   final Map<String, String>? stringMapWithDefault;
+
   final Map<String, String>? nullableStringMap;
+
   final Map<String, Map<String, int>>? nestedMap;
+
   final Map<String, Map<String, int>>? nestedMapWithDefault;
+
   final Map<String, Map<String, int>>? nullableNestedMap;
+
   final Map<String, List<int>>? listMap;
+
   final Map<String, List<int>>? listMapWithDefault;
+
   final Map<String, List<int>>? nullableListMap;
+
   final List<Map<String, int>>? mapList;
+
   final List<Map<String, int>>? mapListWithDefault;
+
   final List<Map<String, int>>? nullableMapList;
+
   final GeoPoint? geoPoint;
+
   final GeoPoint? geoPointWithDefault;
+
   final GeoPoint? nullableGeoPoint;
+
   final DateTime? dateTime;
+
   final DateTime? nullableDateTime;
+
   final Timestamp? timestamp;
+
   final Timestamp? nullableTimestamp;
+
   final DocumentReference<Object?>? documentReference;
+
   final DocumentReference<Object?>? nullableDocumentReference;
+
   final Foo? foo;
+
   final Foo? fooWithDefault;
+
   final Foo? nullableFoo;
+
   final Foo? nullableFooWithDefaultAnnotation;
+
   final FirestoreData<int>? fieldValueAllowedInt;
+
   final FirestoreData<int>? fieldValueAllowedNullableInt;
+
   final FirestoreData<int>? fieldValueAllowedNullableIntWithDefaultAnnotation;
 
   Map<String, dynamic> toJson() {
