@@ -87,8 +87,8 @@ class Todo {
 /// This class is used to define the necessary data for creating a new todo document.
 /// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
-class CreateTodo {
-  const CreateTodo({
+class CreateTodoData {
+  const CreateTodoData({
     required this.title,
     this.isCompleted,
   });
@@ -119,8 +119,8 @@ class CreateTodo {
 /// be updated. Fields set to `null` will not be updated. It also automatically
 /// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
 /// to the server's timestamp upon updating.
-class UpdateTodo {
-  const UpdateTodo({
+class UpdateTodoData {
+  const UpdateTodoData({
     this.title,
     this.isCompleted,
     this.createdAt,
@@ -167,32 +167,34 @@ DocumentReference<Todo> readTodoDocumentReference({
 }) =>
     readTodosCollectionReference.doc(todoId);
 
-/// Reference to the 'todos' collection with a converter for [CreateTodo].
+/// Reference to the 'todos' collection with a converter for [CreateTodoData].
 /// This enables type-safe create operations in Firestore, converting
-/// [CreateTodo] objects to Firestore document data.
-final createTodosCollectionReference =
-    FirebaseFirestore.instance.collection('todos').withConverter<CreateTodo>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+/// [CreateTodoData] objects to Firestore document data.
+final createTodosCollectionReference = FirebaseFirestore.instance
+    .collection('todos')
+    .withConverter<CreateTodoData>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific Todo document.
-DocumentReference<CreateTodo> createTodoDocumentReference({
+DocumentReference<CreateTodoData> createTodoDocumentReference({
   required String todoId,
 }) =>
     createTodosCollectionReference.doc(todoId);
 
-/// Reference to the 'todos' collection with a converter for [UpdateTodo].
+/// Reference to the 'todos' collection with a converter for [UpdateTodoData].
 /// This allows for type-safe update operations in Firestore, converting
-/// [UpdateTodo] objects to Firestore document data.
-final updateTodosCollectionReference =
-    FirebaseFirestore.instance.collection('todos').withConverter<UpdateTodo>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+/// [UpdateTodoData] objects to Firestore document data.
+final updateTodosCollectionReference = FirebaseFirestore.instance
+    .collection('todos')
+    .withConverter<UpdateTodoData>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific Todo document.
-DocumentReference<UpdateTodo> updateTodoDocumentReference({
+DocumentReference<UpdateTodoData> updateTodoDocumentReference({
   required String todoId,
 }) =>
     updateTodosCollectionReference.doc(todoId);
@@ -235,12 +237,12 @@ sealed class BatchWriteTodo {
 final class BatchCreateTodo extends BatchWriteTodo {
   const BatchCreateTodo({
     required this.todoId,
-    required this.createTodo,
+    required this.createTodoData,
   });
 
   final String todoId;
 
-  final CreateTodo createTodo;
+  final CreateTodoData createTodoData;
 }
 
 /// Represents a batch operation for updating an existing todo document in Firestore.
@@ -251,12 +253,12 @@ final class BatchCreateTodo extends BatchWriteTodo {
 final class BatchUpdateTodo extends BatchWriteTodo {
   const BatchUpdateTodo({
     required this.todoId,
-    required this.updateTodo,
+    required this.updateTodoData,
   });
 
   final String todoId;
 
-  final UpdateTodo updateTodo;
+  final UpdateTodoData updateTodoData;
 }
 
 // Represents a batch operation for deleting a todo document in Firestore.
@@ -281,7 +283,7 @@ final class BatchDeleteTodo extends BatchWriteTodo {
 /// documents, as well as methods to add, set, update, and delete documents.
 ///
 /// The class uses Firebase Firestore as the backend, assuming [Todo],
-/// [CreateTodo], [UpdateTodo] are models representing the data.
+/// [CreateTodoData], [UpdateTodoData] are models representing the data.
 ///
 /// Usage:
 ///
@@ -379,10 +381,10 @@ class TodoQuery {
   ///
   /// This method creates a new document in Cloud Firestore using the provided
   /// [createTodo] data.
-  Future<DocumentReference<CreateTodo>> add({
-    required CreateTodo createTodo,
+  Future<DocumentReference<CreateTodoData>> add({
+    required CreateTodoData createTodoData,
   }) =>
-      createTodosCollectionReference.add(createTodo);
+      createTodosCollectionReference.add(createTodoData);
 
   /// Sets a todo document to Cloud Firestore.
   ///
@@ -390,25 +392,25 @@ class TodoQuery {
   /// [createTodo] data.
   Future<void> set({
     required String todoId,
-    required CreateTodo createTodo,
+    required CreateTodoData createTodoData,
     SetOptions? options,
   }) =>
       createTodoDocumentReference(
         todoId: todoId,
-      ).set(createTodo, options);
+      ).set(createTodoData, options);
 
   /// Updates a todo document in Cloud Firestore.
   ///
   /// This method partially updates the document identified by [todoId] with the
   /// provided [updateTodo] data.
-  /// The update is based on the structure defined in `UpdateTodo.toJson()`.
+  /// The update is based on the structure defined in `UpdateTodoData.toJson()`.
   Future<void> update({
     required String todoId,
-    required UpdateTodo updateTodo,
+    required UpdateTodoData updateTodoData,
   }) =>
       updateTodoDocumentReference(
         todoId: todoId,
-      ).update(updateTodo.toJson());
+      ).update(updateTodoData.toJson());
 
   /// Deletes a todo document from Cloud Firestore.
   ///
@@ -450,23 +452,23 @@ class TodoQuery {
       switch (task) {
         case BatchCreateTodo(
             todoId: final todoId,
-            createTodo: final createTodo,
+            createTodoData: final createTodoData,
           ):
           batch.set(
             createTodoDocumentReference(
               todoId: todoId,
             ),
-            createTodo,
+            createTodoData,
           );
         case BatchUpdateTodo(
             todoId: final todoId,
-            updateTodo: final updateTodo,
+            updateTodoData: final updateTodoData,
           ):
           batch.update(
             updateTodoDocumentReference(
               todoId: todoId,
             ),
-            updateTodo.toJson(),
+            updateTodoData.toJson(),
           );
         case BatchDeleteTodo(todoId: final todoId):
           batch.delete(deleteTodoDocumentReference(

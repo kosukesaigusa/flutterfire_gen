@@ -5,3 +5,5 @@ targets:
         options:
           schema_definition_class_prefix: "_$"
           read_class_prefix: ""
+          create_class_suffix: "Data"
+          update_class_suffix: "Data"

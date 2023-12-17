@@ -59,7 +59,7 @@ ${docCommentTemplate.forBatchWriteCreateClass()}final class BatchCreate${config.
 
   final String ${config.documentId};
 
-  final Create${config.capitalizedDocumentName} ${config.createClassInstanceName};
+  final ${config.createClassName} ${config.createClassInstanceName};
 }
 
 ${docCommentTemplate.forBatchWriteUpdateClass()}final class BatchUpdate${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
@@ -73,7 +73,7 @@ ${docCommentTemplate.forBatchWriteUpdateClass()}final class BatchUpdate${config.
 
   final String ${config.documentId};
 
-  final Update${config.capitalizedDocumentName} ${config.updateClassInstanceName};
+  final ${config.updateClassName} ${config.updateClassInstanceName};
 }
 
 ${docCommentTemplate.forBatchWriteDeleteClass()}final class BatchDelete${config.capitalizedDocumentName} extends BatchWrite${config.capitalizedDocumentName} {
@@ -204,7 +204,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
         case BatchCreate${config.capitalizedDocumentName}(
             $caseParameter
             ${config.documentId}: final ${config.documentId},
-            create${config.capitalizedDocumentName}: final ${config.createClassInstanceName},
+            ${config.createClassInstanceName}: final ${config.createClassInstanceName},
           ):
           batch.set(
             ${config.createDocumentReferenceName}(
@@ -216,7 +216,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
         case BatchUpdate${config.capitalizedDocumentName}(
             $caseParameter
             ${config.documentId}: final ${config.documentId},
-            update${config.capitalizedDocumentName}: final ${config.updateClassInstanceName},
+            ${config.updateClassInstanceName}: final ${config.updateClassInstanceName},
           ):
           batch.update(
             ${config.updateDocumentReferenceName}(

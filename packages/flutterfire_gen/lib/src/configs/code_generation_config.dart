@@ -18,9 +18,13 @@ class CodeGenerationConfig {
   /// - [path] : The Firestore document path.
   /// - [baseClassName] The base name for generated classes.
   /// - [readClassPrefix] Prefix for read operation class names.
+  /// - [readClassSuffix] Suffix for read operation class names.
   /// - [createClassPrefix] Prefix for create operation class names.
+  /// - [createClassSuffix] Suffix for create operation class names.
   /// - [updateClassPrefix] Prefix for update operation class names.
+  /// - [updateClassSuffix] Suffix for update operation class names.
   /// - [deleteClassPrefix] Prefix for delete operation class names.
+  /// - [deleteClassSuffix] Suffix for delete operation class names.
   /// - [includePathField] Whether to include a path field in the read class.
   /// - [includeDocumentReferenceField] Whether to include a document  reference
   /// field in the read class.
@@ -31,9 +35,13 @@ class CodeGenerationConfig {
     required String path,
     required this.baseClassName,
     required this.readClassPrefix,
+    required this.readClassSuffix,
     required this.createClassPrefix,
+    required this.createClassSuffix,
     required this.updateClassPrefix,
+    required this.updateClassSuffix,
     required this.deleteClassPrefix,
+    required this.deleteClassSuffix,
     required this.includePathField,
     required this.includeDocumentReferenceField,
     required this.generateCopyWith,
@@ -50,17 +58,33 @@ class CodeGenerationConfig {
   /// from Cloud Firestore.
   final String readClassPrefix;
 
+  /// The suffix for the class name of entities created based on documents read
+  /// from Cloud Firestore.
+  final String readClassSuffix;
+
   /// The prefix for the class name of data structure for creating a new
   /// document in Cloud Firestore.
   final String createClassPrefix;
+
+  /// The suffix for the class name of data structure for creating a new
+  /// document in Cloud Firestore.
+  final String createClassSuffix;
 
   /// The prefix for the class name of data structure for updating a document in
   /// Cloud Firestore.
   final String updateClassPrefix;
 
+  /// The suffix for the class name of data structure for updating a document in
+  /// Cloud Firestore.
+  final String updateClassSuffix;
+
   /// The prefix for the class name of data structure for deleting a  document
   /// in Cloud Firestore.
   final String deleteClassPrefix;
+
+  /// The suffix for the class name of data structure for deleting a  document
+  /// in Cloud Firestore.
+  final String deleteClassSuffix;
 
   /// Whether to include a path field in the document class.
   final bool includePathField;
@@ -91,31 +115,35 @@ class CodeGenerationConfig {
   String get capitalizedDocumentName => documentName.capitalize();
 
   /// The name of the document class for reading.
-  String get readClassName => '${readClassPrefix.capitalize()}$baseClassName';
+  String get readClassName =>
+      '${readClassPrefix.capitalize()}$baseClassName$readClassSuffix';
 
   /// The name of the class for creating a document.
   String get createClassName =>
-      '${createClassPrefix.capitalize()}$baseClassName';
+      '${createClassPrefix.capitalize()}$baseClassName$createClassSuffix';
 
   /// The name of the class for updating a document.
   String get updateClassName =>
-      '${updateClassPrefix.capitalize()}$baseClassName';
+      '${updateClassPrefix.capitalize()}$baseClassName$updateClassSuffix';
 
   /// The name of the class for deleting a document.
   String get deleteClassName =>
-      '${deleteClassPrefix.capitalize()}$baseClassName';
+      '${deleteClassPrefix.capitalize()}$baseClassName$deleteClassSuffix';
 
   /// The name of the instance variable of [createClassName].
   String get createClassInstanceName =>
-      '${createClassPrefix.decapitalize()}$capitalizedDocumentName';
+      '${createClassPrefix.decapitalize()}$capitalizedDocumentName'
+      '$createClassSuffix';
 
   /// The name of the instance variable of [updateClassName].
   String get updateClassInstanceName =>
-      '${updateClassPrefix.decapitalize()}$capitalizedDocumentName';
+      '${updateClassPrefix.decapitalize()}$capitalizedDocumentName'
+      '$updateClassSuffix';
 
   /// The name of the instance variable of [deleteClassName].
   String get deleteClassInstanceName =>
-      '${deleteClassPrefix.decapitalize()}$capitalizedDocumentName';
+      '${deleteClassPrefix.decapitalize()}$capitalizedDocumentName'
+      '$deleteClassSuffix';
 
   /// The document reference field name.
   String get documentReferenceFieldName => '${documentName}Reference';

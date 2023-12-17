@@ -82,20 +82,40 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
         decode: (obj) => obj.toStringValue()!.capitalize(),
         orElse: _buildYamlConfig.readClassPrefix.capitalize,
       ),
+      readClassSuffix: annotation.decodeField(
+        'readClassSuffix',
+        decode: (obj) => obj.toStringValue()!.capitalize(),
+        orElse: _buildYamlConfig.readClassSuffix.capitalize,
+      ),
       createClassPrefix: annotation.decodeField(
         'createClassPrefix',
         decode: (obj) => obj.toStringValue()!.capitalize(),
         orElse: _buildYamlConfig.createClassPrefix.capitalize,
+      ),
+      createClassSuffix: annotation.decodeField(
+        'createClassSuffix',
+        decode: (obj) => obj.toStringValue()!.capitalize(),
+        orElse: _buildYamlConfig.createClassSuffix.capitalize,
       ),
       updateClassPrefix: annotation.decodeField(
         'updateClassPrefix',
         decode: (obj) => obj.toStringValue()!.capitalize(),
         orElse: _buildYamlConfig.updateClassPrefix.capitalize,
       ),
+      updateClassSuffix: annotation.decodeField(
+        'updateClassSuffix',
+        decode: (obj) => obj.toStringValue()!.capitalize(),
+        orElse: _buildYamlConfig.updateClassSuffix.capitalize,
+      ),
       deleteClassPrefix: annotation.decodeField(
         'deleteClassPrefix',
         decode: (obj) => obj.toStringValue()!.capitalize(),
         orElse: _buildYamlConfig.deleteClassPrefix.capitalize,
+      ),
+      deleteClassSuffix: annotation.decodeField(
+        'deleteClassSuffix',
+        decode: (obj) => obj.toStringValue()!.capitalize(),
+        orElse: _buildYamlConfig.deleteClassSuffix.capitalize,
       ),
       includePathField: annotation.decodeField(
         'includePathField',

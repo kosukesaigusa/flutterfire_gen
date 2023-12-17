@@ -14,7 +14,9 @@ class TodoList extends _$TodoList {
   Future<List<Todo>> build() => ref.watch(todoQueryProvider).fetchDocuments();
 
   Future<void> addTodo(String title) async {
-    await ref.read(todoQueryProvider).add(createTodo: CreateTodo(title: title));
+    await ref
+        .read(todoQueryProvider)
+        .add(createTodoData: CreateTodoData(title: title));
     ref.invalidateSelf();
   }
 
@@ -24,7 +26,7 @@ class TodoList extends _$TodoList {
   }) async {
     await ref.read(todoQueryProvider).update(
           todoId: todoId,
-          updateTodo: UpdateTodo(isCompleted: isCompleted),
+          updateTodoData: UpdateTodoData(isCompleted: isCompleted),
         );
     ref.invalidateSelf();
   }
@@ -42,7 +44,7 @@ class TodoList extends _$TodoList {
               .map(
                 (todoId) => BatchUpdateTodo(
                   todoId: todoId,
-                  updateTodo: const UpdateTodo(isCompleted: true),
+                  updateTodoData: const UpdateTodoData(isCompleted: true),
                 ),
               )
               .toList(),
