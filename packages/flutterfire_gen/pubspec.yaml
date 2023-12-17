@@ -13,8 +13,8 @@ dependencies:
   cloud_firestore: ^4.11.0
   flutter:
     sdk: flutter
-  flutterfire_gen_annotation: ^0.2.0-dev.1
-  flutterfire_gen_utils: ^0.2.0-dev.1
+  flutterfire_gen_annotation: ^0.3.0-dev.1
+  flutterfire_gen_utils: ^0.3.0-dev.1
   json_annotation: ^4.8.1
   meta: ^1.9.1
   path: ^1.8.3
