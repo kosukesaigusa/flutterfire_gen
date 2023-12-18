@@ -86,11 +86,9 @@ class TodoListPage extends ConsumerWidget {
           ),
           const SizedBox(height: 4),
           FloatingActionButton(
-            onPressed: () async {
-              await ref
-                  .read(todoListProvider.notifier)
-                  .addTodo('Todo ${DateTime.now()}');
-            },
+            onPressed: () => ref
+                .read(todoListProvider.notifier)
+                .addTodo('Todo ${DateTime.now()}'),
             child: const Icon(Icons.add),
           ),
         ],
