@@ -312,9 +312,10 @@ final class BatchDeleteAppUserPost extends BatchWriteAppUserPost {
 /// A service class for managing appUserPost documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
-/// operations on appUserPost documents.
+/// operations on appUserPost documents, along with additional utilities like counting
+/// documents.
 ///
-/// It includes methods to fetch and subscribe to single or multiple [ReadAppUserPost]
+/// It includes methods to fetch, subscribe to, and count single or multiple [ReadAppUserPost]
 /// documents, as well as methods to add, set, update, and delete documents.
 ///
 /// The class uses Firebase Firestore as the backend, assuming [ReadAppUserPost],
@@ -322,8 +323,8 @@ final class BatchDeleteAppUserPost extends BatchWriteAppUserPost {
 ///
 /// Usage:
 ///
-/// - To fetch or subscribe to one or more appUserPost documents, use [fetchDocuments],
-/// [subscribeDocuments], [fetchDocument], or [subscribeDocument].
+/// - To fetch, subscribe to, or count one or more appUserPost documents, use
+/// [fetchDocuments], [subscribeDocuments], [fetchDocument], [subscribeDocument], or [count].
 /// - To modify appUserPost documents, use [add], [set], [update], or [delete].
 ///
 /// This class is designed to abstract the complexities of direct Firestore
@@ -386,6 +387,34 @@ class AppUserPostQuery {
       }
       return result;
     });
+  }
+
+  /// Counts the number of appUserPost documents in Cloud Firestore.
+  ///
+  /// This method returns the count of documents based on the provided query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [source] parameter allows you to specify whether to count documents
+  /// from the server or the local cache.
+  ///
+  /// - [queryBuilder] Function to build and customize the Firestore query.
+  /// - [source] Source of the count, either from the server or local cache.
+  ///
+  /// Returns the count of documents as an integer.
+  Future<int> count({
+    required String appUserId,
+    Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
+        queryBuilder,
+    AggregateSource source = AggregateSource.server,
+  }) async {
+    Query<ReadAppUserPost> query = readAppUserPostsCollectionReference(
+      appUserId: appUserId,
+    );
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.count();
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.count;
   }
 
   /// Fetches a single [ReadAppUserPost] document from Cloud Firestore by its ID.

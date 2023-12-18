@@ -280,7 +280,7 @@ final class BatchDeleteTodo extends BatchWriteTodo {
 /// operations on todo documents, along with additional utilities like counting
 /// documents.
 ///
-/// It includes methods to fetch, subscribe, and count single or multiple [Todo]
+/// It includes methods to fetch, subscribe to, and count single or multiple [Todo]
 /// documents, as well as methods to add, set, update, and delete documents.
 ///
 /// The class uses Firebase Firestore as the backend, assuming [Todo],
@@ -288,8 +288,8 @@ final class BatchDeleteTodo extends BatchWriteTodo {
 ///
 /// Usage:
 ///
-/// - To fetch, subscribe, or count one or more todo documents, use [fetchDocuments],
-///   [subscribeDocuments], [fetchDocument], [subscribeDocument], or [count].
+/// - To fetch, subscribe to, or count one or more todo documents, use
+/// [fetchDocuments], [subscribeDocuments], [fetchDocument], [subscribeDocument], or [count].
 /// - To modify todo documents, use [add], [set], [update], or [delete].
 ///
 /// This class is designed to abstract the complexities of direct Firestore
@@ -346,7 +346,7 @@ class TodoQuery {
     });
   }
 
-  /// Counts the number of [Todo] documents in Cloud Firestore.
+  /// Counts the number of todo documents in Cloud Firestore.
   ///
   /// This method returns the count of documents based on the provided query.
   /// You can customize the query by using the [queryBuilder].
@@ -366,7 +366,8 @@ class TodoQuery {
       query = queryBuilder(query)!;
     }
     final aggregateQuery = await query.count();
-    return (await aggregateQuery.get(source: source)).count;
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.count;
   }
 
   /// Fetches a single [Todo] document from Cloud Firestore by its ID.
