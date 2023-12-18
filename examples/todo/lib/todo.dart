@@ -60,6 +60,10 @@ class TodoList extends _$TodoList {
         );
     ref.invalidateSelf();
   }
+
+  Future<int> countNotCompletedTodos() => ref.read(todoQueryProvider).count(
+        queryBuilder: (query) => query.where('isCompleted', isNotEqualTo: true),
+      );
 }
 
 @FirestoreDocument(path: 'todos/{todoId}')
