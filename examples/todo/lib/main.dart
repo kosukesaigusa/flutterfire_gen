@@ -27,11 +27,16 @@ void main() async {
   );
 }
 
-class TodoListPage extends ConsumerWidget {
+class TodoListPage extends ConsumerStatefulWidget {
   const TodoListPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TodoListPage> createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends ConsumerState<TodoListPage> {
+  @override
+  Widget build(BuildContext context) {
     final todoList = ref.watch(todoListProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Todo List')),
@@ -83,6 +88,23 @@ class TodoListPage extends ConsumerWidget {
           FloatingActionButton(
             onPressed: () => ref.read(todoListProvider.notifier).deleteAll(),
             child: const Icon(Icons.delete),
+          ),
+          const SizedBox(height: 4),
+          FloatingActionButton(
+            onPressed: () async {
+              final count = await ref
+                  .read(todoListProvider.notifier)
+                  .countNotCompletedTodos();
+              if (!mounted) {
+                return;
+              }
+              ScaffoldMessenger.of(context)
+                ..removeCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(content: Text('$count todos left.')),
+                );
+            },
+            child: const Icon(Icons.onetwothree),
           ),
           const SizedBox(height: 4),
           FloatingActionButton(

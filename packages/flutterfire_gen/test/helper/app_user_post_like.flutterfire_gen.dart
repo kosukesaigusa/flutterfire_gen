@@ -346,9 +346,10 @@ final class BatchDeleteAppUserPostLike extends BatchWriteAppUserPostLike {
 /// A service class for managing appUserPostLike documents in the database.
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
-/// operations on appUserPostLike documents.
+/// operations on appUserPostLike documents, along with additional utilities like counting
+/// documents.
 ///
-/// It includes methods to fetch and subscribe to single or multiple [ReadAppUserPostLike]
+/// It includes methods to fetch, subscribe to, and count single or multiple [ReadAppUserPostLike]
 /// documents, as well as methods to add, set, update, and delete documents.
 ///
 /// The class uses Firebase Firestore as the backend, assuming [ReadAppUserPostLike],
@@ -356,8 +357,8 @@ final class BatchDeleteAppUserPostLike extends BatchWriteAppUserPostLike {
 ///
 /// Usage:
 ///
-/// - To fetch or subscribe to one or more appUserPostLike documents, use [fetchDocuments],
-/// [subscribeDocuments], [fetchDocument], or [subscribeDocument].
+/// - To fetch, subscribe to, or count one or more appUserPostLike documents, use
+/// [fetchDocuments], [subscribeDocuments], [fetchDocument], [subscribeDocument], or [count].
 /// - To modify appUserPostLike documents, use [add], [set], [update], or [delete].
 ///
 /// This class is designed to abstract the complexities of direct Firestore
@@ -424,6 +425,36 @@ class AppUserPostLikeQuery {
       }
       return result;
     });
+  }
+
+  /// Counts the number of appUserPostLike documents in Cloud Firestore.
+  ///
+  /// This method returns the count of documents based on the provided query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [source] parameter allows you to specify whether to count documents
+  /// from the server or the local cache.
+  ///
+  /// - [queryBuilder] Function to build and customize the Firestore query.
+  /// - [source] Source of the count, either from the server or local cache.
+  ///
+  /// Returns the count of documents as an integer.
+  Future<int> count({
+    required String appUserId,
+    required String appUserPostId,
+    Query<ReadAppUserPostLike>? Function(Query<ReadAppUserPostLike> query)?
+        queryBuilder,
+    AggregateSource source = AggregateSource.server,
+  }) async {
+    Query<ReadAppUserPostLike> query = readAppUserPostLikesCollectionReference(
+      appUserId: appUserId,
+      appUserPostId: appUserPostId,
+    );
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.count();
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.count;
   }
 
   /// Fetches a single [ReadAppUserPostLike] document from Cloud Firestore by its ID.
