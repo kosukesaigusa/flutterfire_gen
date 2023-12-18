@@ -131,6 +131,20 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
     });
   }
 
+  ${docCommentTemplate.forCountMethod()}Future<int> count({
+    $documentIdMethodParametersDefinition
+    Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
+    AggregateSource source = AggregateSource.server,
+  }) async {
+    Query<${config.readClassName}> query = ${_collectionReference(ReferenceClassType.read)};
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.count();
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.count;
+  }
+
   ${docCommentTemplate.forFetchDocumentMethod()}Future<${config.readClassName}?> fetchDocument({
     $documentIdMethodParametersDefinition
     required String ${config.documentId},
