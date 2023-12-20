@@ -916,6 +916,19 @@ DocumentReference<DeleteEntity> deleteEntityDocumentReference({
 }) =>
     deleteEntitiesCollectionReference.doc(entityId);
 
+/// Reference to the 'entities' collection group with a converter for [ReadEntity].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents from various paths in the 'entities' collection group
+/// into [ReadEntity] objects. It facilitates unified handling of 'entities' documents
+/// scattered across different locations in Firestore, ensuring consistent
+/// data structure and manipulation.
+final readEntitiesCollectionGroupReference = FirebaseFirestore.instance
+    .collectionGroup('entities')
+    .withConverter<ReadEntity>(
+      fromFirestore: (ds, _) => ReadEntity.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
+
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
 /// This class is the abstract base for subclasses that define specific types
@@ -1000,14 +1013,29 @@ class EntityQuery {
   /// Fetches a list of [ReadEntity] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
-  /// if a [compare] function is given.
-  /// You can customize the query by using the [queryBuilder] and control the
+  /// if a [compare] function is given. You can customize the query by using the
+  /// [queryBuilder] and control the source of the documents with [options].
+  /// The [asCollectionGroup] parameter determines whether to fetch documents
+  /// from the 'entities' collection directly (false) or as a collection group across
+  /// different Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [options] Optional `GetOptions` to define the source of the documents (server, cache).
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [compare] Optional function to sort the ReadEntity documents.
+  /// - [asCollectionGroup] Fetch the 'entities' as a collection group if true.
+  ///
+  /// Returns a list of [ReadEntity] documents.
   Future<List<ReadEntity>> fetchDocuments({
     GetOptions? options,
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
     int Function(ReadEntity lhs, ReadEntity rhs)? compare,
+    bool asCollectionGroup = false,
   }) async {
-    Query<ReadEntity> query = readEntitiesCollectionReference;
+    Query<ReadEntity> query = asCollectionGroup
+        ? readEntitiesCollectionGroupReference
+        : readEntitiesCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -1024,13 +1052,27 @@ class EntityQuery {
   /// This method returns a stream of [ReadEntity] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
+  /// The [asCollectionGroup] parameter determines whether to query the 'entities'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [compare] Optional function to sort the ReadEntity documents.
+  /// - [includeMetadataChanges] Include metadata changes in the stream.
+  /// - [excludePendingWrites] Exclude documents with pending writes from the stream.
+  /// - [asCollectionGroup] Query the 'entities' as a collection group if true.
   Stream<List<ReadEntity>> subscribeDocuments({
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
     int Function(ReadEntity lhs, ReadEntity rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
+    bool asCollectionGroup = false,
   }) {
-    Query<ReadEntity> query = readEntitiesCollectionReference;
+    Query<ReadEntity> query = asCollectionGroup
+        ? readEntitiesCollectionGroupReference
+        : readEntitiesCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -1052,18 +1094,26 @@ class EntityQuery {
   ///
   /// This method returns the count of documents based on the provided query.
   /// You can customize the query by using the [queryBuilder].
-  /// The [source] parameter allows you to specify whether to count documents
-  /// from the server or the local cache.
+  /// The [asCollectionGroup] parameter determines whether to count documents
+  /// in the 'entities' collection directly (false) or across various Firestore
+  /// paths as a collection group (true). The [source] parameter allows you to
+  /// specify whether to count documents from the server or the local cache.
   ///
-  /// - [queryBuilder] Function to build and customize the Firestore query.
+  /// Parameters:
+  ///
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
   /// - [source] Source of the count, either from the server or local cache.
+  /// - [asCollectionGroup] Count the 'entities' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
   Future<int> count({
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
   }) async {
-    Query<ReadEntity> query = readEntitiesCollectionReference;
+    Query<ReadEntity> query = asCollectionGroup
+        ? readEntitiesCollectionGroupReference
+        : readEntitiesCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }

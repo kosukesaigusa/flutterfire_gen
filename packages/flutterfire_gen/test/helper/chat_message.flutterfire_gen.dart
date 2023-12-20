@@ -349,6 +349,19 @@ DocumentReference<DeleteChatMessage> deleteChatMessageDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(chatMessageId);
 
+/// Reference to the 'chatMessages' collection group with a converter for [ReadChatMessage].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents from various paths in the 'chatMessages' collection group
+/// into [ReadChatMessage] objects. It facilitates unified handling of 'chatMessages' documents
+/// scattered across different locations in Firestore, ensuring consistent
+/// data structure and manipulation.
+final readChatMessagesCollectionGroupReference = FirebaseFirestore.instance
+    .collectionGroup('chatMessages')
+    .withConverter<ReadChatMessage>(
+      fromFirestore: (ds, _) => ReadChatMessage.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
+
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
 /// This class is the abstract base for subclasses that define specific types
@@ -442,18 +455,33 @@ class ChatMessageQuery {
   /// Fetches a list of [ReadChatMessage] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
-  /// if a [compare] function is given.
-  /// You can customize the query by using the [queryBuilder] and control the
+  /// if a [compare] function is given. You can customize the query by using the
+  /// [queryBuilder] and control the source of the documents with [options].
+  /// The [asCollectionGroup] parameter determines whether to fetch documents
+  /// from the 'chatMessages' collection directly (false) or as a collection group across
+  /// different Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [options] Optional `GetOptions` to define the source of the documents (server, cache).
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [compare] Optional function to sort the ReadChatMessage documents.
+  /// - [asCollectionGroup] Fetch the 'chatMessages' as a collection group if true.
+  ///
+  /// Returns a list of [ReadChatMessage] documents.
   Future<List<ReadChatMessage>> fetchDocuments({
     required String chatRoomId,
     GetOptions? options,
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
         queryBuilder,
     int Function(ReadChatMessage lhs, ReadChatMessage rhs)? compare,
+    bool asCollectionGroup = false,
   }) async {
-    Query<ReadChatMessage> query = readChatMessagesCollectionReference(
-      chatRoomId: chatRoomId,
-    );
+    Query<ReadChatMessage> query = asCollectionGroup
+        ? readChatMessagesCollectionGroupReference
+        : readChatMessagesCollectionReference(
+            chatRoomId: chatRoomId,
+          );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -470,6 +498,17 @@ class ChatMessageQuery {
   /// This method returns a stream of [ReadChatMessage] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
+  /// The [asCollectionGroup] parameter determines whether to query the 'chatMessages'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [compare] Optional function to sort the ReadChatMessage documents.
+  /// - [includeMetadataChanges] Include metadata changes in the stream.
+  /// - [excludePendingWrites] Exclude documents with pending writes from the stream.
+  /// - [asCollectionGroup] Query the 'chatMessages' as a collection group if true.
   Stream<List<ReadChatMessage>> subscribeDocuments({
     required String chatRoomId,
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
@@ -477,10 +516,13 @@ class ChatMessageQuery {
     int Function(ReadChatMessage lhs, ReadChatMessage rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
+    bool asCollectionGroup = false,
   }) {
-    Query<ReadChatMessage> query = readChatMessagesCollectionReference(
-      chatRoomId: chatRoomId,
-    );
+    Query<ReadChatMessage> query = asCollectionGroup
+        ? readChatMessagesCollectionGroupReference
+        : readChatMessagesCollectionReference(
+            chatRoomId: chatRoomId,
+          );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -502,11 +544,16 @@ class ChatMessageQuery {
   ///
   /// This method returns the count of documents based on the provided query.
   /// You can customize the query by using the [queryBuilder].
-  /// The [source] parameter allows you to specify whether to count documents
-  /// from the server or the local cache.
+  /// The [asCollectionGroup] parameter determines whether to count documents
+  /// in the 'chatMessages' collection directly (false) or across various Firestore
+  /// paths as a collection group (true). The [source] parameter allows you to
+  /// specify whether to count documents from the server or the local cache.
   ///
-  /// - [queryBuilder] Function to build and customize the Firestore query.
+  /// Parameters:
+  ///
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
   /// - [source] Source of the count, either from the server or local cache.
+  /// - [asCollectionGroup] Count the 'chatMessages' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
   Future<int> count({
@@ -514,10 +561,13 @@ class ChatMessageQuery {
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
         queryBuilder,
     AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
   }) async {
-    Query<ReadChatMessage> query = readChatMessagesCollectionReference(
-      chatRoomId: chatRoomId,
-    );
+    Query<ReadChatMessage> query = asCollectionGroup
+        ? readChatMessagesCollectionGroupReference
+        : readChatMessagesCollectionReference(
+            chatRoomId: chatRoomId,
+          );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }

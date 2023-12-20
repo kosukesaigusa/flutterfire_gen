@@ -32,6 +32,7 @@ class ReferencesTemplate {
         ..writeln()
         ..writeln(_documentReferenceTemplate(referenceClassType));
     }
+    buffer.writeln(_collectionGroupReferenceTemplate());
     return buffer.toString();
   }
 
@@ -55,6 +56,31 @@ class ReferencesTemplate {
     buffer
       ..write(
         ".collection('${config.firestoreDocumentPath.endPair.collectionName}')",
+      )
+      ..write(
+        WithConverterTemplate(
+          config: config,
+          referenceClassType: referenceClassType,
+        ),
+      )
+      ..write(';');
+    return buffer.toString();
+  }
+
+  String _collectionGroupReferenceTemplate() {
+    const referenceClassType = ReferenceClassType.read;
+    final buffer = StringBuffer()
+      ..write(
+        ReferenceDocCommentTemplate(
+          config: config,
+          referenceClassType: referenceClassType,
+        ).forCollectionGroupReference(),
+      )
+      ..write('final ${config.collectionGroupReferenceName} =')
+      ..write('FirebaseFirestore.instance')
+      ..write(
+        '.collectionGroup('
+        "'${config.firestoreDocumentPath.endPair.collectionName}')",
       )
       ..write(
         WithConverterTemplate(

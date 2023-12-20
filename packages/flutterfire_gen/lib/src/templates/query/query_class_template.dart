@@ -93,8 +93,11 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
     GetOptions? options,
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
     int Function(${config.readClassName} lhs, ${config.readClassName} rhs)? compare,
+    bool asCollectionGroup = false,
   }) async {
-    Query<${config.readClassName}> query = ${_collectionReference(ReferenceClassType.read)};
+    Query<${config.readClassName}> query = asCollectionGroup
+        ? ${config.collectionGroupReferenceName}
+        : ${_collectionReference(ReferenceClassType.read)};
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -112,8 +115,11 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
     int Function(${config.readClassName} lhs, ${config.readClassName} rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
+    bool asCollectionGroup = false,
   }) {
-    Query<${config.readClassName}> query = ${_collectionReference(ReferenceClassType.read)};
+    Query<${config.readClassName}> query = asCollectionGroup
+        ? ${config.collectionGroupReferenceName}
+        : ${_collectionReference(ReferenceClassType.read)};
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -135,8 +141,11 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
     $documentIdMethodParametersDefinition
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
   }) async {
-    Query<${config.readClassName}> query = ${_collectionReference(ReferenceClassType.read)};
+    Query<${config.readClassName}> query = asCollectionGroup
+        ? ${config.collectionGroupReferenceName}
+        : ${_collectionReference(ReferenceClassType.read)};
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
