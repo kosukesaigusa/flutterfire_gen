@@ -175,6 +175,11 @@ class CodeGenerationConfig {
       '${referenceClassType.name}${collectionName.capitalize()}'
       'CollectionReference';
 
+  /// Returns the collection group reference name.
+  String get collectionGroupReferenceName =>
+      '${ReferenceClassType.read.name}${collectionName.capitalize()}'
+      'CollectionGroupReference';
+
   /// Returns the document reference type name based on the given reference
   /// class type.
   String documentReferenceTypeName(ReferenceClassType referenceClassType) =>

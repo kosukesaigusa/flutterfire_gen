@@ -41,6 +41,18 @@ class ReferenceDocCommentTemplate {
     }
   }
 
+  /// Returns the doc comment for the collection group reference.
+  String forCollectionGroupReference() {
+    return '''
+/// Reference to the '${config.collectionName}' collection group with a converter for [${config.readClassName}].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents from various paths in the '${config.collectionName}' collection group
+/// into [${config.readClassName}] objects. It facilitates unified handling of '${config.collectionName}' documents
+/// scattered across different locations in Firestore, ensuring consistent
+/// data structure and manipulation.
+''';
+  }
+
   /// Returns the doc comment for the [referenceClassType] document reference.
   String forDocumentReference() {
     switch (referenceClassType) {

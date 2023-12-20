@@ -207,6 +207,19 @@ DocumentReference<DeleteReadStatus> deleteReadStatusDocumentReference({
       chatRoomId: chatRoomId,
     ).doc(readStatusId);
 
+/// Reference to the 'readStatuses' collection group with a converter for [ReadReadStatus].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents from various paths in the 'readStatuses' collection group
+/// into [ReadReadStatus] objects. It facilitates unified handling of 'readStatuses' documents
+/// scattered across different locations in Firestore, ensuring consistent
+/// data structure and manipulation.
+final readReadStatusesCollectionGroupReference = FirebaseFirestore.instance
+    .collectionGroup('readStatuses')
+    .withConverter<ReadReadStatus>(
+      fromFirestore: (ds, _) => ReadReadStatus.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
+
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
 /// This class is the abstract base for subclasses that define specific types
@@ -300,17 +313,32 @@ class ReadStatusQuery {
   /// Fetches a list of [ReadReadStatus] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
-  /// if a [compare] function is given.
-  /// You can customize the query by using the [queryBuilder] and control the
+  /// if a [compare] function is given. You can customize the query by using the
+  /// [queryBuilder] and control the source of the documents with [options].
+  /// The [asCollectionGroup] parameter determines whether to fetch documents
+  /// from the 'readStatuses' collection directly (false) or as a collection group across
+  /// different Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [options] Optional `GetOptions` to define the source of the documents (server, cache).
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [compare] Optional function to sort the ReadReadStatus documents.
+  /// - [asCollectionGroup] Fetch the 'readStatuses' as a collection group if true.
+  ///
+  /// Returns a list of [ReadReadStatus] documents.
   Future<List<ReadReadStatus>> fetchDocuments({
     required String chatRoomId,
     GetOptions? options,
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     int Function(ReadReadStatus lhs, ReadReadStatus rhs)? compare,
+    bool asCollectionGroup = false,
   }) async {
-    Query<ReadReadStatus> query = readReadStatusesCollectionReference(
-      chatRoomId: chatRoomId,
-    );
+    Query<ReadReadStatus> query = asCollectionGroup
+        ? readReadStatusesCollectionGroupReference
+        : readReadStatusesCollectionReference(
+            chatRoomId: chatRoomId,
+          );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -327,16 +355,30 @@ class ReadStatusQuery {
   /// This method returns a stream of [ReadReadStatus] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
+  /// The [asCollectionGroup] parameter determines whether to query the 'readStatuses'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [compare] Optional function to sort the ReadReadStatus documents.
+  /// - [includeMetadataChanges] Include metadata changes in the stream.
+  /// - [excludePendingWrites] Exclude documents with pending writes from the stream.
+  /// - [asCollectionGroup] Query the 'readStatuses' as a collection group if true.
   Stream<List<ReadReadStatus>> subscribeDocuments({
     required String chatRoomId,
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     int Function(ReadReadStatus lhs, ReadReadStatus rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
+    bool asCollectionGroup = false,
   }) {
-    Query<ReadReadStatus> query = readReadStatusesCollectionReference(
-      chatRoomId: chatRoomId,
-    );
+    Query<ReadReadStatus> query = asCollectionGroup
+        ? readReadStatusesCollectionGroupReference
+        : readReadStatusesCollectionReference(
+            chatRoomId: chatRoomId,
+          );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -358,21 +400,29 @@ class ReadStatusQuery {
   ///
   /// This method returns the count of documents based on the provided query.
   /// You can customize the query by using the [queryBuilder].
-  /// The [source] parameter allows you to specify whether to count documents
-  /// from the server or the local cache.
+  /// The [asCollectionGroup] parameter determines whether to count documents
+  /// in the 'readStatuses' collection directly (false) or across various Firestore
+  /// paths as a collection group (true). The [source] parameter allows you to
+  /// specify whether to count documents from the server or the local cache.
   ///
-  /// - [queryBuilder] Function to build and customize the Firestore query.
+  /// Parameters:
+  ///
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
   /// - [source] Source of the count, either from the server or local cache.
+  /// - [asCollectionGroup] Count the 'readStatuses' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
   Future<int> count({
     required String chatRoomId,
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
   }) async {
-    Query<ReadReadStatus> query = readReadStatusesCollectionReference(
-      chatRoomId: chatRoomId,
-    );
+    Query<ReadReadStatus> query = asCollectionGroup
+        ? readReadStatusesCollectionGroupReference
+        : readReadStatusesCollectionReference(
+            chatRoomId: chatRoomId,
+          );
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }

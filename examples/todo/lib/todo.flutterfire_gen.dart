@@ -214,6 +214,18 @@ DocumentReference<DeleteTodo> deleteTodoDocumentReference({
 }) =>
     deleteTodosCollectionReference.doc(todoId);
 
+/// Reference to the 'todos' collection group with a converter for [Todo].
+/// This allows for type-safe read operations from Firestore, converting
+/// Firestore documents from various paths in the 'todos' collection group
+/// into [Todo] objects. It facilitates unified handling of 'todos' documents
+/// scattered across different locations in Firestore, ensuring consistent
+/// data structure and manipulation.
+final readTodosCollectionGroupReference =
+    FirebaseFirestore.instance.collectionGroup('todos').withConverter<Todo>(
+          fromFirestore: (ds, _) => Todo.fromDocumentSnapshot(ds),
+          toFirestore: (_, __) => throw UnimplementedError(),
+        );
+
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
 /// This class is the abstract base for subclasses that define specific types
@@ -298,14 +310,29 @@ class TodoQuery {
   /// Fetches a list of [Todo] documents from Cloud Firestore.
   ///
   /// This method retrieves documents based on the provided query and sorts them
-  /// if a [compare] function is given.
-  /// You can customize the query by using the [queryBuilder] and control the
+  /// if a [compare] function is given. You can customize the query by using the
+  /// [queryBuilder] and control the source of the documents with [options].
+  /// The [asCollectionGroup] parameter determines whether to fetch documents
+  /// from the 'todos' collection directly (false) or as a collection group across
+  /// different Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [options] Optional `GetOptions` to define the source of the documents (server, cache).
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [compare] Optional function to sort the Todo documents.
+  /// - [asCollectionGroup] Fetch the 'todos' as a collection group if true.
+  ///
+  /// Returns a list of [Todo] documents.
   Future<List<Todo>> fetchDocuments({
     GetOptions? options,
     Query<Todo>? Function(Query<Todo> query)? queryBuilder,
     int Function(Todo lhs, Todo rhs)? compare,
+    bool asCollectionGroup = false,
   }) async {
-    Query<Todo> query = readTodosCollectionReference;
+    Query<Todo> query = asCollectionGroup
+        ? readTodosCollectionGroupReference
+        : readTodosCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -322,13 +349,27 @@ class TodoQuery {
   /// This method returns a stream of [Todo] documents, which updates in
   /// real-time based on the database changes. You can customize the query using
   /// [queryBuilder]. The documents can be sorted using the [compare] function.
+  /// The [asCollectionGroup] parameter determines whether to query the 'todos'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [compare] Optional function to sort the Todo documents.
+  /// - [includeMetadataChanges] Include metadata changes in the stream.
+  /// - [excludePendingWrites] Exclude documents with pending writes from the stream.
+  /// - [asCollectionGroup] Query the 'todos' as a collection group if true.
   Stream<List<Todo>> subscribeDocuments({
     Query<Todo>? Function(Query<Todo> query)? queryBuilder,
     int Function(Todo lhs, Todo rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
+    bool asCollectionGroup = false,
   }) {
-    Query<Todo> query = readTodosCollectionReference;
+    Query<Todo> query = asCollectionGroup
+        ? readTodosCollectionGroupReference
+        : readTodosCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -350,18 +391,26 @@ class TodoQuery {
   ///
   /// This method returns the count of documents based on the provided query.
   /// You can customize the query by using the [queryBuilder].
-  /// The [source] parameter allows you to specify whether to count documents
-  /// from the server or the local cache.
+  /// The [asCollectionGroup] parameter determines whether to count documents
+  /// in the 'todos' collection directly (false) or across various Firestore
+  /// paths as a collection group (true). The [source] parameter allows you to
+  /// specify whether to count documents from the server or the local cache.
   ///
-  /// - [queryBuilder] Function to build and customize the Firestore query.
+  /// Parameters:
+  ///
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
   /// - [source] Source of the count, either from the server or local cache.
+  /// - [asCollectionGroup] Count the 'todos' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
   Future<int> count({
     Query<Todo>? Function(Query<Todo> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
   }) async {
-    Query<Todo> query = readTodosCollectionReference;
+    Query<Todo> query = asCollectionGroup
+        ? readTodosCollectionGroupReference
+        : readTodosCollectionReference;
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
