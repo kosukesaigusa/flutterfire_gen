@@ -160,7 +160,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
     GetOptions? options,
   }) async {
     final ds =
-        await read${config.baseClassName}DocumentReference(
+        await ${config.documentReferenceName(ReferenceClassType.read)}(
           $documentIdParametersArgumentInvocation
           ${config.documentId}: ${config.documentId},
         ).get(options);
@@ -173,7 +173,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
-    var streamDs = read${config.baseClassName}DocumentReference(
+    var streamDs = ${config.documentReferenceName(ReferenceClassType.read)}(
       $documentIdParametersArgumentInvocation
       ${config.documentId}: ${config.documentId},
     )
