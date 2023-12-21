@@ -6,4 +6,9 @@ void main() {
     const input = 'sampleValue';
     expect(input.capitalize(), 'SampleValue');
   });
+
+  test('decapitalize string', () {
+    const input = 'SampleValue';
+    expect(input.decapitalize(), 'sampleValue');
+  });
 }
