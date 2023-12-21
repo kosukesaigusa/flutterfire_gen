@@ -1,13 +1,16 @@
 # melos_managed_dependency_overrides: flutterfire_gen_annotation,flutterfire_gen_utils
 dependency_overrides:
-  # pub downgrade:
-  # build_runner 2.2.0 => glob 2.0.0 => file 6.0.0
-  # flutterfire_gen requires file: ^6.1.3
-  file: ^6.1.3
   flutterfire_gen_annotation:
     path: ../flutterfire_gen_annotation
   flutterfire_gen_utils:
     path: ../flutterfire_gen_utils
+
+  # pub downgrade:
+  # flutterfire_gen generated codes includes sealed class feature to ge formatted
+  dart_style: ^2.3.0
+  # build_runner 2.2.0 => glob 2.0.0 => file 6.0.0
+  # flutterfire_gen requires file: ^6.1.3
+  file: ^6.1.3
   # analyzer 5.2.0 => pub_semver 2.0.0
   # flutterfire_gen requires pub_semver: ^2.1.3
   pub_semver: ^2.1.3
