@@ -326,7 +326,7 @@ packages:
       path: "../../packages/flutterfire_gen"
       relative: true
     source: path
-    version: "0.3.0-dev.1"
+    version: "0.3.0-dev.2"
   flutterfire_gen_annotation:
     dependency: "direct main"
     description:
