@@ -1,0 +1,55 @@
+# https://dart.dev/tools/pub/automated-publishing#publishing-packages-using-github-actions
+name: Publish to pub.dev
+
+on:
+  push:
+    tags:
+      - 'flutterfire_gen-v[0-9]+.[0-9]+.[0-9]+*'
+      - 'flutterfire_gen_annotation-v[0-9]+.[0-9]+.[0-9]+*'
+      - 'flutterfire_gen_utils-v[0-9]+.[0-9]+.[0-9]+*'
+
+jobs:
+  publish_flutterfire_gen:
+    if: startsWith(github.ref, 'refs/tags/flutterfire_gen-v')
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+      - name: Install dependencies
+        run: dart pub get
+      - name: Publish flutterfire_gen
+        run: |
+          cd packages/flutterfire_gen
+          dart pub publish --force
+
+  publish_flutterfire_gen_annotation:
+    if: startsWith(github.ref, 'refs/tags/flutterfire_gen_annotation-v')
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+      - name: Install dependencies
+        run: dart pub get
+      - name: Publish flutterfire_gen_annotation
+        run: |
+          cd packages/flutterfire_gen_annotation
+          dart pub publish --force
+
+  publish_flutterfire_gen_utils:
+    if: startsWith(github.ref, 'refs/tags/flutterfire_gen_utils-v')
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+      - name: Install dependencies
+        run: dart pub get
+      - name: Publish flutterfire_gen_utils
+        run: |
+          cd packages/flutterfire_gen_utils
+          dart pub publish --force
