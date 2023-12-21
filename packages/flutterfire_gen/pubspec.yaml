@@ -1,6 +1,6 @@
 name: flutterfire_gen
 description: flutterfire_gen is a package for automatic code generation for Cloud Firestore. It supports efficient CRUD operations with type-safe interfaces and methods.
-version: 0.3.0-dev.1
+version: 0.3.0-dev.2
 homepage: https://github.com/kosukesaigusa/flutterfire_gen
 
 environment:

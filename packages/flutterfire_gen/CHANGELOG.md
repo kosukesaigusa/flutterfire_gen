@@ -1,3 +1,11 @@
+## 0.3.0-dev.2
+
+* Enablet to generate `count` method in query class.
+* Enable to call read methods as `CollectionGroupQuery` for `fetchDocuments`, `subscribeDocuments`, and `count` methods.
+* Fix read `DocumentReference` name bug in `fetchDocument` and `subscribeDocument` methods (thanks to @iincho).
+* Update doc comments.
+* Refactor codes.
+
 ## 0.3.0-dev.1
 
 * Enable to set `schema_definition_class_prefix`, `read_class_prefix`, `create_class_prefix`, `update_class_prefix`, `delete_class_prefix`, `read_class_suffix`, `create_class_suffix`, `update_class_suffix`, `delete_class_suffix` to customize schema definition and generated class names.
