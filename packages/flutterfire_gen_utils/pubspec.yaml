@@ -8,7 +8,7 @@ environment:
   flutter: '>=3.10.0'
 
 dependencies:
-  cloud_firestore: ^4.8.2
+  cloud_firestore: ^4.13.6
   flutter:
     sdk: flutter
   meta: ^1.9.1
