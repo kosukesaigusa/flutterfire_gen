@@ -1,6 +1,10 @@
+## 0.3.0-dev.3
+
+* Update dependency versions to enable to build when `flutter pub downgrade`.
+
 ## 0.3.0-dev.2
 
-* Enablet to generate `count` method in query class.
+* Enable to generate `count` method in query class.
 * Enable to call read methods as `CollectionGroupQuery` for `fetchDocuments`, `subscribeDocuments`, and `count` methods.
 * Fix read `DocumentReference` name bug in `fetchDocument` and `subscribeDocument` methods (thanks to @iincho).
 * Update doc comments.
