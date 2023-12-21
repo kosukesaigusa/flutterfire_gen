@@ -1,0 +1,74 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  schedule:
+    # runs the CI everyday at 10AM
+    - cron: "0 10 * * *"
+
+jobs:
+  flutterfire_gen:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        package:
+          - packages/flutterfire_gen
+          - packages/flutterfire_gen_annotation
+          - packages/flutterfire_gen_utils
+        channel:
+          - master
+          - stable
+        dependencies:
+          - get
+          - downgrade
+        exclude:
+          - channel: master
+            dependencies: downgrade
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ matrix.channel }}
+          cache: ${{ matrix.channel == 'stable' }}
+
+      # It is executed separately
+      - name: Removing example folder
+        run: rm -rf example
+        working-directory: ${{ matrix.package }}
+
+      - name: Install dependencies
+        run: |
+          flutter pub ${{ matrix.dependencies }}
+        working-directory: ${{ matrix.package }}
+
+      - name: Check format
+        # Check dart format only on master
+        if: matrix.channel == 'master'
+        run: dart format --set-exit-if-changed .
+        working-directory: ${{ matrix.package }}
+
+      - name: Generate
+        run: |
+          if grep -q build_runner "pubspec.yaml"; then
+            flutter pub run build_runner build --delete-conflicting-outputs
+          fi
+        working-directory: ${{ matrix.package }}
+
+      - name: Analyze
+        run: flutter analyze
+        working-directory: ${{ matrix.package }}
+
+      - name: Run tests
+        run: |
+          if grep -q "name: example" "pubspec.yaml"; then
+            flutter test
+          else
+            dart test
+          fi
+        working-directory: ${{ matrix.package }}
