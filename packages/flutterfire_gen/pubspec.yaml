@@ -24,3 +24,12 @@ dev_dependencies:
   build_runner: ^2.4.7
   mockito: ^5.4.4
   test: ^1.21.0
+
+# https://dart.dev/tools/pub/pubspec#platforms
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
