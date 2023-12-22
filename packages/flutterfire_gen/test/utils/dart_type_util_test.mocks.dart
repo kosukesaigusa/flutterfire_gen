@@ -132,116 +132,139 @@ class MockDynamicType extends _i1.Mock implements _i2.DynamicType {
         Invocation.getter(#isBottom),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartAsyncFuture => (super.noSuchMethod(
         Invocation.getter(#isDartAsyncFuture),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartAsyncFutureOr => (super.noSuchMethod(
         Invocation.getter(#isDartAsyncFutureOr),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartAsyncStream => (super.noSuchMethod(
         Invocation.getter(#isDartAsyncStream),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreBool => (super.noSuchMethod(
         Invocation.getter(#isDartCoreBool),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreDouble => (super.noSuchMethod(
         Invocation.getter(#isDartCoreDouble),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreEnum => (super.noSuchMethod(
         Invocation.getter(#isDartCoreEnum),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreFunction => (super.noSuchMethod(
         Invocation.getter(#isDartCoreFunction),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreInt => (super.noSuchMethod(
         Invocation.getter(#isDartCoreInt),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreIterable => (super.noSuchMethod(
         Invocation.getter(#isDartCoreIterable),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreList => (super.noSuchMethod(
         Invocation.getter(#isDartCoreList),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreMap => (super.noSuchMethod(
         Invocation.getter(#isDartCoreMap),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreNull => (super.noSuchMethod(
         Invocation.getter(#isDartCoreNull),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreNum => (super.noSuchMethod(
         Invocation.getter(#isDartCoreNum),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreObject => (super.noSuchMethod(
         Invocation.getter(#isDartCoreObject),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreRecord => (super.noSuchMethod(
         Invocation.getter(#isDartCoreRecord),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreSet => (super.noSuchMethod(
         Invocation.getter(#isDartCoreSet),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreString => (super.noSuchMethod(
         Invocation.getter(#isDartCoreString),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreSymbol => (super.noSuchMethod(
         Invocation.getter(#isDartCoreSymbol),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreType => (super.noSuchMethod(
         Invocation.getter(#isDartCoreType),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDynamic => (super.noSuchMethod(
         Invocation.getter(#isDynamic),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isVoid => (super.noSuchMethod(
         Invocation.getter(#isVoid),
         returnValue: false,
       ) as bool);
+
   @override
   _i6.NullabilitySuffix get nullabilitySuffix => (super.noSuchMethod(
         Invocation.getter(#nullabilitySuffix),
         returnValue: _i6.NullabilitySuffix.question,
       ) as _i6.NullabilitySuffix);
+
   @override
   R accept<R>(_i7.TypeVisitor<R>? visitor) => (super.noSuchMethod(
         Invocation.method(
@@ -256,6 +279,7 @@ class MockDynamicType extends _i1.Mock implements _i2.DynamicType {
           ),
         ),
       ) as R);
+
   @override
   R acceptWithArgument<R, A>(
     _i7.TypeVisitorWithArgument<R, A>? visitor,
@@ -280,12 +304,14 @@ class MockDynamicType extends _i1.Mock implements _i2.DynamicType {
           ),
         ),
       ) as R);
+
   @override
   _i2.InterfaceType? asInstanceOf(_i3.InterfaceElement? element) =>
       (super.noSuchMethod(Invocation.method(
         #asInstanceOf,
         [element],
       )) as _i2.InterfaceType?);
+
   @override
   String getDisplayString({required bool? withNullability}) =>
       (super.noSuchMethod(
@@ -303,6 +329,7 @@ class MockDynamicType extends _i1.Mock implements _i2.DynamicType {
           ),
         ),
       ) as String);
+
   @override
   _i2.DartType resolveToBound(_i2.DartType? objectType) => (super.noSuchMethod(
         Invocation.method(
@@ -332,16 +359,19 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
         Invocation.getter(#accessors),
         returnValue: <_i3.PropertyAccessorElement>[],
       ) as List<_i3.PropertyAccessorElement>);
+
   @override
   List<_i2.InterfaceType> get allSupertypes => (super.noSuchMethod(
         Invocation.getter(#allSupertypes),
         returnValue: <_i2.InterfaceType>[],
       ) as List<_i2.InterfaceType>);
+
   @override
   List<_i3.ConstructorElement> get constructors => (super.noSuchMethod(
         Invocation.getter(#constructors),
         returnValue: <_i3.ConstructorElement>[],
       ) as List<_i3.ConstructorElement>);
+
   @override
   _i3.InterfaceElement get element => (super.noSuchMethod(
         Invocation.getter(#element),
@@ -350,6 +380,7 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
           Invocation.getter(#element),
         ),
       ) as _i3.InterfaceElement);
+
   @override
   _i3.InterfaceElement get element2 => (super.noSuchMethod(
         Invocation.getter(#element2),
@@ -358,164 +389,196 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
           Invocation.getter(#element2),
         ),
       ) as _i3.InterfaceElement);
+
   @override
   List<_i2.InterfaceType> get interfaces => (super.noSuchMethod(
         Invocation.getter(#interfaces),
         returnValue: <_i2.InterfaceType>[],
       ) as List<_i2.InterfaceType>);
+
   @override
   List<_i3.MethodElement> get methods => (super.noSuchMethod(
         Invocation.getter(#methods),
         returnValue: <_i3.MethodElement>[],
       ) as List<_i3.MethodElement>);
+
   @override
   List<_i2.InterfaceType> get mixins => (super.noSuchMethod(
         Invocation.getter(#mixins),
         returnValue: <_i2.InterfaceType>[],
       ) as List<_i2.InterfaceType>);
+
   @override
   List<_i2.InterfaceType> get superclassConstraints => (super.noSuchMethod(
         Invocation.getter(#superclassConstraints),
         returnValue: <_i2.InterfaceType>[],
       ) as List<_i2.InterfaceType>);
+
   @override
   List<_i2.DartType> get typeArguments => (super.noSuchMethod(
         Invocation.getter(#typeArguments),
         returnValue: <_i2.DartType>[],
       ) as List<_i2.DartType>);
+
   @override
   bool get isBottom => (super.noSuchMethod(
         Invocation.getter(#isBottom),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartAsyncFuture => (super.noSuchMethod(
         Invocation.getter(#isDartAsyncFuture),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartAsyncFutureOr => (super.noSuchMethod(
         Invocation.getter(#isDartAsyncFutureOr),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartAsyncStream => (super.noSuchMethod(
         Invocation.getter(#isDartAsyncStream),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreBool => (super.noSuchMethod(
         Invocation.getter(#isDartCoreBool),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreDouble => (super.noSuchMethod(
         Invocation.getter(#isDartCoreDouble),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreEnum => (super.noSuchMethod(
         Invocation.getter(#isDartCoreEnum),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreFunction => (super.noSuchMethod(
         Invocation.getter(#isDartCoreFunction),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreInt => (super.noSuchMethod(
         Invocation.getter(#isDartCoreInt),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreIterable => (super.noSuchMethod(
         Invocation.getter(#isDartCoreIterable),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreList => (super.noSuchMethod(
         Invocation.getter(#isDartCoreList),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreMap => (super.noSuchMethod(
         Invocation.getter(#isDartCoreMap),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreNull => (super.noSuchMethod(
         Invocation.getter(#isDartCoreNull),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreNum => (super.noSuchMethod(
         Invocation.getter(#isDartCoreNum),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreObject => (super.noSuchMethod(
         Invocation.getter(#isDartCoreObject),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreRecord => (super.noSuchMethod(
         Invocation.getter(#isDartCoreRecord),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreSet => (super.noSuchMethod(
         Invocation.getter(#isDartCoreSet),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreString => (super.noSuchMethod(
         Invocation.getter(#isDartCoreString),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreSymbol => (super.noSuchMethod(
         Invocation.getter(#isDartCoreSymbol),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDartCoreType => (super.noSuchMethod(
         Invocation.getter(#isDartCoreType),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isDynamic => (super.noSuchMethod(
         Invocation.getter(#isDynamic),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isVoid => (super.noSuchMethod(
         Invocation.getter(#isVoid),
         returnValue: false,
       ) as bool);
+
   @override
   _i6.NullabilitySuffix get nullabilitySuffix => (super.noSuchMethod(
         Invocation.getter(#nullabilitySuffix),
         returnValue: _i6.NullabilitySuffix.question,
       ) as _i6.NullabilitySuffix);
+
   @override
   _i3.PropertyAccessorElement? getGetter(String? name) =>
       (super.noSuchMethod(Invocation.method(
         #getGetter,
         [name],
       )) as _i3.PropertyAccessorElement?);
+
   @override
   _i3.MethodElement? getMethod(String? name) =>
       (super.noSuchMethod(Invocation.method(
         #getMethod,
         [name],
       )) as _i3.MethodElement?);
+
   @override
   _i3.PropertyAccessorElement? getSetter(String? name) =>
       (super.noSuchMethod(Invocation.method(
         #getSetter,
         [name],
       )) as _i3.PropertyAccessorElement?);
+
   @override
   _i3.ConstructorElement? lookUpConstructor(
     String? name,
@@ -528,6 +591,7 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
           library,
         ],
       )) as _i3.ConstructorElement?);
+
   @override
   _i3.PropertyAccessorElement? lookUpGetter2(
     String? name,
@@ -548,6 +612,7 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
           #recoveryStatic: recoveryStatic,
         },
       )) as _i3.PropertyAccessorElement?);
+
   @override
   _i3.MethodElement? lookUpMethod2(
     String? name,
@@ -568,6 +633,7 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
           #recoveryStatic: recoveryStatic,
         },
       )) as _i3.MethodElement?);
+
   @override
   _i3.PropertyAccessorElement? lookUpSetter2(
     String? name,
@@ -588,6 +654,7 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
           #recoveryStatic: recoveryStatic,
         },
       )) as _i3.PropertyAccessorElement?);
+
   @override
   R accept<R>(_i7.TypeVisitor<R>? visitor) => (super.noSuchMethod(
         Invocation.method(
@@ -602,6 +669,7 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
           ),
         ),
       ) as R);
+
   @override
   R acceptWithArgument<R, A>(
     _i7.TypeVisitorWithArgument<R, A>? visitor,
@@ -626,12 +694,14 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
           ),
         ),
       ) as R);
+
   @override
   _i2.InterfaceType? asInstanceOf(_i3.InterfaceElement? element) =>
       (super.noSuchMethod(Invocation.method(
         #asInstanceOf,
         [element],
       )) as _i2.InterfaceType?);
+
   @override
   String getDisplayString({required bool? withNullability}) =>
       (super.noSuchMethod(
@@ -649,6 +719,7 @@ class MockInterfaceType extends _i1.Mock implements _i2.InterfaceType {
           ),
         ),
       ) as String);
+
   @override
   _i2.DartType resolveToBound(_i2.DartType? objectType) => (super.noSuchMethod(
         Invocation.method(
@@ -678,6 +749,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
         Invocation.getter(#allSupertypes),
         returnValue: <_i2.InterfaceType>[],
       ) as List<_i2.InterfaceType>);
+
   @override
   _i2.InterfaceType get thisType => (super.noSuchMethod(
         Invocation.getter(#thisType),
@@ -686,16 +758,19 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#thisType),
         ),
       ) as _i2.InterfaceType);
+
   @override
   List<_i3.PropertyAccessorElement> get accessors => (super.noSuchMethod(
         Invocation.getter(#accessors),
         returnValue: <_i3.PropertyAccessorElement>[],
       ) as List<_i3.PropertyAccessorElement>);
+
   @override
   List<_i3.ConstructorElement> get constructors => (super.noSuchMethod(
         Invocation.getter(#constructors),
         returnValue: <_i3.ConstructorElement>[],
       ) as List<_i3.ConstructorElement>);
+
   @override
   _i3.CompilationUnitElement get enclosingElement => (super.noSuchMethod(
         Invocation.getter(#enclosingElement),
@@ -704,6 +779,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#enclosingElement),
         ),
       ) as _i3.CompilationUnitElement);
+
   @override
   _i3.CompilationUnitElement get enclosingElement3 => (super.noSuchMethod(
         Invocation.getter(#enclosingElement3),
@@ -712,26 +788,31 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#enclosingElement3),
         ),
       ) as _i3.CompilationUnitElement);
+
   @override
   List<_i3.FieldElement> get fields => (super.noSuchMethod(
         Invocation.getter(#fields),
         returnValue: <_i3.FieldElement>[],
       ) as List<_i3.FieldElement>);
+
   @override
   List<_i2.InterfaceType> get interfaces => (super.noSuchMethod(
         Invocation.getter(#interfaces),
         returnValue: <_i2.InterfaceType>[],
       ) as List<_i2.InterfaceType>);
+
   @override
   List<_i3.MethodElement> get methods => (super.noSuchMethod(
         Invocation.getter(#methods),
         returnValue: <_i3.MethodElement>[],
       ) as List<_i3.MethodElement>);
+
   @override
   List<_i2.InterfaceType> get mixins => (super.noSuchMethod(
         Invocation.getter(#mixins),
         returnValue: <_i2.InterfaceType>[],
       ) as List<_i2.InterfaceType>);
+
   @override
   String get name => (super.noSuchMethod(
         Invocation.getter(#name),
@@ -740,16 +821,19 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#name),
         ),
       ) as String);
+
   @override
   bool get isSimplyBounded => (super.noSuchMethod(
         Invocation.getter(#isSimplyBounded),
         returnValue: false,
       ) as bool);
+
   @override
   List<_i3.TypeParameterElement> get typeParameters => (super.noSuchMethod(
         Invocation.getter(#typeParameters),
         returnValue: <_i3.TypeParameterElement>[],
       ) as List<_i3.TypeParameterElement>);
+
   @override
   _i3.Element get declaration => (super.noSuchMethod(
         Invocation.getter(#declaration),
@@ -758,6 +842,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#declaration),
         ),
       ) as _i3.Element);
+
   @override
   _i3.LibraryElement get library => (super.noSuchMethod(
         Invocation.getter(#library),
@@ -766,6 +851,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#library),
         ),
       ) as _i3.LibraryElement);
+
   @override
   _i4.Source get librarySource => (super.noSuchMethod(
         Invocation.getter(#librarySource),
@@ -774,6 +860,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#librarySource),
         ),
       ) as _i4.Source);
+
   @override
   _i4.Source get source => (super.noSuchMethod(
         Invocation.getter(#source),
@@ -782,11 +869,13 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#source),
         ),
       ) as _i4.Source);
+
   @override
   List<_i3.Element> get children => (super.noSuchMethod(
         Invocation.getter(#children),
         returnValue: <_i3.Element>[],
       ) as List<_i3.Element>);
+
   @override
   _i5.AnalysisContext get context => (super.noSuchMethod(
         Invocation.getter(#context),
@@ -795,6 +884,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#context),
         ),
       ) as _i5.AnalysisContext);
+
   @override
   String get displayName => (super.noSuchMethod(
         Invocation.getter(#displayName),
@@ -803,136 +893,163 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#displayName),
         ),
       ) as String);
+
   @override
   bool get hasAlwaysThrows => (super.noSuchMethod(
         Invocation.getter(#hasAlwaysThrows),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasDeprecated => (super.noSuchMethod(
         Invocation.getter(#hasDeprecated),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasDoNotStore => (super.noSuchMethod(
         Invocation.getter(#hasDoNotStore),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasFactory => (super.noSuchMethod(
         Invocation.getter(#hasFactory),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasInternal => (super.noSuchMethod(
         Invocation.getter(#hasInternal),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasIsTest => (super.noSuchMethod(
         Invocation.getter(#hasIsTest),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasIsTestGroup => (super.noSuchMethod(
         Invocation.getter(#hasIsTestGroup),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasJS => (super.noSuchMethod(
         Invocation.getter(#hasJS),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasLiteral => (super.noSuchMethod(
         Invocation.getter(#hasLiteral),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasMustBeOverridden => (super.noSuchMethod(
         Invocation.getter(#hasMustBeOverridden),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasMustCallSuper => (super.noSuchMethod(
         Invocation.getter(#hasMustCallSuper),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasNonVirtual => (super.noSuchMethod(
         Invocation.getter(#hasNonVirtual),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasOptionalTypeArgs => (super.noSuchMethod(
         Invocation.getter(#hasOptionalTypeArgs),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasOverride => (super.noSuchMethod(
         Invocation.getter(#hasOverride),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasProtected => (super.noSuchMethod(
         Invocation.getter(#hasProtected),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasReopen => (super.noSuchMethod(
         Invocation.getter(#hasReopen),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasRequired => (super.noSuchMethod(
         Invocation.getter(#hasRequired),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasSealed => (super.noSuchMethod(
         Invocation.getter(#hasSealed),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasUseResult => (super.noSuchMethod(
         Invocation.getter(#hasUseResult),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasVisibleForOverriding => (super.noSuchMethod(
         Invocation.getter(#hasVisibleForOverriding),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasVisibleForTemplate => (super.noSuchMethod(
         Invocation.getter(#hasVisibleForTemplate),
         returnValue: false,
       ) as bool);
+
   @override
   bool get hasVisibleForTesting => (super.noSuchMethod(
         Invocation.getter(#hasVisibleForTesting),
         returnValue: false,
       ) as bool);
+
   @override
   int get id => (super.noSuchMethod(
         Invocation.getter(#id),
         returnValue: 0,
       ) as int);
+
   @override
   bool get isPrivate => (super.noSuchMethod(
         Invocation.getter(#isPrivate),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isPublic => (super.noSuchMethod(
         Invocation.getter(#isPublic),
         returnValue: false,
       ) as bool);
+
   @override
   bool get isSynthetic => (super.noSuchMethod(
         Invocation.getter(#isSynthetic),
         returnValue: false,
       ) as bool);
+
   @override
   _i3.ElementKind get kind => (super.noSuchMethod(
         Invocation.getter(#kind),
@@ -941,21 +1058,25 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#kind),
         ),
       ) as _i3.ElementKind);
+
   @override
   List<_i3.ElementAnnotation> get metadata => (super.noSuchMethod(
         Invocation.getter(#metadata),
         returnValue: <_i3.ElementAnnotation>[],
       ) as List<_i3.ElementAnnotation>);
+
   @override
   int get nameLength => (super.noSuchMethod(
         Invocation.getter(#nameLength),
         returnValue: 0,
       ) as int);
+
   @override
   int get nameOffset => (super.noSuchMethod(
         Invocation.getter(#nameOffset),
         returnValue: 0,
       ) as int);
+
   @override
   _i3.Element get nonSynthetic => (super.noSuchMethod(
         Invocation.getter(#nonSynthetic),
@@ -964,36 +1085,42 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           Invocation.getter(#nonSynthetic),
         ),
       ) as _i3.Element);
+
   @override
   _i3.FieldElement? getField(String? name) =>
       (super.noSuchMethod(Invocation.method(
         #getField,
         [name],
       )) as _i3.FieldElement?);
+
   @override
   _i3.PropertyAccessorElement? getGetter(String? name) =>
       (super.noSuchMethod(Invocation.method(
         #getGetter,
         [name],
       )) as _i3.PropertyAccessorElement?);
+
   @override
   _i3.MethodElement? getMethod(String? name) =>
       (super.noSuchMethod(Invocation.method(
         #getMethod,
         [name],
       )) as _i3.MethodElement?);
+
   @override
   _i3.ConstructorElement? getNamedConstructor(String? name) =>
       (super.noSuchMethod(Invocation.method(
         #getNamedConstructor,
         [name],
       )) as _i3.ConstructorElement?);
+
   @override
   _i3.PropertyAccessorElement? getSetter(String? name) =>
       (super.noSuchMethod(Invocation.method(
         #getSetter,
         [name],
       )) as _i3.PropertyAccessorElement?);
+
   @override
   _i2.InterfaceType instantiate({
     required List<_i2.DartType>? typeArguments,
@@ -1020,6 +1147,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           ),
         ),
       ) as _i2.InterfaceType);
+
   @override
   _i3.MethodElement? lookUpConcreteMethod(
     String? methodName,
@@ -1032,6 +1160,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           library,
         ],
       )) as _i3.MethodElement?);
+
   @override
   _i3.PropertyAccessorElement? lookUpGetter(
     String? getterName,
@@ -1044,6 +1173,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           library,
         ],
       )) as _i3.PropertyAccessorElement?);
+
   @override
   _i3.PropertyAccessorElement? lookUpInheritedConcreteGetter(
     String? getterName,
@@ -1056,6 +1186,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           library,
         ],
       )) as _i3.PropertyAccessorElement?);
+
   @override
   _i3.MethodElement? lookUpInheritedConcreteMethod(
     String? methodName,
@@ -1068,6 +1199,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           library,
         ],
       )) as _i3.MethodElement?);
+
   @override
   _i3.PropertyAccessorElement? lookUpInheritedConcreteSetter(
     String? setterName,
@@ -1080,6 +1212,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           library,
         ],
       )) as _i3.PropertyAccessorElement?);
+
   @override
   _i3.MethodElement? lookUpInheritedMethod(
     String? methodName,
@@ -1092,6 +1225,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           library,
         ],
       )) as _i3.MethodElement?);
+
   @override
   _i3.MethodElement? lookUpMethod(
     String? methodName,
@@ -1104,6 +1238,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           library,
         ],
       )) as _i3.MethodElement?);
+
   @override
   _i3.PropertyAccessorElement? lookUpSetter(
     String? setterName,
@@ -1116,12 +1251,14 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           library,
         ],
       )) as _i3.PropertyAccessorElement?);
+
   @override
   T? accept<T>(_i3.ElementVisitor<T>? visitor) =>
       (super.noSuchMethod(Invocation.method(
         #accept,
         [visitor],
       )) as T?);
+
   @override
   String getDisplayString({
     required bool? withNullability,
@@ -1148,6 +1285,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           ),
         ),
       ) as String);
+
   @override
   String getExtendedDisplayName(String? shortName) => (super.noSuchMethod(
         Invocation.method(
@@ -1162,6 +1300,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
           ),
         ),
       ) as String);
+
   @override
   bool isAccessibleIn(_i3.LibraryElement? library) => (super.noSuchMethod(
         Invocation.method(
@@ -1170,6 +1309,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
         ),
         returnValue: false,
       ) as bool);
+
   @override
   bool isAccessibleIn2(_i3.LibraryElement? library) => (super.noSuchMethod(
         Invocation.method(
@@ -1178,6 +1318,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
         ),
         returnValue: false,
       ) as bool);
+
   @override
   E? thisOrAncestorMatching<E extends _i3.Element>(
           bool Function(_i3.Element)? predicate) =>
@@ -1185,6 +1326,7 @@ class MockInterfaceElement extends _i1.Mock implements _i3.InterfaceElement {
         #thisOrAncestorMatching,
         [predicate],
       )) as E?);
+
   @override
   void visitChildren(_i3.ElementVisitor<dynamic>? visitor) =>
       super.noSuchMethod(
