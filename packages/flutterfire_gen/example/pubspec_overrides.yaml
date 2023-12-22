@@ -1,7 +1,7 @@
 # melos_managed_dependency_overrides: flutterfire_gen,flutterfire_gen_annotation,flutterfire_gen_utils
 dependency_overrides:
   flutterfire_gen:
-    path: ../
+    path: ..
   flutterfire_gen_annotation:
     path: ../../flutterfire_gen_annotation
   flutterfire_gen_utils:

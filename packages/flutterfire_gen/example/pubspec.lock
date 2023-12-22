@@ -226,7 +226,7 @@ packages:
     source: hosted
     version: "7.0.0"
   firebase_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_core
       sha256: "96607c0e829a581c2a483c658f04e8b159964c3bae2730f73297070bc85d40bb"
@@ -278,7 +278,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.3.0-dev.2"
+    version: "0.3.0-dev.3"
   flutterfire_gen_annotation:
     dependency: "direct main"
     description:
