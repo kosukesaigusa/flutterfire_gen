@@ -1,0 +1,5 @@
+targets:
+  $default:
+    builders:
+      flutterfire_gen:
+        options:
