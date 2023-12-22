@@ -1,6 +1,7 @@
 ## 0.3.0-dev.3
 
 * Update dependency versions to enable to build when `flutter pub downgrade`.
+* Improve pub.dev score.
 
 ## 0.3.0-dev.2
 
