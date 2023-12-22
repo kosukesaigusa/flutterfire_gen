@@ -1,3 +1,7 @@
+## Unreleased changes
+
+* Remove direct dependency on Flutter SDK.
+
 ## 0.3.0-dev.1
 
 * Update doc comments.
