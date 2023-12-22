@@ -1,3 +1,7 @@
+## 0.3.0-dev.5
+
+* Update dependency version.
+
 ## 0.3.0-dev.4
 
 * Remove direct dependency on Flutter SDK.
