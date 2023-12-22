@@ -31,10 +31,10 @@ dependencies:
   firebase_core: latest
 
   # A package containing annotations for flutterfire_gen.
-  flutterfire_gen_annotation: ^0.3.0-dev.1
+  flutterfire_gen_annotation: latest
 
   # A package containing utility annotations for flutterfire_gen.
-  flutterfire_gen_utils: ^0.3.0-dev.1
+  flutterfire_gen_utils: latest
 
   # Optional. Will be necessary if you use JsonConverter.
   json_annotation: latest
