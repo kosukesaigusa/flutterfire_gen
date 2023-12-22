@@ -33,6 +33,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
       - name: Publish flutterfire_gen_annotation
         run: |
           cd packages/flutterfire_gen_annotation
@@ -46,6 +49,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
       - name: Publish flutterfire_gen_utils
         run: |
           cd packages/flutterfire_gen_utils
