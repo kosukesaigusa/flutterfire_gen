@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'configs/build_yaml_config.dart';
@@ -132,7 +133,28 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
         decode: (obj) => obj.toBoolValue() ?? false,
         orElse: () => _buildYamlConfig.generateCopyWith,
       ),
-      fieldConfigs: element.fields.map(parseFieldElement).toList(),
+      fieldConfigs: element.fields
+          .map(
+            const FieldElementParser(
+              readDefaultTypeChecker: TypeChecker.fromRuntime(ReadDefault),
+              createDefaultTypeChecker: TypeChecker.fromRuntime(CreateDefault),
+              updateDefaultTypeChecker: TypeChecker.fromRuntime(UpdateDefault),
+              jsonConverterTypeChecker: TypeChecker.fromRuntime(JsonConverter),
+              jsonPostProcessorTypeChecker:
+                  TypeChecker.fromRuntime(JsonPostProcessor),
+              allowFieldValueTypeChecker:
+                  TypeChecker.fromRuntime(AllowFieldValue),
+              alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker:
+                  TypeChecker.fromRuntime(
+                AlwaysUseFieldValueServerTimestampWhenCreating,
+              ),
+              alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker:
+                  TypeChecker.fromRuntime(
+                AlwaysUseFieldValueServerTimestampWhenUpdating,
+              ),
+            ).parse,
+          )
+          .toList(),
     );
 
     final buffer = StringBuffer()
