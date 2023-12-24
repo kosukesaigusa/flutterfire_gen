@@ -5,6 +5,8 @@ import '../configs/field_config.dart';
 import '../configs/json_converter_config.dart';
 import '../configs/json_post_processor_config.dart';
 
+enum _DefaultType { read, create, update }
+
 /// `FieldElementParser` class for parsing annotations on field elements
 /// and generating configuration details.
 class FieldElementParser {
@@ -92,6 +94,14 @@ class FieldElementParser {
   /// when updating instances.
   final TypeChecker alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker;
 
+  TypeChecker _defaultTypeChecker(_DefaultType defaultType) {
+    return switch (defaultType) {
+      _DefaultType.read => readDefaultTypeChecker,
+      _DefaultType.create => createDefaultTypeChecker,
+      _DefaultType.update => updateDefaultTypeChecker,
+    };
+  }
+
   /// Parses a given [FieldElement] to produce a [FieldConfig] instance.
   /// This function examines the metadata annotations of the [FieldElement]
   /// to extract default values and any JsonConverter configurations.
@@ -100,13 +110,28 @@ class FieldElementParser {
   FieldConfig parse(FieldElement element) {
     final annotations = element.metadata;
     final readDefaultValueString = annotations
-        .map(parseReadDefaultAnnotation)
+        .map(
+          (annotation) => _parseDefaultAnnotation(
+            defaultType: _DefaultType.read,
+            annotation: annotation,
+          ),
+        )
         .firstWhere((value) => value != null, orElse: () => null);
     final createDefaultValueString = annotations
-        .map(_parseCreateDefaultAnnotation)
+        .map(
+          (annotation) => _parseDefaultAnnotation(
+            defaultType: _DefaultType.create,
+            annotation: annotation,
+          ),
+        )
         .firstWhere((value) => value != null, orElse: () => null);
     final updateDefaultValueString = annotations
-        .map(_parseUpdateDefaultAnnotation)
+        .map(
+          (annotation) => _parseDefaultAnnotation(
+            defaultType: _DefaultType.update,
+            annotation: annotation,
+          ),
+        )
         .firstWhere((value) => value != null, orElse: () => null);
     final jsonConverterConfig = annotations
         .map(_parseJsonConverterAnnotation)
@@ -140,133 +165,14 @@ class FieldElementParser {
     );
   }
 
-  /// Parses the `@ReadDefault` annotation present on a field to extract the
-  /// default value.
-  ///
-  /// The method inspects the given `annotation` to determine if it is a
-  /// `@ReadDefault` annotation. If it is, the method extracts the string
-  /// representation of the  default value specified in the annotation. This
-  /// string is suitable for inclusion in generated code that sets default
-  /// values for fields.
-  ///
-  /// Parameters:
-  ///
-  /// - [annotation] The metadata annotation to parse, looking for
-  /// `@ReadDefault`.
-  ///
-  /// Returns:
-  ///
-  /// A `String` representing the default value from the annotation,
-  /// properly formatted for inclusion in Dart code. If the `@ReadDefault`
-  /// annotation is not present on the field, `null` is returned.
-  ///
-  /// Note:
-  ///
-  /// If the extracted default value is not a string or a literal that is
-  /// prefixed with `const`, and if it is a compound literal (like list, set, or
-  /// map), this method adds a `const` modifier to the returned string to ensure
-  /// correct constant initialization in generated code.
-  String? parseReadDefaultAnnotation(ElementAnnotation annotation) {
+  String? _parseDefaultAnnotation({
+    required _DefaultType defaultType,
+    required ElementAnnotation annotation,
+  }) {
     final source = annotation.toSource();
     final objectType = annotation.computeConstantValue()!.type!;
 
-    if (!readDefaultTypeChecker.isAssignableFromType(objectType)) {
-      return null;
-    }
-
-    final defaultTypeString =
-        objectType.getDisplayString(withNullability: false);
-    final res =
-        source.substring('@$defaultTypeString('.length, source.length - 1);
-    final needsConstModifier = !objectType.isDartCoreString &&
-        !res.trimLeft().startsWith('const') &&
-        (res.contains('(') || res.contains('[') || res.contains('{'));
-    if (needsConstModifier) {
-      return 'const $res';
-    } else {
-      return res;
-    }
-  }
-
-  /// Parses the `@CreateDefault` annotation present on a field to extract the
-  /// default value.
-  ///
-  /// The method inspects the given `annotation` to determine if it is a
-  /// `@CreateDefault` annotation. If it is, the method extracts the string
-  /// representation of the  default value specified in the annotation. This
-  /// string is suitable for inclusion in generated code that sets default
-  /// values for fields.
-  ///
-  /// Parameters:
-  ///
-  /// - [annotation] The metadata annotation to parse, looking for
-  /// `@CreateDefault`.
-  ///
-  /// Returns:
-  ///
-  /// A `String` representing the default value from the annotation,
-  /// properly formatted for inclusion in Dart code. If the `@CreateDefault`
-  /// annotation is not present on the field, `null` is returned.
-  ///
-  /// Note:
-  ///
-  /// If the extracted default value is not a string or a literal that is
-  /// prefixed with `const`, and if it is a compound literal (like list, set, or
-  /// map), this method adds a `const` modifier to the returned string to ensure
-  /// correct constant initialization in generated code.
-  String? _parseCreateDefaultAnnotation(ElementAnnotation annotation) {
-    final source = annotation.toSource();
-    final objectType = annotation.computeConstantValue()!.type!;
-
-    if (!createDefaultTypeChecker.isAssignableFromType(objectType)) {
-      return null;
-    }
-
-    final defaultTypeString =
-        objectType.getDisplayString(withNullability: false);
-    final res =
-        source.substring('@$defaultTypeString('.length, source.length - 1);
-    final needsConstModifier = !objectType.isDartCoreString &&
-        !res.trimLeft().startsWith('const') &&
-        (res.contains('(') || res.contains('[') || res.contains('{'));
-    if (needsConstModifier) {
-      return 'const $res';
-    } else {
-      return res;
-    }
-  }
-
-  /// Parses the `@UpdateDefault` annotation present on a field to extract the
-  /// default value.
-  ///
-  /// The method inspects the given `annotation` to determine if it is a
-  /// `@UpdateDefault` annotation. If it is, the method extracts the string
-  /// representation of the  default value specified in the annotation. This
-  /// string is suitable for inclusion in generated code that sets default
-  /// values for fields.
-  ///
-  /// Parameters:
-  ///
-  /// - [annotation] The metadata annotation to parse, looking for
-  /// `@UpdateDefault`.
-  ///
-  /// Returns:
-  ///
-  /// A `String` representing the default value from the annotation,
-  /// properly formatted for inclusion in Dart code. If the `@UpdateDefault`
-  /// annotation is not present on the field, `null` is returned.
-  ///
-  /// Note:
-  ///
-  /// If the extracted default value is not a string or a literal that is
-  /// prefixed with `const`, and if it is a compound literal (like list, set, or
-  /// map), this method adds a `const` modifier to the returned string to ensure
-  /// correct constant initialization in generated code.
-  String? _parseUpdateDefaultAnnotation(ElementAnnotation annotation) {
-    final source = annotation.toSource();
-    final objectType = annotation.computeConstantValue()!.type!;
-
-    if (!updateDefaultTypeChecker.isAssignableFromType(objectType)) {
+    if (!_defaultTypeChecker(defaultType).isAssignableFromType(objectType)) {
       return null;
     }
 
