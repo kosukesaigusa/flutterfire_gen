@@ -1,3 +1,8 @@
+## Unreleased changes
+
+* Refactor `FieldElementParser` to enable to write unit test.
+* Add `field_element_parser_test.dart`.
+
 ## 0.3.0-dev.5
 
 * Update dependency version.
