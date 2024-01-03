@@ -10,36 +10,39 @@ enum _DefaultType { read, create, update }
 /// `FieldElementParser` class for parsing annotations on field elements
 /// and generating configuration details.
 class FieldElementParser {
-  /// Constructs a `FieldElementParser` with specified [TypeChecker] instances
+  /// Constructs a `FieldElementParser` with optional [TypeChecker] instances
   /// for different types of annotations.
   ///
   /// Each [TypeChecker] provided as a parameter is used to identify and
-  /// process specific annotations found on Dart field elements. This allows
-  /// the parser to handle a variety of annotations related to default values,
-  /// JSON serialization, Firestore field values, and more.
+  /// process specific annotations found on Dart field elements. If a
+  /// [TypeChecker] is null, the corresponding annotation type is ignored.
   ///
   /// Parameters:
   ///
-  /// - [readDefaultTypeChecker] A [TypeChecker] for identifying `ReadDefault`
-  ///   annotations. It is used to extract default values for fields.
-  /// - [createDefaultTypeChecker] A [TypeChecker] for identifying
+  /// - [readDefaultTypeChecker] A nullable [TypeChecker] for identifying
+  /// `ReadDefault` annotations. Used to extract default values for fields
+  /// if not null.
+  /// - [createDefaultTypeChecker] A nullable [TypeChecker] for identifying
   /// `CreateDefault` annotations, which define default values for object
-  /// creation.
-  /// - [updateDefaultTypeChecker] A [TypeChecker] for `UpdateDefault`
-  ///   annotations, specifying default values for object updates.
-  /// - [jsonConverterTypeChecker] A [TypeChecker] for `JsonConverter`
-  ///   annotations, used for custom JSON conversion logic.
-  /// - [jsonPostProcessorTypeChecker] A [TypeChecker] for `JsonPostProcessor`
-  ///   annotations, for post-processing after JSON deserialization.
-  /// - [allowFieldValueTypeChecker] A [TypeChecker] for `AllowFieldValue`
-  ///   annotations, allowing specific Firestore FieldValue types.
-  /// - [alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker] A
+  /// creation, if not null.
+  /// - [updateDefaultTypeChecker] A nullable [TypeChecker] for `UpdateDefault`
+  /// annotations, specifying default values for object updates, if not null.
+  /// - [jsonConverterTypeChecker] A nullable [TypeChecker] for `JsonConverter`
+  /// annotations, used for custom JSON conversion logic, if not null.
+  /// - [jsonPostProcessorTypeChecker] A nullable [TypeChecker] for
+  /// `JsonPostProcessor` annotations, for post-processing after JSON
+  /// deserialization, if not null.
+  /// - [allowFieldValueTypeChecker] A nullable [TypeChecker] for
+  /// `AllowFieldValue` annotations, allowing specific Firestore FieldValue
+  /// types, if not null.
+  /// - [alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker] A nullable
   /// [TypeChecker] for identifying
   /// `AlwaysUseFieldValueServerTimestampWhenCreating` annotations, enforcing
-  /// `FieldValue.serverTimestamp` for new instances.
-  /// - [alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker] A
+  /// `FieldValue.serverTimestamp` for new instances, if not null.
+  /// - [alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker] A nullable
   /// [TypeChecker] for `AlwaysUseFieldValueServerTimestampWhenUpdating`
-  /// annotations, enforcing `FieldValue.serverTimestamp` during updates.
+  /// annotations, enforcing `FieldValue.serverTimestamp` during updates, if
+  /// not null.
   const FieldElementParser({
     required this.readDefaultTypeChecker,
     required this.createDefaultTypeChecker,
@@ -54,47 +57,47 @@ class FieldElementParser {
   /// [TypeChecker] for identifying `ReadDefault` annotations.
   /// Used to check if a field element has been annotated with `ReadDefault`
   /// and process its value accordingly.
-  final TypeChecker readDefaultTypeChecker;
+  final TypeChecker? readDefaultTypeChecker;
 
   /// [TypeChecker] for identifying `CreateDefault` annotations.
   /// This checker is used to determine if a field element has the
   /// `CreateDefault`
   /// annotation for default value assignment during object creation.
-  final TypeChecker createDefaultTypeChecker;
+  final TypeChecker? createDefaultTypeChecker;
 
   /// [TypeChecker] for identifying `UpdateDefault` annotations.
   /// It checks for the presence of `UpdateDefault` annotation on a field
   /// element,
   /// which indicates a default value to be used during object updates.
-  final TypeChecker updateDefaultTypeChecker;
+  final TypeChecker? updateDefaultTypeChecker;
 
   /// [TypeChecker] for identifying `JsonConverter` annotations.
   /// This is used to specify custom JSON conversion logic for a field element.
-  final TypeChecker jsonConverterTypeChecker;
+  final TypeChecker? jsonConverterTypeChecker;
 
   /// [TypeChecker] for identifying `JsonPostProcessor` annotations.
   /// It is used to apply custom post-processing logic after JSON
   /// deserialization.
-  final TypeChecker jsonPostProcessorTypeChecker;
+  final TypeChecker? jsonPostProcessorTypeChecker;
 
   /// [TypeChecker] for identifying `AllowFieldValue` annotations.
   /// This checker is used to allow specific Firestore FieldValue types
   /// (like `FieldValue.serverTimestamp`) for a field element.
-  final TypeChecker allowFieldValueTypeChecker;
+  final TypeChecker? allowFieldValueTypeChecker;
 
   /// [TypeChecker] for identifying
   /// `AlwaysUseFieldValueServerTimestampWhenCreating` annotations.
   /// It checks for this annotation to use `FieldValue.serverTimestamp` as a
   /// default value when creating new instances.
-  final TypeChecker alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker;
+  final TypeChecker? alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker;
 
   /// [TypeChecker] for identifying
   /// `AlwaysUseFieldValueServerTimestampWhenUpdating` annotations.
   /// This is used to enforce `FieldValue.serverTimestamp` as a default value
   /// when updating instances.
-  final TypeChecker alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker;
+  final TypeChecker? alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker;
 
-  TypeChecker _defaultTypeChecker(_DefaultType defaultType) {
+  TypeChecker? _defaultTypeChecker(_DefaultType defaultType) {
     return switch (defaultType) {
       _DefaultType.read => readDefaultTypeChecker,
       _DefaultType.create => createDefaultTypeChecker,
@@ -169,10 +172,15 @@ class FieldElementParser {
     required _DefaultType defaultType,
     required ElementAnnotation annotation,
   }) {
+    final typeChecker = _defaultTypeChecker(defaultType);
+    if (typeChecker == null) {
+      return null;
+    }
+
     final source = annotation.toSource();
     final objectType = annotation.computeConstantValue()!.type!;
 
-    if (!_defaultTypeChecker(defaultType).isAssignableFromType(objectType)) {
+    if (!typeChecker.isAssignableFromType(objectType)) {
       return null;
     }
 
@@ -220,16 +228,21 @@ class FieldElementParser {
   JsonConverterConfig? _parseJsonConverterAnnotation(
     ElementAnnotation annotation,
   ) {
+    final typeChecker = jsonConverterTypeChecker;
+    if (typeChecker == null) {
+      return null;
+    }
+
     final source = annotation.toSource();
     final objectType = annotation.computeConstantValue()!.type!;
 
-    if (!jsonConverterTypeChecker.isAssignableFromType(objectType)) {
+    if (!typeChecker.isAssignableFromType(objectType)) {
       return null;
     }
 
     final interfaceTypes = (objectType.element! as ClassElement)
         .allSupertypes
-        .where(jsonConverterTypeChecker.isExactlyType);
+        .where(typeChecker.isExactlyType);
     final typeArguments = interfaceTypes.first.typeArguments;
     if (typeArguments.length == 2) {
       final clientType = typeArguments[0];
@@ -251,16 +264,21 @@ class FieldElementParser {
   JsonPostProcessorConfig? _parseJsonPostProcessorAnnotation(
     ElementAnnotation annotation,
   ) {
+    final typeChecker = jsonPostProcessorTypeChecker;
+    if (typeChecker == null) {
+      return null;
+    }
+
     final source = annotation.toSource();
     final objectType = annotation.computeConstantValue()!.type!;
 
-    if (!jsonPostProcessorTypeChecker.isAssignableFromType(objectType)) {
+    if (!typeChecker.isAssignableFromType(objectType)) {
       return null;
     }
 
     final interfaceTypes = (objectType.element! as ClassElement)
         .allSupertypes
-        .where(jsonPostProcessorTypeChecker.isExactlyType);
+        .where(typeChecker.isExactlyType);
     final typeArguments = interfaceTypes.first.typeArguments;
     if (typeArguments.length == 2) {
       final clientType = typeArguments[0];
@@ -279,24 +297,36 @@ class FieldElementParser {
     return null;
   }
 
-  bool _parseAllowFieldValueAnnotation(ElementAnnotation annotation) {
-    final objectType = annotation.computeConstantValue()!.type!;
-    return allowFieldValueTypeChecker.isExactlyType(objectType);
-  }
+  bool _parseAllowFieldValueAnnotation(ElementAnnotation annotation) =>
+      _parseBoolTypeAnnotation(
+        annotation: annotation,
+        typeChecker: allowFieldValueTypeChecker,
+      );
 
   bool _parseAlwaysUseFieldValueServerTimestampWhenCreatingAnnotation(
     ElementAnnotation annotation,
-  ) {
-    final objectType = annotation.computeConstantValue()!.type!;
-    return alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker
-        .isExactlyType(objectType);
-  }
+  ) =>
+      _parseBoolTypeAnnotation(
+        annotation: annotation,
+        typeChecker: alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker,
+      );
 
   bool _parseAlwaysUseFieldValueServerTimestampWhenUpdatingAnnotation(
     ElementAnnotation annotation,
-  ) {
+  ) =>
+      _parseBoolTypeAnnotation(
+        annotation: annotation,
+        typeChecker: alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker,
+      );
+
+  bool _parseBoolTypeAnnotation({
+    required ElementAnnotation annotation,
+    required TypeChecker? typeChecker,
+  }) {
+    if (typeChecker == null) {
+      return false;
+    }
     final objectType = annotation.computeConstantValue()!.type!;
-    return alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker
-        .isExactlyType(objectType);
+    return typeChecker.isExactlyType(objectType);
   }
 }
