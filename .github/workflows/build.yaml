@@ -67,8 +67,19 @@ jobs:
       - name: Run tests
         run: |
           if grep -q "name: example" "pubspec.yaml"; then
-            flutter test
+            flutter test --coverage
           else
-            dart test
+            dart test --coverage=./coverage
+            dart run coverage:format_coverage --lcov --in=./coverage --out=./coverage/lcov.info --report-on=lib
           fi
         working-directory: ${{ matrix.package }}
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: true
+          flags: unittests
+          name: codecov-umbrella
+          working-directory: ${{ matrix.package }}
