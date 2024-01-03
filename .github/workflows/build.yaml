@@ -82,3 +82,4 @@ jobs:
           fail_ci_if_error: true
           flags: unittests
           name: codecov-umbrella
+          working-directory: ${{ matrix.package }}
