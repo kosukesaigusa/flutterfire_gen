@@ -8,7 +8,12 @@ import 'package:test/test.dart';
 
 import 'dart_type_util_test.mocks.dart';
 
-@GenerateMocks([DynamicType, InterfaceType, InterfaceElement])
+@GenerateMocks([
+  DynamicType,
+  InterfaceType,
+  InterfaceElement,
+  TypeParameterType,
+])
 void main() {
   group('DartTypeExtension tests', () {
     final intType = MockInterfaceType();
@@ -88,6 +93,17 @@ void main() {
           'FirestoreData<List<String>>',
         );
       });
+
+      test(
+        'TypeParameterType (Generics T) type throws Unimplemented error',
+        () {
+          final typeParameterType = MockTypeParameterType();
+          expect(
+            typeParameterType.typeName,
+            throwsA(isA<UnimplementedError>()),
+          );
+        },
+      );
     });
   });
 }
