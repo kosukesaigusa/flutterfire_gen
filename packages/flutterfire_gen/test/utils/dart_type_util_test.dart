@@ -156,6 +156,16 @@ void main() {
       expect(intType.isDateTimeType, false);
     });
 
+    group('firstTypeArgumentOfList test', () {
+      test('List<String> type returns String type', () {
+        expect(listOfStringsType.firstTypeArgumentOfList, stringType);
+      });
+
+      test('String type returns null', () {
+        expect(stringType.firstTypeArgumentOfList, null);
+      });
+    });
+
     group('isJsonMap test', () {
       test('Map<String, dynamic> type is JSON map', () {
         expect(jsonMapType.isJsonMap, true);
@@ -166,13 +176,18 @@ void main() {
       });
     });
 
-    group('firstTypeArgumentOfList test', () {
-      test('List<String> type returns String type', () {
-        expect(listOfStringsType.firstTypeArgumentOfList, stringType);
+    group('keyValueOfMap test', () {
+      test(
+          'Map<String, dynamic> type returns '
+          'Record of (key: stringType, value: dynamicType)', () {
+        expect(
+          jsonMapType.keyValueOfMap,
+          (key: stringType, value: dynamicType),
+        );
       });
 
-      test('String type returns null', () {
-        expect(stringType.firstTypeArgumentOfList, null);
+      test('Map<int, dynamic> type returns null', () {
+        expect(intDynamicMapType.keyValueOfMap, null);
       });
     });
   });
