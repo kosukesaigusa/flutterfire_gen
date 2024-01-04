@@ -18,7 +18,6 @@ void main() {
   group('DartTypeExtension tests', () {
     final intType = MockInterfaceType();
     final intElement = MockInterfaceElement();
-
     when(intElement.name).thenReturn('int');
     when(intType.element).thenReturn(intElement);
     when(intType.typeArguments).thenReturn([]);
@@ -46,6 +45,13 @@ void main() {
     when(nullableStringType.typeArguments).thenReturn([]);
     when(nullableStringType.nullabilitySuffix)
         .thenReturn(NullabilitySuffix.question);
+
+    final dateTimeType = MockInterfaceType();
+    final dateTimeElement = MockInterfaceElement();
+    when(dateTimeElement.name).thenReturn('DateTime');
+    when(dateTimeType.element).thenReturn(dateTimeElement);
+    when(dateTimeType.typeArguments).thenReturn([]);
+    when(dateTimeType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
 
     final listOfStringsType = MockInterfaceType();
     final listOfStringsElement = MockInterfaceElement();
@@ -104,6 +110,11 @@ void main() {
           );
         },
       );
+    });
+
+    test('isDateTimeType test', () {
+      expect(dateTimeType.isDateTimeType, true);
+      expect(intType.isDateTimeType, false);
     });
   });
 }
