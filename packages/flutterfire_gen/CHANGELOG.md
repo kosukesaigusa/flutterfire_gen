@@ -2,6 +2,7 @@
 
 * Refactor `FieldElementParser` to enable to write unit test.
 * Add `field_element_parser_test.dart`.
+* Add `dart_type_util.dart` tests.
 
 ## 0.3.0-dev.5
 

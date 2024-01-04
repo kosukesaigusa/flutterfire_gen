@@ -98,15 +98,6 @@ extension DartTypeExtension on DartType {
         return code;
       }
     }
-
-    if (type is TypeParameterType) {
-      final code = type.getDisplayString(withNullability: false);
-      if (wrapByFirestoreData) {
-        return _wrapByFirestoreData(code);
-      } else {
-        return code;
-      }
-    }
     throw UnimplementedError('(${type.runtimeType}) $type');
   }
 
