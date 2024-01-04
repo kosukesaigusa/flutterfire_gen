@@ -58,6 +58,7 @@ void main() {
       when(stringType.typeArguments).thenReturn([]);
       when(stringType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
       when(stringType.isDartCoreString).thenReturn(true);
+      when(stringType.isDartCoreList).thenReturn(false);
 
       nullableStringType = MockInterfaceType();
       nullableStringElement = MockInterfaceElement();
@@ -78,11 +79,10 @@ void main() {
       listOfStringsElement = MockInterfaceElement();
       when(listOfStringsElement.name).thenReturn('List');
       when(listOfStringsType.element).thenReturn(listOfStringsElement);
-      when(listOfStringsType.typeArguments).thenReturn([
-        stringType,
-      ]);
+      when(listOfStringsType.typeArguments).thenReturn([stringType]);
       when(listOfStringsType.nullabilitySuffix)
           .thenReturn(NullabilitySuffix.none);
+      when(listOfStringsType.isDartCoreList).thenReturn(true);
 
       jsonMapType = MockInterfaceType();
       dynamicType = MockDynamicType();
@@ -90,10 +90,7 @@ void main() {
       when(mapElement.name).thenReturn('Map');
       when(jsonMapType.isDartCoreMap).thenReturn(true);
       when(jsonMapType.element).thenReturn(mapElement);
-      when(jsonMapType.typeArguments).thenReturn([
-        stringType,
-        dynamicType,
-      ]);
+      when(jsonMapType.typeArguments).thenReturn([stringType, dynamicType]);
       when(jsonMapType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
 
       intDynamicMapType = MockInterfaceType();
@@ -166,6 +163,16 @@ void main() {
 
       test('Map<int, dynamic> type is not JSON map', () {
         expect(intDynamicMapType.isJsonMap, false);
+      });
+    });
+
+    group('firstTypeArgumentOfList test', () {
+      test('List<String> type returns String type', () {
+        expect(listOfStringsType.firstTypeArgumentOfList, stringType);
+      });
+
+      test('String type returns null', () {
+        expect(stringType.firstTypeArgumentOfList, null);
       });
     });
   });
