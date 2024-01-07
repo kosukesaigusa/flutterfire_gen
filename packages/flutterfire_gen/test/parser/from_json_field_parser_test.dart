@@ -25,6 +25,8 @@ void main() {
     late final MockInterfaceElement jsonMapElement;
     late final MockInterfaceType nullableJsonMapType;
     late final MockInterfaceElement nullableJsonMapElement;
+    late final MockInterfaceType mapStringDynamicJsonMapType;
+    late final MockInterfaceElement mapStringDynamicJsonMapElement;
 
     setUpAll(() {
       dynamicType = MockDynamicType();
@@ -91,6 +93,20 @@ void main() {
       when(nullableJsonMapType.typeArguments).thenReturn([
         stringType,
         dynamicType,
+      ]);
+
+      mapStringDynamicJsonMapType = MockInterfaceType();
+      mapStringDynamicJsonMapElement = MockInterfaceElement();
+      when(mapStringDynamicJsonMapElement.name).thenReturn('Map');
+      when(mapStringDynamicJsonMapType.isDartCoreList).thenReturn(false);
+      when(mapStringDynamicJsonMapType.isDartCoreMap).thenReturn(true);
+      when(mapStringDynamicJsonMapType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.none);
+      when(mapStringDynamicJsonMapType.element)
+          .thenReturn(mapStringDynamicJsonMapElement);
+      when(mapStringDynamicJsonMapType.typeArguments).thenReturn([
+        stringType,
+        jsonMapType,
       ]);
     });
 
@@ -191,6 +207,20 @@ void main() {
       expect(
         result,
         "jsonMap: extendedJson['jsonMap'] as Map<String, dynamic>?,",
+      );
+    });
+
+    test('test Map<String, Map<String, dynamic>> field', () {
+      final parser = FromJsonFieldParser(
+        name: 'nestedJsonMap',
+        dartType: mapStringDynamicJsonMapType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        """nestedJsonMap: (extendedJson['nestedJsonMap'] as Map<String, dynamic>).map((k, v) => MapEntry(k, v as Map<String, dynamic>)),""",
       );
     });
   });
