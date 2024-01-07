@@ -14,6 +14,8 @@ void main() {
   group('FromJsonFieldParser test', () {
     late final MockInterfaceType stringDartType;
     late final MockInterfaceElement stringElement;
+    late final MockInterfaceType nullableStringDartType;
+    late final MockInterfaceElement nullableStringElement;
 
     setUpAll(() {
       stringDartType = MockInterfaceType();
@@ -24,6 +26,16 @@ void main() {
       when(stringDartType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
       when(stringDartType.element).thenReturn(stringElement);
       when(stringDartType.typeArguments).thenReturn([]);
+
+      nullableStringDartType = MockInterfaceType();
+      nullableStringElement = MockInterfaceElement();
+      when(nullableStringElement.name).thenReturn('String');
+      when(nullableStringDartType.isDartCoreList).thenReturn(false);
+      when(nullableStringDartType.isJsonMap).thenReturn(false);
+      when(nullableStringDartType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.question);
+      when(nullableStringDartType.element).thenReturn(nullableStringElement);
+      when(nullableStringDartType.typeArguments).thenReturn([]);
     });
 
     test('test String field', () {
@@ -46,6 +58,17 @@ void main() {
       );
       final result = parser.toString();
       expect(result, "text: extendedJson['text'] as String? ?? 'defaultText',");
+    });
+
+    test('test String? field', () {
+      final parser = FromJsonFieldParser(
+        name: 'text',
+        dartType: nullableStringDartType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(result, "text: extendedJson['text'] as String?,");
     });
   });
 }
