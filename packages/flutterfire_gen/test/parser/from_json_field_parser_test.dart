@@ -70,5 +70,16 @@ void main() {
       final result = parser.toString();
       expect(result, "text: extendedJson['text'] as String?,");
     });
+
+    test('test String? field with default value', () {
+      final parser = FromJsonFieldParser(
+        name: 'text',
+        dartType: nullableStringDartType,
+        defaultValueString: "'defaultText'",
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(result, "text: extendedJson['text'] as String? ?? 'defaultText',");
+    });
   });
 }
