@@ -1,5 +1,10 @@
-## Unreleased changes
+## 0.4.0
 
+> [!NOTE]
+> This release has breaking changes.
+
+* **Breaking**: Update `cloud_firestore` package version to `4.14.0`, which is not compatible with its previous version `4.13.6` or lower because of the `count` query return type change. See the `cloud_firestore` package diff [here](https://github.com/firebase/flutterfire/commit/82af6c2f40160a9e2f74e2d48652003fa48bb161#diff-a7d6f2f7fa9f6ad84f9faf884d4a507f5e85a06d88e64b99578de885a0b637d5R19).
+* Update `flutterfire_gen`, `flutterfire_gen_utils` dependency versions.
 * Refactor `FieldElementParser` to enable to write unit test.
 * Add `field_element_parser_test.dart`.
 * Add `dart_type_util.dart` tests.
