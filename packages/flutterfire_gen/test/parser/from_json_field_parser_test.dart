@@ -16,6 +16,8 @@ void main() {
     late final MockInterfaceElement stringElement;
     late final MockInterfaceType nullableStringDartType;
     late final MockInterfaceElement nullableStringElement;
+    late final MockInterfaceType dateTimeDartType;
+    late final MockInterfaceElement dateTimeElement;
 
     setUpAll(() {
       stringDartType = MockInterfaceType();
@@ -36,6 +38,16 @@ void main() {
           .thenReturn(NullabilitySuffix.question);
       when(nullableStringDartType.element).thenReturn(nullableStringElement);
       when(nullableStringDartType.typeArguments).thenReturn([]);
+
+      dateTimeDartType = MockInterfaceType();
+      dateTimeElement = MockInterfaceElement();
+      when(dateTimeElement.name).thenReturn('DateTime');
+      when(dateTimeDartType.isDartCoreList).thenReturn(false);
+      when(dateTimeDartType.isJsonMap).thenReturn(false);
+      when(dateTimeDartType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.none);
+      when(dateTimeDartType.element).thenReturn(dateTimeElement);
+      when(dateTimeDartType.typeArguments).thenReturn([]);
     });
 
     test('test String field', () {
@@ -80,6 +92,20 @@ void main() {
       );
       final result = parser.toString();
       expect(result, "text: extendedJson['text'] as String? ?? 'defaultText',");
+    });
+
+    test('test DateTime field', () {
+      final parser = FromJsonFieldParser(
+        name: 'createdAt',
+        dartType: dateTimeDartType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        "createdAt: (extendedJson['createdAt'] as Timestamp).toDate(),",
+      );
     });
   });
 }
