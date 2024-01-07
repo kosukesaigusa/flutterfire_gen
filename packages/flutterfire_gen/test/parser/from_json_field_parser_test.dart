@@ -23,6 +23,8 @@ void main() {
     late final MockInterfaceElement nullableDateTimeElement;
     late final MockInterfaceType jsonMapType;
     late final MockInterfaceElement jsonMapElement;
+    late final MockInterfaceType nullableJsonMapType;
+    late final MockInterfaceElement nullableJsonMapElement;
 
     setUpAll(() {
       dynamicType = MockDynamicType();
@@ -74,6 +76,19 @@ void main() {
       when(jsonMapType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
       when(jsonMapType.element).thenReturn(jsonMapElement);
       when(jsonMapType.typeArguments).thenReturn([
+        stringType,
+        dynamicType,
+      ]);
+
+      nullableJsonMapType = MockInterfaceType();
+      nullableJsonMapElement = MockInterfaceElement();
+      when(nullableJsonMapElement.name).thenReturn('Map');
+      when(nullableJsonMapType.isDartCoreList).thenReturn(false);
+      when(nullableJsonMapType.isDartCoreMap).thenReturn(true);
+      when(nullableJsonMapType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.question);
+      when(nullableJsonMapType.element).thenReturn(nullableJsonMapElement);
+      when(nullableJsonMapType.typeArguments).thenReturn([
         stringType,
         dynamicType,
       ]);
@@ -162,6 +177,20 @@ void main() {
       expect(
         result,
         "jsonMap: extendedJson['jsonMap'] as Map<String, dynamic>,",
+      );
+    });
+
+    test('test Map<String, dynamic>? field', () {
+      final parser = FromJsonFieldParser(
+        name: 'jsonMap',
+        dartType: nullableJsonMapType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        "jsonMap: extendedJson['jsonMap'] as Map<String, dynamic>?,",
       );
     });
   });
