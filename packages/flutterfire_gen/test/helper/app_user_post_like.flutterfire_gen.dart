@@ -485,7 +485,7 @@ class AppUserPostLikeQuery {
   /// - [asCollectionGroup] Count the 'appUserPostLikes' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
-  Future<int> count({
+  Future<int?> count({
     required String appUserId,
     required String appUserPostId,
     Query<ReadAppUserPostLike>? Function(Query<ReadAppUserPostLike> query)?

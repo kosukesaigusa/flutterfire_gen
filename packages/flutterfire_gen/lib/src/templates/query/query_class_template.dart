@@ -137,7 +137,7 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
     });
   }
 
-  ${docCommentTemplate.forCountMethod()}Future<int> count({
+  ${docCommentTemplate.forCountMethod()}Future<int?> count({
     $documentIdMethodParametersDefinition
     Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,

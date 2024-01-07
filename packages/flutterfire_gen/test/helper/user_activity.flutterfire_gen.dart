@@ -450,7 +450,7 @@ class UserActivityQuery {
   /// - [asCollectionGroup] Count the 'activities' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
-  Future<int> count({
+  Future<int?> count({
     required String userId,
     Query<ReadUserActivity>? Function(Query<ReadUserActivity> query)?
         queryBuilder,

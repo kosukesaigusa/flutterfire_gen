@@ -389,7 +389,7 @@ class FcmTokenQuery {
   /// - [asCollectionGroup] Count the 'fcmTokens' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
-  Future<int> count({
+  Future<int?> count({
     Query<ReadFcmToken>? Function(Query<ReadFcmToken> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
