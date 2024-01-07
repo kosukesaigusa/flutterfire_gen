@@ -1110,3 +1110,230 @@ class MockInterfaceElement extends _i1.Mock implements _i2.InterfaceElement {
         returnValueForMissingStub: null,
       );
 }
+
+/// A class which mocks [DynamicType].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDynamicType extends _i1.Mock implements _i3.DynamicType {
+  MockDynamicType() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get isBottom => (super.noSuchMethod(
+        Invocation.getter(#isBottom),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartAsyncFuture => (super.noSuchMethod(
+        Invocation.getter(#isDartAsyncFuture),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartAsyncFutureOr => (super.noSuchMethod(
+        Invocation.getter(#isDartAsyncFutureOr),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartAsyncStream => (super.noSuchMethod(
+        Invocation.getter(#isDartAsyncStream),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreBool => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreBool),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreDouble => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreDouble),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreEnum => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreEnum),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreFunction => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreFunction),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreInt => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreInt),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreIterable => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreIterable),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreList => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreList),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreMap => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreMap),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreNull => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreNull),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreNum => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreNum),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreObject => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreObject),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreRecord => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreRecord),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreSet => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreSet),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreString => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreString),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreSymbol => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreSymbol),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDartCoreType => (super.noSuchMethod(
+        Invocation.getter(#isDartCoreType),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isDynamic => (super.noSuchMethod(
+        Invocation.getter(#isDynamic),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  bool get isVoid => (super.noSuchMethod(
+        Invocation.getter(#isVoid),
+        returnValue: false,
+      ) as bool);
+
+  @override
+  _i6.NullabilitySuffix get nullabilitySuffix => (super.noSuchMethod(
+        Invocation.getter(#nullabilitySuffix),
+        returnValue: _i6.NullabilitySuffix.question,
+      ) as _i6.NullabilitySuffix);
+
+  @override
+  R accept<R>(_i7.TypeVisitor<R>? visitor) => (super.noSuchMethod(
+        Invocation.method(
+          #accept,
+          [visitor],
+        ),
+        returnValue: _i8.dummyValue<R>(
+          this,
+          Invocation.method(
+            #accept,
+            [visitor],
+          ),
+        ),
+      ) as R);
+
+  @override
+  R acceptWithArgument<R, A>(
+    _i7.TypeVisitorWithArgument<R, A>? visitor,
+    A? argument,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #acceptWithArgument,
+          [
+            visitor,
+            argument,
+          ],
+        ),
+        returnValue: _i8.dummyValue<R>(
+          this,
+          Invocation.method(
+            #acceptWithArgument,
+            [
+              visitor,
+              argument,
+            ],
+          ),
+        ),
+      ) as R);
+
+  @override
+  _i3.InterfaceType? asInstanceOf(_i2.InterfaceElement? element) =>
+      (super.noSuchMethod(Invocation.method(
+        #asInstanceOf,
+        [element],
+      )) as _i3.InterfaceType?);
+
+  @override
+  String getDisplayString({required bool? withNullability}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getDisplayString,
+          [],
+          {#withNullability: withNullability},
+        ),
+        returnValue: _i8.dummyValue<String>(
+          this,
+          Invocation.method(
+            #getDisplayString,
+            [],
+            {#withNullability: withNullability},
+          ),
+        ),
+      ) as String);
+
+  @override
+  _i3.DartType resolveToBound(_i3.DartType? objectType) => (super.noSuchMethod(
+        Invocation.method(
+          #resolveToBound,
+          [objectType],
+        ),
+        returnValue: _FakeDartType_1(
+          this,
+          Invocation.method(
+            #resolveToBound,
+            [objectType],
+          ),
+        ),
+      ) as _i3.DartType);
+}

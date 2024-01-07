@@ -9,9 +9,10 @@ import 'package:test/test.dart';
 
 import 'from_json_field_parser_test.mocks.dart';
 
-@GenerateMocks([InterfaceType, InterfaceElement])
+@GenerateMocks([InterfaceType, InterfaceElement, DynamicType])
 void main() {
   group('FromJsonFieldParser test', () {
+    late final MockDynamicType dynamicType;
     late final MockInterfaceType stringDartType;
     late final MockInterfaceElement stringElement;
     late final MockInterfaceType nullableStringDartType;
@@ -20,13 +21,18 @@ void main() {
     late final MockInterfaceElement dateTimeElement;
     late final MockInterfaceType nullableDateTimeDartType;
     late final MockInterfaceElement nullableDateTimeElement;
+    late final MockInterfaceType jsonMapDartType;
+    late final MockInterfaceElement jsonMapElement;
 
     setUpAll(() {
+      dynamicType = MockDynamicType();
+
       stringDartType = MockInterfaceType();
       stringElement = MockInterfaceElement();
       when(stringElement.name).thenReturn('String');
       when(stringDartType.isDartCoreList).thenReturn(false);
       when(stringDartType.isJsonMap).thenReturn(false);
+      when(stringDartType.isDartCoreString).thenReturn(true);
       when(stringDartType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
       when(stringDartType.element).thenReturn(stringElement);
       when(stringDartType.typeArguments).thenReturn([]);
@@ -61,6 +67,19 @@ void main() {
       when(nullableDateTimeDartType.element)
           .thenReturn(nullableDateTimeElement);
       when(nullableDateTimeDartType.typeArguments).thenReturn([]);
+
+      jsonMapDartType = MockInterfaceType();
+      jsonMapElement = MockInterfaceElement();
+      when(jsonMapElement.name).thenReturn('Map');
+      when(jsonMapDartType.isDartCoreList).thenReturn(false);
+      when(jsonMapDartType.isDartCoreMap).thenReturn(true);
+      when(jsonMapDartType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.none);
+      when(jsonMapDartType.element).thenReturn(jsonMapElement);
+      when(jsonMapDartType.typeArguments).thenReturn([
+        stringDartType,
+        dynamicType,
+      ]);
     });
 
     test('test String field', () {
@@ -132,6 +151,20 @@ void main() {
       expect(
         result,
         "createdAt: (extendedJson['createdAt'] as Timestamp?)?.toDate(),",
+      );
+    });
+
+    test('test Map<String, dynamic> field', () {
+      final parser = FromJsonFieldParser(
+        name: 'jsonMap',
+        dartType: jsonMapDartType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        "jsonMap: extendedJson['jsonMap'] as Map<String, dynamic>,",
       );
     });
   });
