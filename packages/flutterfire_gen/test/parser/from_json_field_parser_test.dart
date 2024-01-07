@@ -27,9 +27,23 @@ void main() {
     late final MockInterfaceElement nullableJsonMapElement;
     late final MockInterfaceType mapStringDynamicJsonMapType;
     late final MockInterfaceElement mapStringDynamicJsonMapElement;
+    late final MockInterfaceType mapStringIntType;
+    late final MockInterfaceElement mapStringIntElement;
+    late final MockInterfaceType mapStringIntJsonMapType;
+    late final MockInterfaceElement mapStringIntJsonMapElement;
 
     setUpAll(() {
       dynamicType = MockDynamicType();
+
+      final intType = MockInterfaceType();
+      final intElement = MockInterfaceElement();
+      when(intElement.name).thenReturn('int');
+      when(intType.isDartCoreList).thenReturn(false);
+      when(intType.isJsonMap).thenReturn(false);
+      when(intType.isDartCoreInt).thenReturn(true);
+      when(intType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
+      when(intType.element).thenReturn(intElement);
+      when(intType.typeArguments).thenReturn([]);
 
       stringType = MockInterfaceType();
       stringElement = MockInterfaceElement();
@@ -107,6 +121,33 @@ void main() {
       when(mapStringDynamicJsonMapType.typeArguments).thenReturn([
         stringType,
         jsonMapType,
+      ]);
+
+      mapStringIntType = MockInterfaceType();
+      mapStringIntElement = MockInterfaceElement();
+      when(mapStringIntElement.name).thenReturn('Map');
+      when(mapStringIntType.isDartCoreList).thenReturn(false);
+      when(mapStringIntType.isDartCoreMap).thenReturn(true);
+      when(mapStringIntType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.none);
+      when(mapStringIntType.element).thenReturn(mapStringIntElement);
+      when(mapStringIntType.typeArguments).thenReturn([
+        stringType,
+        intType,
+      ]);
+
+      mapStringIntJsonMapType = MockInterfaceType();
+      mapStringIntJsonMapElement = MockInterfaceElement();
+      when(mapStringIntJsonMapElement.name).thenReturn('Map');
+      when(mapStringIntJsonMapType.isDartCoreList).thenReturn(false);
+      when(mapStringIntJsonMapType.isDartCoreMap).thenReturn(true);
+      when(mapStringIntJsonMapType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.none);
+      when(mapStringIntJsonMapType.element)
+          .thenReturn(mapStringIntJsonMapElement);
+      when(mapStringIntJsonMapType.typeArguments).thenReturn([
+        stringType,
+        mapStringIntType,
       ]);
     });
 
@@ -212,7 +253,7 @@ void main() {
 
     test('test Map<String, Map<String, dynamic>> field', () {
       final parser = FromJsonFieldParser(
-        name: 'nestedJsonMap',
+        name: 'mapStringDynamicJsonMap',
         dartType: mapStringDynamicJsonMapType,
         defaultValueString: null,
         jsonConverterConfig: null,
@@ -220,7 +261,21 @@ void main() {
       final result = parser.toString();
       expect(
         result,
-        """nestedJsonMap: (extendedJson['nestedJsonMap'] as Map<String, dynamic>).map((k, v) => MapEntry(k, v as Map<String, dynamic>)),""",
+        """mapStringDynamicJsonMap: (extendedJson['mapStringDynamicJsonMap'] as Map<String, dynamic>).map((k, v) => MapEntry(k, v as Map<String, dynamic>)),""",
+      );
+    });
+
+    test('test Map<String, Map<String, int>> field', () {
+      final parser = FromJsonFieldParser(
+        name: 'mapStringIntJsonMap',
+        dartType: mapStringIntJsonMapType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        """mapStringIntJsonMap: (extendedJson['mapStringIntJsonMap'] as Map<String, dynamic>).map((k, v) => MapEntry(k, (v as Map<String, dynamic>).map((k, v) => MapEntry(k, v as int)))),""",
       );
     });
   });
