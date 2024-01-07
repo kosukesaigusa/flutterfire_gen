@@ -13,71 +13,68 @@ import 'from_json_field_parser_test.mocks.dart';
 void main() {
   group('FromJsonFieldParser test', () {
     late final MockDynamicType dynamicType;
-    late final MockInterfaceType stringDartType;
+    late final MockInterfaceType stringType;
     late final MockInterfaceElement stringElement;
-    late final MockInterfaceType nullableStringDartType;
+    late final MockInterfaceType nullableStringType;
     late final MockInterfaceElement nullableStringElement;
-    late final MockInterfaceType dateTimeDartType;
+    late final MockInterfaceType dateTimeType;
     late final MockInterfaceElement dateTimeElement;
-    late final MockInterfaceType nullableDateTimeDartType;
+    late final MockInterfaceType nullableDateTimeType;
     late final MockInterfaceElement nullableDateTimeElement;
-    late final MockInterfaceType jsonMapDartType;
+    late final MockInterfaceType jsonMapType;
     late final MockInterfaceElement jsonMapElement;
 
     setUpAll(() {
       dynamicType = MockDynamicType();
 
-      stringDartType = MockInterfaceType();
+      stringType = MockInterfaceType();
       stringElement = MockInterfaceElement();
       when(stringElement.name).thenReturn('String');
-      when(stringDartType.isDartCoreList).thenReturn(false);
-      when(stringDartType.isJsonMap).thenReturn(false);
-      when(stringDartType.isDartCoreString).thenReturn(true);
-      when(stringDartType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
-      when(stringDartType.element).thenReturn(stringElement);
-      when(stringDartType.typeArguments).thenReturn([]);
+      when(stringType.isDartCoreList).thenReturn(false);
+      when(stringType.isJsonMap).thenReturn(false);
+      when(stringType.isDartCoreString).thenReturn(true);
+      when(stringType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
+      when(stringType.element).thenReturn(stringElement);
+      when(stringType.typeArguments).thenReturn([]);
 
-      nullableStringDartType = MockInterfaceType();
+      nullableStringType = MockInterfaceType();
       nullableStringElement = MockInterfaceElement();
       when(nullableStringElement.name).thenReturn('String');
-      when(nullableStringDartType.isDartCoreList).thenReturn(false);
-      when(nullableStringDartType.isJsonMap).thenReturn(false);
-      when(nullableStringDartType.nullabilitySuffix)
+      when(nullableStringType.isDartCoreList).thenReturn(false);
+      when(nullableStringType.isJsonMap).thenReturn(false);
+      when(nullableStringType.nullabilitySuffix)
           .thenReturn(NullabilitySuffix.question);
-      when(nullableStringDartType.element).thenReturn(nullableStringElement);
-      when(nullableStringDartType.typeArguments).thenReturn([]);
+      when(nullableStringType.element).thenReturn(nullableStringElement);
+      when(nullableStringType.typeArguments).thenReturn([]);
 
-      dateTimeDartType = MockInterfaceType();
+      dateTimeType = MockInterfaceType();
       dateTimeElement = MockInterfaceElement();
       when(dateTimeElement.name).thenReturn('DateTime');
-      when(dateTimeDartType.isDartCoreList).thenReturn(false);
-      when(dateTimeDartType.isJsonMap).thenReturn(false);
-      when(dateTimeDartType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.none);
-      when(dateTimeDartType.element).thenReturn(dateTimeElement);
-      when(dateTimeDartType.typeArguments).thenReturn([]);
+      when(dateTimeType.isDartCoreList).thenReturn(false);
+      when(dateTimeType.isJsonMap).thenReturn(false);
+      when(dateTimeType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
+      when(dateTimeType.element).thenReturn(dateTimeElement);
+      when(dateTimeType.typeArguments).thenReturn([]);
 
-      nullableDateTimeDartType = MockInterfaceType();
+      nullableDateTimeType = MockInterfaceType();
       nullableDateTimeElement = MockInterfaceElement();
       when(nullableDateTimeElement.name).thenReturn('DateTime');
-      when(nullableDateTimeDartType.isDartCoreList).thenReturn(false);
-      when(nullableDateTimeDartType.isJsonMap).thenReturn(false);
-      when(nullableDateTimeDartType.nullabilitySuffix)
+      when(nullableDateTimeType.isDartCoreList).thenReturn(false);
+      when(nullableDateTimeType.isJsonMap).thenReturn(false);
+      when(nullableDateTimeType.nullabilitySuffix)
           .thenReturn(NullabilitySuffix.question);
-      when(nullableDateTimeDartType.element)
-          .thenReturn(nullableDateTimeElement);
-      when(nullableDateTimeDartType.typeArguments).thenReturn([]);
+      when(nullableDateTimeType.element).thenReturn(nullableDateTimeElement);
+      when(nullableDateTimeType.typeArguments).thenReturn([]);
 
-      jsonMapDartType = MockInterfaceType();
+      jsonMapType = MockInterfaceType();
       jsonMapElement = MockInterfaceElement();
       when(jsonMapElement.name).thenReturn('Map');
-      when(jsonMapDartType.isDartCoreList).thenReturn(false);
-      when(jsonMapDartType.isDartCoreMap).thenReturn(true);
-      when(jsonMapDartType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.none);
-      when(jsonMapDartType.element).thenReturn(jsonMapElement);
-      when(jsonMapDartType.typeArguments).thenReturn([
-        stringDartType,
+      when(jsonMapType.isDartCoreList).thenReturn(false);
+      when(jsonMapType.isDartCoreMap).thenReturn(true);
+      when(jsonMapType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
+      when(jsonMapType.element).thenReturn(jsonMapElement);
+      when(jsonMapType.typeArguments).thenReturn([
+        stringType,
         dynamicType,
       ]);
     });
@@ -85,7 +82,7 @@ void main() {
     test('test String field', () {
       final parser = FromJsonFieldParser(
         name: 'text',
-        dartType: stringDartType,
+        dartType: stringType,
         defaultValueString: null,
         jsonConverterConfig: null,
       );
@@ -96,7 +93,7 @@ void main() {
     test('test String field with default value', () {
       final parser = FromJsonFieldParser(
         name: 'text',
-        dartType: stringDartType,
+        dartType: stringType,
         defaultValueString: "'defaultText'",
         jsonConverterConfig: null,
       );
@@ -107,7 +104,7 @@ void main() {
     test('test String? field', () {
       final parser = FromJsonFieldParser(
         name: 'text',
-        dartType: nullableStringDartType,
+        dartType: nullableStringType,
         defaultValueString: null,
         jsonConverterConfig: null,
       );
@@ -118,7 +115,7 @@ void main() {
     test('test String? field with default value', () {
       final parser = FromJsonFieldParser(
         name: 'text',
-        dartType: nullableStringDartType,
+        dartType: nullableStringType,
         defaultValueString: "'defaultText'",
         jsonConverterConfig: null,
       );
@@ -129,7 +126,7 @@ void main() {
     test('test DateTime field', () {
       final parser = FromJsonFieldParser(
         name: 'createdAt',
-        dartType: dateTimeDartType,
+        dartType: dateTimeType,
         defaultValueString: null,
         jsonConverterConfig: null,
       );
@@ -143,7 +140,7 @@ void main() {
     test('test DateTime? field', () {
       final parser = FromJsonFieldParser(
         name: 'createdAt',
-        dartType: nullableDateTimeDartType,
+        dartType: nullableDateTimeType,
         defaultValueString: null,
         jsonConverterConfig: null,
       );
@@ -157,7 +154,7 @@ void main() {
     test('test Map<String, dynamic> field', () {
       final parser = FromJsonFieldParser(
         name: 'jsonMap',
-        dartType: jsonMapDartType,
+        dartType: jsonMapType,
         defaultValueString: null,
         jsonConverterConfig: null,
       );
