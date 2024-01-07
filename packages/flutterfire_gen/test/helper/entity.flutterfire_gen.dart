@@ -1106,7 +1106,7 @@ class EntityQuery {
   /// - [asCollectionGroup] Count the 'entities' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
-  Future<int> count({
+  Future<int?> count({
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,

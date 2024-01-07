@@ -556,7 +556,7 @@ class ChatMessageQuery {
   /// - [asCollectionGroup] Count the 'chatMessages' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
-  Future<int> count({
+  Future<int?> count({
     required String chatRoomId,
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
         queryBuilder,

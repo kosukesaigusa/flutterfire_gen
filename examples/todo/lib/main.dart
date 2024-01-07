@@ -95,6 +95,9 @@ class _TodoListPageState extends ConsumerState<TodoListPage> {
               final count = await ref
                   .read(todoListProvider.notifier)
                   .countNotCompletedTodos();
+              if (count == null) {
+                return;
+              }
               if (!mounted) {
                 return;
               }

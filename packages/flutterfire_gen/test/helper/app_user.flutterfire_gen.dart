@@ -387,7 +387,7 @@ class AppUserQuery {
   /// - [asCollectionGroup] Count the 'appUsers' as a collection group if true.
   ///
   /// Returns the count of documents as an integer.
-  Future<int> count({
+  Future<int?> count({
     Query<ReadAppUser>? Function(Query<ReadAppUser> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,

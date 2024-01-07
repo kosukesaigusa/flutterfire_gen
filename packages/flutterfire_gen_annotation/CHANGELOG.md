@@ -1,3 +1,7 @@
+## 0.4.0
+
+* Update flutterfire_gen_annotation package version.
+
 ## 0.3.0-dev.1
 
 * Update doc comments.
