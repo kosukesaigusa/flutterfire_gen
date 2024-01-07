@@ -1,3 +1,10 @@
+## 0.4.0
+
+> [!NOTE]
+> This release has breaking changes.
+
+* Update `cloud_firestore` package version to `4.14.0`, which might be not compatible with previous versions.
+
 ## 0.3.0-dev.2
 
 * Remove direct dependency on Flutter SDK.
