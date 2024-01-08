@@ -460,5 +460,5 @@ Future<void> incrementCount(String counterId) => query.update(
 [version-badge]: https://img.shields.io/pub/v/flutterfire_gen.svg
 [package]: https://pub.dartlang.org/packages/flutterfire_gen
 [license-badge]: https://img.shields.io/github/license/KosukeSaigusa/flutterfire_gen.svg
-[license]: https://github.com/KosukeSaigusa/flutterfire_gen/blob/master/LICENSE
+[license]: https://github.com/KosukeSaigusa/flutterfire_gen/blob/master/packages/flutterfire_gen/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
