@@ -31,6 +31,10 @@ void main() {
     late final MockInterfaceElement mapStringIntElement;
     late final MockInterfaceType mapStringIntJsonMapType;
     late final MockInterfaceElement mapStringIntJsonMapElement;
+    late final MockInterfaceType nullableMapStringIntJsonMapType;
+    late final MockInterfaceElement nullableMapStringIntJsonMapElement;
+    late final MockInterfaceType nullableMapStringIntType;
+    late final MockInterfaceElement nullableMapStringIntElement;
 
     setUpAll(() {
       dynamicType = MockDynamicType();
@@ -148,6 +152,34 @@ void main() {
       when(mapStringIntJsonMapType.typeArguments).thenReturn([
         stringType,
         mapStringIntType,
+      ]);
+
+      nullableMapStringIntType = MockInterfaceType();
+      nullableMapStringIntElement = MockInterfaceElement();
+      when(mapStringIntElement.name).thenReturn('Map');
+      when(nullableMapStringIntType.isDartCoreList).thenReturn(false);
+      when(nullableMapStringIntType.isDartCoreMap).thenReturn(true);
+      when(nullableMapStringIntType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.question);
+      when(nullableMapStringIntType.element)
+          .thenReturn(nullableMapStringIntElement);
+      when(nullableMapStringIntType.typeArguments).thenReturn([
+        stringType,
+        intType,
+      ]);
+
+      nullableMapStringIntJsonMapType = MockInterfaceType();
+      nullableMapStringIntJsonMapElement = MockInterfaceElement();
+      when(nullableMapStringIntJsonMapElement.name).thenReturn('Map');
+      when(nullableMapStringIntJsonMapType.isDartCoreList).thenReturn(false);
+      when(nullableMapStringIntJsonMapType.isDartCoreMap).thenReturn(true);
+      when(nullableMapStringIntJsonMapType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.none);
+      when(nullableMapStringIntJsonMapType.element)
+          .thenReturn(nullableMapStringIntJsonMapElement);
+      when(nullableMapStringIntJsonMapType.typeArguments).thenReturn([
+        stringType,
+        nullableMapStringIntType,
       ]);
     });
 
@@ -276,6 +308,20 @@ void main() {
       expect(
         result,
         """mapStringIntJsonMap: (extendedJson['mapStringIntJsonMap'] as Map<String, dynamic>).map((k, v) => MapEntry(k, (v as Map<String, dynamic>).map((k, v) => MapEntry(k, v as int)))),""",
+      );
+    });
+
+    test('test Map<String, Map<String, int>?> field', () {
+      final parser = FromJsonFieldParser(
+        name: 'nullableMapStringIntJsonMap',
+        dartType: nullableMapStringIntJsonMapType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        """nullableMapStringIntJsonMap: (extendedJson['nullableMapStringIntJsonMap'] as Map<String, dynamic>).map((k, v) => MapEntry(k, (v as Map<String, dynamic>?)?.map((k, v) => MapEntry(k, v as int)))),""",
       );
     });
   });
