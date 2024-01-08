@@ -154,7 +154,7 @@ void main() {
       expect(result, "if (text != null) 'text': text,");
     });
 
-    test('test isAlwaysUseFieldValueServerTimestamp true', () {
+    test('test alwaysUseFieldValueServerTimestamp true', () {
       final parser = ToJsonFieldParser(
         name: 'createdAt',
         dartType: dateTimeType,
