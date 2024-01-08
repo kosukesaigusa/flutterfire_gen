@@ -11,6 +11,10 @@ import 'to_json_field_parser_test.mocks.dart';
 @GenerateMocks([InterfaceType, InterfaceElement, DynamicType])
 void main() {
   group('ToJsonFieldParser test', () {
+    late final MockInterfaceType intType;
+    late final MockInterfaceElement intElement;
+    late final MockInterfaceType nullableIntType;
+    late final MockInterfaceElement nullableIntElement;
     late final MockInterfaceType stringType;
     late final MockInterfaceElement stringElement;
     late final MockInterfaceType nullableStringType;
@@ -21,6 +25,24 @@ void main() {
     late final MockInterfaceElement nullableDateTimeElement;
 
     setUpAll(() {
+      intType = MockInterfaceType();
+      intElement = MockInterfaceElement();
+      when(intElement.name).thenReturn('int');
+      when(intType.isDartCoreList).thenReturn(false);
+      when(intType.isDartCoreInt).thenReturn(true);
+      when(intType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
+      when(intType.element).thenReturn(intElement);
+      when(intType.typeArguments).thenReturn([]);
+
+      nullableIntType = MockInterfaceType();
+      nullableIntElement = MockInterfaceElement();
+      when(nullableIntElement.name).thenReturn('int');
+      when(nullableIntType.isDartCoreList).thenReturn(false);
+      when(nullableIntType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.question);
+      when(nullableIntType.element).thenReturn(nullableIntElement);
+      when(nullableIntType.typeArguments).thenReturn([]);
+
       stringType = MockInterfaceType();
       stringElement = MockInterfaceElement();
       when(stringElement.name).thenReturn('String');
@@ -160,6 +182,64 @@ void main() {
           result,
           """'createdAt': createdAt == null ? null : Timestamp.fromDate(createdAt!),""",
         );
+      });
+    });
+
+    group('test isFieldValueAllowed field', () {
+      test('test isFieldValueAllowed field with skipIfNull false', () {
+        final parser = ToJsonFieldParser(
+          name: 'count',
+          dartType: intType,
+          defaultValueString: null,
+          allowFieldValue: true,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: null,
+          skipIfNull: false,
+        );
+        final result = parser.toString();
+        expect(result, "'count': count.value,");
+      });
+
+      test('test isFieldValueAllowed field with skipIfNull true', () {
+        final parser = ToJsonFieldParser(
+          name: 'count',
+          dartType: intType,
+          defaultValueString: null,
+          allowFieldValue: true,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: null,
+          skipIfNull: true,
+        );
+        final result = parser.toString();
+        expect(result, "if (count != null) 'count': count!.value,");
+      });
+
+      test('test isFieldValueAllowed field with skipIfNull false', () {
+        final parser = ToJsonFieldParser(
+          name: 'count',
+          dartType: nullableIntType,
+          defaultValueString: null,
+          allowFieldValue: true,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: null,
+          skipIfNull: false,
+        );
+        final result = parser.toString();
+        expect(result, "'count': count?.value,");
+      });
+
+      test('test isFieldValueAllowed field with skipIfNull true', () {
+        final parser = ToJsonFieldParser(
+          name: 'count',
+          dartType: nullableIntType,
+          defaultValueString: null,
+          allowFieldValue: true,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: null,
+          skipIfNull: true,
+        );
+        final result = parser.toString();
+        expect(result, "if (count != null) 'count': count!.value,");
       });
     });
   });
