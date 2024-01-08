@@ -1,3 +1,8 @@
+[![version][version-badge]][package]
+[![MIT License][license-badge]][license]
+[![codecov](https://codecov.io/gh/kosukesaigusa/flutterfire_gen/graph/badge.svg?token=B76gv3SErd)](https://codecov.io/gh/kosukesaigusa/flutterfire_gen)
+[![PRs Welcome][prs-badge]](https://makeapullrequest.com)
+
 # flutterfire_gen
 
 [English](https://github.com/kosukesaigusa/flutterfire_gen/blob/main/packages/flutterfire_gen/README.md) | [日本語](https://github.com/kosukesaigusa/flutterfire_gen/blob/main/resources/translations/ja_JP/README.md)
@@ -463,3 +468,9 @@ Future<void> incrementCount(String counterId) => query.update(
           UpdateCounter(count: FieldValueData<int>(FieldValue.increment(1))),
     );
 ```
+
+[version-badge]: https://img.shields.io/pub/v/flutterfire_gen.svg
+[package]: https://pub.dartlang.org/packages/flutterfire_gen
+[license-badge]: https://img.shields.io/github/license/KosukeSaigusa/flutterfire_gen.svg
+[license]: https://github.com/KosukeSaigusa/flutterfire_gen/blob/master/packages/flutterfire_gen/LICENSE
+[prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
