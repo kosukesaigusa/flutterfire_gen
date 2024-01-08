@@ -145,7 +145,7 @@ void main() {
         );
       });
 
-      test('test DateTime? type field with skipIfNull false', () {
+      test('test DateTime? type field', () {
         final parser = ToJsonFieldParser(
           name: 'createdAt',
           dartType: nullableDateTimeType,
