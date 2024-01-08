@@ -17,6 +17,8 @@ void main() {
     late final MockInterfaceElement nullableStringElement;
     late final MockInterfaceType dateTimeType;
     late final MockInterfaceElement dateTimeElement;
+    late final MockInterfaceType nullableDateTimeType;
+    late final MockInterfaceElement nullableDateTimeElement;
 
     setUpAll(() {
       stringType = MockInterfaceType();
@@ -44,6 +46,15 @@ void main() {
       when(dateTimeType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
       when(dateTimeType.element).thenReturn(dateTimeElement);
       when(dateTimeType.typeArguments).thenReturn([]);
+
+      nullableDateTimeType = MockInterfaceType();
+      nullableDateTimeElement = MockInterfaceElement();
+      when(nullableDateTimeElement.name).thenReturn('DateTime');
+      when(nullableDateTimeType.isDartCoreList).thenReturn(false);
+      when(nullableDateTimeType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.question);
+      when(nullableDateTimeType.element).thenReturn(nullableDateTimeElement);
+      when(nullableDateTimeType.typeArguments).thenReturn([]);
     });
 
     test('test String field', () {
@@ -100,6 +111,56 @@ void main() {
       );
       final result = parser.toString();
       expect(result, "'createdAt': FieldValue.serverTimestamp(),");
+    });
+
+    group('test DateTime type field', () {
+      test('test DateTime type field with skipIfNull false', () {
+        final parser = ToJsonFieldParser(
+          name: 'createdAt',
+          dartType: dateTimeType,
+          defaultValueString: null,
+          allowFieldValue: false,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: null,
+          skipIfNull: false,
+        );
+        final result = parser.toString();
+        expect(result, "'createdAt': Timestamp.fromDate(createdAt),");
+      });
+
+      test('test DateTime type field with skipIfNull true', () {
+        final parser = ToJsonFieldParser(
+          name: 'createdAt',
+          dartType: dateTimeType,
+          defaultValueString: null,
+          allowFieldValue: false,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: null,
+          skipIfNull: true,
+        );
+        final result = parser.toString();
+        expect(
+          result,
+          """if (createdAt != null) 'createdAt': Timestamp.fromDate(createdAt!),""",
+        );
+      });
+
+      test('test DateTime? type field with skipIfNull false', () {
+        final parser = ToJsonFieldParser(
+          name: 'createdAt',
+          dartType: nullableDateTimeType,
+          defaultValueString: null,
+          allowFieldValue: false,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: null,
+          skipIfNull: false,
+        );
+        final result = parser.toString();
+        expect(
+          result,
+          """'createdAt': createdAt == null ? null : Timestamp.fromDate(createdAt!),""",
+        );
+      });
     });
   });
 }
