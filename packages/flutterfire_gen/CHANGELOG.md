@@ -1,6 +1,7 @@
 ## Unreleased changes
 
 * Add `FromJsonFieldParser` tests.
+* Add `FieldConfig` tests.
 
 ## 0.4.0
 
