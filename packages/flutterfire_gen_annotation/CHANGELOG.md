@@ -1,3 +1,7 @@
+## 0.4.1
+
+* Update `README.md`.
+
 ## 0.4.0
 
 * Update flutterfire_gen_annotation package version.
