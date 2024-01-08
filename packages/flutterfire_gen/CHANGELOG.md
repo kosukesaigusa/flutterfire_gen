@@ -1,7 +1,9 @@
-## Unreleased changes
+## 0.4.1
 
 * Add `FromJsonFieldParser` tests.
+* Add `ToJsonFieldParser` tests.
 * Add `FieldConfig` tests.
+* Update `flutterfire_gen`, `flutterfire_gen_utils` dependency versions.
 
 ## 0.4.0
 
