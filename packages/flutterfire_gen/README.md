@@ -1,6 +1,6 @@
 [![version][version-badge]][package]
 [![MIT License][license-badge]][license]
-[![codecov][codecov-badge]][codecov]
+[![codecov](https://codecov.io/gh/kosukesaigusa/flutterfire_gen/graph/badge.svg?token=B76gv3SErd)](https://codecov.io/gh/kosukesaigusa/flutterfire_gen)
 [![PRs Welcome][prs-badge]](https://makeapullrequest.com)
 
 # flutterfire_gen
@@ -459,7 +459,6 @@ Future<void> incrementCount(String counterId) => query.update(
 
 [version-badge]: https://img.shields.io/pub/v/flutterfire_gen.svg
 [package]: https://pub.dartlang.org/packages/flutterfire_gen
-[codecov-badge]: https://codecov.io/gh/kosukesaigusa/flutterfire_gen/graph/badge.svg
 [license-badge]: https://img.shields.io/github/license/KosukeSaigusa/flutterfire_gen.svg
 [license]: https://github.com/KosukeSaigusa/flutterfire_gen/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
