@@ -50,11 +50,6 @@ class FieldConfig {
   /// The Dart type of the field.
   final DartType dartType;
 
-  /// Indicates whether the field type is nullable.
-  ///
-  /// Returns `true` if the Dart type of the field is nullable.
-  bool get isNullableType => dartType.isNullableType;
-
   /// Generates the type name of the field as a String.
   ///
   /// Parameters:
@@ -126,14 +121,4 @@ class FieldConfig {
   /// Set to `true` to enforce that the field's value is updated to the server's
   /// timestamp during document update operations.
   final bool alwaysUseFieldValueServerTimestampWhenUpdating;
-
-  /// Indicates whether the field is a non-nullable list.
-  ///
-  /// Returns `true` if the field's Dart type is a non-nullable list.
-  bool get isNonNullableList => dartType.isDartCoreList && !isNullableType;
-
-  /// Indicates whether the field is a nullable list.
-  ///
-  /// Returns `true` if the field's Dart type is a nullable list.
-  bool get isNullableList => dartType.isDartCoreList && isNullableType;
 }
