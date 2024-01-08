@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:flutterfire_gen/src/configs/json_converter_config.dart';
 import 'package:flutterfire_gen/src/parser/from_json_field_parser.dart';
 import 'package:flutterfire_gen/src/utils/dart_type_util.dart';
 import 'package:mockito/annotations.dart';
@@ -31,6 +32,16 @@ void main() {
     late final MockInterfaceElement mapStringIntElement;
     late final MockInterfaceType mapStringIntJsonMapType;
     late final MockInterfaceElement mapStringIntJsonMapElement;
+    late final MockInterfaceType nullableMapStringIntJsonMapType;
+    late final MockInterfaceElement nullableMapStringIntJsonMapElement;
+    late final MockInterfaceType nullableMapStringIntType;
+    late final MockInterfaceElement nullableMapStringIntElement;
+    late final MockInterfaceType listStringType;
+    late final MockInterfaceElement listStringElement;
+    late final MockInterfaceType listNullableStringType;
+    late final MockInterfaceElement listNullableStringElement;
+    late final MockInterfaceType nullableListStringType;
+    late final MockInterfaceElement nullableListStringElement;
 
     setUpAll(() {
       dynamicType = MockDynamicType();
@@ -149,6 +160,63 @@ void main() {
         stringType,
         mapStringIntType,
       ]);
+
+      nullableMapStringIntType = MockInterfaceType();
+      nullableMapStringIntElement = MockInterfaceElement();
+      when(mapStringIntElement.name).thenReturn('Map');
+      when(nullableMapStringIntType.isDartCoreList).thenReturn(false);
+      when(nullableMapStringIntType.isDartCoreMap).thenReturn(true);
+      when(nullableMapStringIntType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.question);
+      when(nullableMapStringIntType.element)
+          .thenReturn(nullableMapStringIntElement);
+      when(nullableMapStringIntType.typeArguments).thenReturn([
+        stringType,
+        intType,
+      ]);
+
+      nullableMapStringIntJsonMapType = MockInterfaceType();
+      nullableMapStringIntJsonMapElement = MockInterfaceElement();
+      when(nullableMapStringIntJsonMapElement.name).thenReturn('Map');
+      when(nullableMapStringIntJsonMapType.isDartCoreList).thenReturn(false);
+      when(nullableMapStringIntJsonMapType.isDartCoreMap).thenReturn(true);
+      when(nullableMapStringIntJsonMapType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.none);
+      when(nullableMapStringIntJsonMapType.element)
+          .thenReturn(nullableMapStringIntJsonMapElement);
+      when(nullableMapStringIntJsonMapType.typeArguments).thenReturn([
+        stringType,
+        nullableMapStringIntType,
+      ]);
+
+      listStringType = MockInterfaceType();
+      listStringElement = MockInterfaceElement();
+      when(listStringElement.name).thenReturn('List');
+      when(listStringType.isDartCoreList).thenReturn(true);
+      when(listStringType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
+      when(listStringType.element).thenReturn(listStringElement);
+      when(listStringType.typeArguments).thenReturn([stringType]);
+
+      listNullableStringType = MockInterfaceType();
+      listNullableStringElement = MockInterfaceElement();
+      when(listNullableStringElement.name).thenReturn('List');
+      when(listNullableStringType.isDartCoreList).thenReturn(true);
+      when(listNullableStringType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.none);
+      when(listNullableStringType.element)
+          .thenReturn(listNullableStringElement);
+      when(listNullableStringType.typeArguments)
+          .thenReturn([nullableStringType]);
+
+      nullableListStringType = MockInterfaceType();
+      nullableListStringElement = MockInterfaceElement();
+      when(nullableListStringElement.name).thenReturn('List');
+      when(nullableListStringType.isDartCoreList).thenReturn(true);
+      when(nullableListStringType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.question);
+      when(nullableListStringType.element)
+          .thenReturn(nullableListStringElement);
+      when(nullableListStringType.typeArguments).thenReturn([stringType]);
     });
 
     test('test String field', () {
@@ -276,6 +344,112 @@ void main() {
       expect(
         result,
         """mapStringIntJsonMap: (extendedJson['mapStringIntJsonMap'] as Map<String, dynamic>).map((k, v) => MapEntry(k, (v as Map<String, dynamic>).map((k, v) => MapEntry(k, v as int)))),""",
+      );
+    });
+
+    test('test Map<String, Map<String, int>?> field', () {
+      final parser = FromJsonFieldParser(
+        name: 'nullableMapStringIntJsonMap',
+        dartType: nullableMapStringIntJsonMapType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        """nullableMapStringIntJsonMap: (extendedJson['nullableMapStringIntJsonMap'] as Map<String, dynamic>).map((k, v) => MapEntry(k, (v as Map<String, dynamic>?)?.map((k, v) => MapEntry(k, v as int)))),""",
+      );
+    });
+
+    test('test List<String> field', () {
+      final parser = FromJsonFieldParser(
+        name: 'texts',
+        dartType: listStringType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''texts: (extendedJson['texts'] as List<dynamic>).map((e) => e as String).toList(),''',
+      );
+    });
+
+    test('test List<String?> field', () {
+      final parser = FromJsonFieldParser(
+        name: 'nullableTexts',
+        dartType: listNullableStringType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''nullableTexts: (extendedJson['nullableTexts'] as List<dynamic>).map((e) => e as String?).toList(),''',
+      );
+    });
+
+    test('test List<String>? field', () {
+      final parser = FromJsonFieldParser(
+        name: 'nullableTexts',
+        dartType: nullableListStringType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''nullableTexts: (extendedJson['nullableTexts'] as List<dynamic>?)?.map((e) => e as String).toList(),''',
+      );
+    });
+
+    test('test List<String?> field with default value', () {
+      final parser = FromJsonFieldParser(
+        name: 'nullableTexts',
+        dartType: listNullableStringType,
+        defaultValueString: 'const <String>[]',
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''nullableTexts: (extendedJson['nullableTexts'] as List<dynamic>?)?.map((e) => e as String?).toList() ?? const <String>[],''',
+      );
+    });
+
+    test('test JsonConverter applied field', () {
+      final parser = FromJsonFieldParser(
+        name: 'foo',
+        dartType: jsonMapType,
+        defaultValueString: null,
+        jsonConverterConfig: const JsonConverterConfig(
+          jsonConverterString: '_FooJsonConverter()',
+          clientTypeString: 'Foo',
+          firestoreTypeString: 'Map<String, dynamic>',
+        ),
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''foo: _FooJsonConverter().fromJson(extendedJson['foo'] as Map<String, dynamic>),''',
+      );
+    });
+
+    test('test JsonConverter applied field with default value', () {
+      final parser = FromJsonFieldParser(
+        name: 'foo',
+        dartType: jsonMapType,
+        defaultValueString: "const Foo('default')",
+        jsonConverterConfig: const JsonConverterConfig(
+          jsonConverterString: '_FooJsonConverter()',
+          clientTypeString: 'Foo',
+          firestoreTypeString: 'Map<String, dynamic>',
+        ),
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''foo: extendedJson['foo'] == null ? const Foo('default') : _FooJsonConverter().fromJson(extendedJson['foo'] as Map<String, dynamic>),''',
       );
     });
   });
