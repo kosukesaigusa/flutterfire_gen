@@ -13,6 +13,8 @@ void main() {
   group('ToJsonFieldParser test', () {
     late final MockInterfaceType stringType;
     late final MockInterfaceElement stringElement;
+    late final MockInterfaceType dateTimeType;
+    late final MockInterfaceElement dateTimeElement;
 
     setUpAll(() {
       stringType = MockInterfaceType();
@@ -23,6 +25,14 @@ void main() {
       when(stringType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
       when(stringType.element).thenReturn(stringElement);
       when(stringType.typeArguments).thenReturn([]);
+
+      dateTimeType = MockInterfaceType();
+      dateTimeElement = MockInterfaceElement();
+      when(dateTimeElement.name).thenReturn('DateTime');
+      when(dateTimeType.isDartCoreList).thenReturn(false);
+      when(dateTimeType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
+      when(dateTimeType.element).thenReturn(dateTimeElement);
+      when(dateTimeType.typeArguments).thenReturn([]);
     });
 
     test('test String field', () {
@@ -51,6 +61,20 @@ void main() {
       );
       final result = parser.toString();
       expect(result, "'text': text ?? 'defaultText',");
+    });
+
+    test('test isAlwaysUseFieldValueServerTimestamp true', () {
+      final parser = ToJsonFieldParser(
+        name: 'createdAt',
+        dartType: dateTimeType,
+        defaultValueString: null,
+        allowFieldValue: false,
+        alwaysUseFieldValueServerTimestamp: true,
+        jsonConverterConfig: null,
+        skipIfNull: true,
+      );
+      final result = parser.toString();
+      expect(result, "'createdAt': FieldValue.serverTimestamp(),");
     });
   });
 }
