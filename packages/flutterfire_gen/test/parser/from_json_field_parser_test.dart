@@ -37,6 +37,10 @@ void main() {
     late final MockInterfaceElement nullableMapStringIntElement;
     late final MockInterfaceType listStringType;
     late final MockInterfaceElement listStringElement;
+    late final MockInterfaceType listNullableStringType;
+    late final MockInterfaceElement listNullableStringElement;
+    late final MockInterfaceType nullableListStringType;
+    late final MockInterfaceElement nullableListStringElement;
 
     setUpAll(() {
       dynamicType = MockDynamicType();
@@ -191,6 +195,27 @@ void main() {
       when(listStringType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
       when(listStringType.element).thenReturn(listStringElement);
       when(listStringType.typeArguments).thenReturn([stringType]);
+
+      listNullableStringType = MockInterfaceType();
+      listNullableStringElement = MockInterfaceElement();
+      when(listNullableStringElement.name).thenReturn('List');
+      when(listNullableStringType.isDartCoreList).thenReturn(true);
+      when(listNullableStringType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.none);
+      when(listNullableStringType.element)
+          .thenReturn(listNullableStringElement);
+      when(listNullableStringType.typeArguments)
+          .thenReturn([nullableStringType]);
+
+      nullableListStringType = MockInterfaceType();
+      nullableListStringElement = MockInterfaceElement();
+      when(nullableListStringElement.name).thenReturn('List');
+      when(nullableListStringType.isDartCoreList).thenReturn(true);
+      when(nullableListStringType.nullabilitySuffix)
+          .thenReturn(NullabilitySuffix.question);
+      when(nullableListStringType.element)
+          .thenReturn(nullableListStringElement);
+      when(nullableListStringType.typeArguments).thenReturn([stringType]);
     });
 
     test('test String field', () {
@@ -346,6 +371,48 @@ void main() {
       expect(
         result,
         '''texts: (extendedJson['texts'] as List<dynamic>).map((e) => e as String).toList(),''',
+      );
+    });
+
+    test('test List<String?> field', () {
+      final parser = FromJsonFieldParser(
+        name: 'nullableTexts',
+        dartType: listNullableStringType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''nullableTexts: (extendedJson['nullableTexts'] as List<dynamic>).map((e) => e as String?).toList(),''',
+      );
+    });
+
+    test('test List<String>? field', () {
+      final parser = FromJsonFieldParser(
+        name: 'nullableTexts',
+        dartType: nullableListStringType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''nullableTexts: (extendedJson['nullableTexts'] as List<dynamic>?)?.map((e) => e as String).toList(),''',
+      );
+    });
+
+    test('test List<String?> field with default value', () {
+      final parser = FromJsonFieldParser(
+        name: 'nullableTexts',
+        dartType: listNullableStringType,
+        defaultValueString: 'const <String>[]',
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''nullableTexts: (extendedJson['nullableTexts'] as List<dynamic>?)?.map((e) => e as String?).toList() ?? const <String>[],''',
       );
     });
   });
