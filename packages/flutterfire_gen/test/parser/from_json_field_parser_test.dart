@@ -35,6 +35,8 @@ void main() {
     late final MockInterfaceElement nullableMapStringIntJsonMapElement;
     late final MockInterfaceType nullableMapStringIntType;
     late final MockInterfaceElement nullableMapStringIntElement;
+    late final MockInterfaceType listStringType;
+    late final MockInterfaceElement listStringElement;
 
     setUpAll(() {
       dynamicType = MockDynamicType();
@@ -181,6 +183,14 @@ void main() {
         stringType,
         nullableMapStringIntType,
       ]);
+
+      listStringType = MockInterfaceType();
+      listStringElement = MockInterfaceElement();
+      when(listStringElement.name).thenReturn('List');
+      when(listStringType.isDartCoreList).thenReturn(true);
+      when(listStringType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
+      when(listStringType.element).thenReturn(listStringElement);
+      when(listStringType.typeArguments).thenReturn([stringType]);
     });
 
     test('test String field', () {
@@ -322,6 +332,20 @@ void main() {
       expect(
         result,
         """nullableMapStringIntJsonMap: (extendedJson['nullableMapStringIntJsonMap'] as Map<String, dynamic>).map((k, v) => MapEntry(k, (v as Map<String, dynamic>?)?.map((k, v) => MapEntry(k, v as int)))),""",
+      );
+    });
+
+    test('test List<String> field', () {
+      final parser = FromJsonFieldParser(
+        name: 'texts',
+        dartType: listStringType,
+        defaultValueString: null,
+        jsonConverterConfig: null,
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''texts: (extendedJson['texts'] as List<dynamic>).map((e) => e as String).toList(),''',
       );
     });
   });
