@@ -14,6 +14,8 @@ import 'from_json_field_parser_test.mocks.dart';
 void main() {
   group('FromJsonFieldParser test', () {
     late final MockDynamicType dynamicType;
+    late final MockInterfaceType intType;
+    late final MockInterfaceElement intElement;
     late final MockInterfaceType stringType;
     late final MockInterfaceElement stringElement;
     late final MockInterfaceType nullableStringType;
@@ -46,8 +48,8 @@ void main() {
     setUpAll(() {
       dynamicType = MockDynamicType();
 
-      final intType = MockInterfaceType();
-      final intElement = MockInterfaceElement();
+      intType = MockInterfaceType();
+      intElement = MockInterfaceElement();
       when(intElement.name).thenReturn('int');
       when(intType.isDartCoreList).thenReturn(false);
       when(intType.isJsonMap).thenReturn(false);
