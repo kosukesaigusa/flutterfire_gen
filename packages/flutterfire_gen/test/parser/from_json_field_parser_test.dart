@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:flutterfire_gen/src/configs/json_converter_config.dart';
 import 'package:flutterfire_gen/src/parser/from_json_field_parser.dart';
 import 'package:flutterfire_gen/src/utils/dart_type_util.dart';
 import 'package:mockito/annotations.dart';
@@ -413,6 +414,42 @@ void main() {
       expect(
         result,
         '''nullableTexts: (extendedJson['nullableTexts'] as List<dynamic>?)?.map((e) => e as String?).toList() ?? const <String>[],''',
+      );
+    });
+
+    test('test JsonConverter applied field', () {
+      final parser = FromJsonFieldParser(
+        name: 'foo',
+        dartType: jsonMapType,
+        defaultValueString: null,
+        jsonConverterConfig: const JsonConverterConfig(
+          jsonConverterString: '_FooJsonConverter()',
+          clientTypeString: 'Foo',
+          firestoreTypeString: 'Map<String, dynamic>',
+        ),
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''foo: _FooJsonConverter().fromJson(extendedJson['foo'] as Map<String, dynamic>),''',
+      );
+    });
+
+    test('test JsonConverter applied field with default value', () {
+      final parser = FromJsonFieldParser(
+        name: 'foo',
+        dartType: jsonMapType,
+        defaultValueString: "const Foo('default')",
+        jsonConverterConfig: const JsonConverterConfig(
+          jsonConverterString: '_FooJsonConverter()',
+          clientTypeString: 'Foo',
+          firestoreTypeString: 'Map<String, dynamic>',
+        ),
+      );
+      final result = parser.toString();
+      expect(
+        result,
+        '''foo: extendedJson['foo'] == null ? const Foo('default') : _FooJsonConverter().fromJson(extendedJson['foo'] as Map<String, dynamic>),''',
       );
     });
   });
