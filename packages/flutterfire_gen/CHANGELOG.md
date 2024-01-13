@@ -1,3 +1,7 @@
+## Unreleased changes
+
+* Add `BuildYamlConfig` tests.
+
 ## 0.4.1
 
 * Add `FromJsonFieldParser` tests.
