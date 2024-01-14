@@ -1,14 +1,33 @@
 {
   "name": "flutterfire_gen",
   "theme": "#36B9B9",
-  "sidebar": [
-    [
-      "Home",
-      "/"
+  "sidebar": {
+    "en": [
+      [
+        "Home",
+        "/"
+      ],
+      [
+        "Another Page",
+        "/another-page"
+      ]
     ],
-    [
-      "Another Page",
-      "/another-page"
+    "ja": [
+      [
+        "Home",
+        "/"
+      ],
+      [
+        "Another Page",
+        "/another-page"
+      ]
     ]
-  ]
+  },
+  "variables": {
+    "versions": {
+      "flutterfire_gen": "0.4.1",
+      "flutterfire_gen_annotation": "0.4.1",
+      "flutterfire_gen_utils": "0.4.1"
+    }
+  }
 }
