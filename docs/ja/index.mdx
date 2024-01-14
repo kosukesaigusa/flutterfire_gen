@@ -1,0 +1,38 @@
+# 導入
+
+## インストール
+
+以下のコマンドを実行して必要なパッケージをインストールします。
+
+```sh
+dart pub add dev:flutterfire_gen
+dart pub add flutterfire_gen_annotation
+dart pub add flutterfire_gen_utils
+
+dart pub add dev:build_runner
+
+dart pub add firebase_core
+dart pub add cloud_firestore
+```
+
+またはあなたの `pubspec.yaml` に以下のような記述を追加してください。
+
+```.yaml title="pubspec.yaml"
+name: your_app_name
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0'
+
+dependencies:
+  cloud_firestore:
+  firebase_core:
+  flutter:
+    sdk: flutter
+  flutterfire_gen_annotation: ^{{ versions.flutterfire_gen_annotation }}
+  flutterfire_gen_utils: ^{{ versions.flutterfire_gen_utils }}
+
+dev_dependencies:
+  build_runner:
+  flutterfire_gen: ^{{ versions.flutterfire_gen }}
+```
