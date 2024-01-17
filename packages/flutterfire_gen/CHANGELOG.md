@@ -1,4 +1,4 @@
-## Unreleased changes
+## 0.4.2
 
 * Add `BuildYamlConfig` tests.
 * Add `CodeGenerationConfig` tests.
