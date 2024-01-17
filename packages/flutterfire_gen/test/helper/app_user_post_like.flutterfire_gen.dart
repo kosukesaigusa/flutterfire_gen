@@ -360,22 +360,27 @@ final class BatchDeleteAppUserPostLike extends BatchWriteAppUserPostLike {
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
 /// operations on appUserPostLike documents, along with additional utilities like counting
-/// documents.
+/// documents, and calculating sum and average values for specific fields.
 ///
-/// It includes methods to fetch, subscribe to, and count single or multiple [ReadAppUserPostLike]
-/// documents, as well as methods to add, set, update, and delete documents.
+/// It includes methods to:
+///
+/// - Fetch single or multiple [ReadAppUserPostLike] documents ([fetchDocuments], [fetchDocument]).
+/// - Subscribe to real-time updates of single or multiple [ReadAppUserPostLike] documents ([subscribeDocuments], [subscribeDocument]).
+/// - Count documents based on queries ([count]).
+/// - Calculate sum ([getSum]) and average ([getAverage]) of specific fields across documents.
+/// - Add ([add]), set ([set]), update ([update]), and delete ([delete]) appUserPostLike documents.
 ///
 /// The class uses Firebase Firestore as the backend, assuming [ReadAppUserPostLike],
 /// [CreateAppUserPostLike], [UpdateAppUserPostLike] are models representing the data.
 ///
 /// Usage:
 ///
-/// - To fetch, subscribe to, or count one or more appUserPostLike documents, use
-/// [fetchDocuments], [subscribeDocuments], [fetchDocument], [subscribeDocument], or [count].
-/// - To modify appUserPostLike documents, use [add], [set], [update], or [delete].
+/// - To fetch or subscribe to appUserPostLike documents, or to count them, use the corresponding fetch, subscribe, and count methods.
+/// - To modify appUserPostLike documents, use the methods for adding, setting, updating, or deleting.
+/// - To perform aggregate calculations like sum and average, use [getSum] and [getAverage].
 ///
-/// This class is designed to abstract the complexities of direct Firestore
-/// usage and provide a straightforward API for appUserPostLike document operations.
+/// This class abstracts the complexities of direct Firestore usage and provides
+/// a straightforward API for appUserPostLike document operations.
 class AppUserPostLikeQuery {
   /// Fetches a list of [ReadAppUserPostLike] documents from Cloud Firestore.
   ///
@@ -388,7 +393,7 @@ class AppUserPostLikeQuery {
   ///
   /// Parameters:
   ///
-  /// - [options] Optional `GetOptions` to define the source of the documents (server, cache).
+  /// - [options] Optional [GetOptions] to define the source of the documents (server, cache).
   /// - [queryBuilder] Optional function to build and customize the Firestore query.
   /// - [compare] Optional function to sort the ReadAppUserPostLike documents.
   /// - [asCollectionGroup] Fetch the 'appUserPostLikes' as a collection group if true.
@@ -505,6 +510,82 @@ class AppUserPostLikeQuery {
     final aggregateQuery = await query.count();
     final aggregateQs = await aggregateQuery.get(source: source);
     return aggregateQs.count;
+  }
+
+  /// Returns the sum of the values of the documents that match the query.
+  ///
+  /// This method returns the sum of the values of the documents that match the query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [asCollectionGroup] parameter determines whether to query the 'appUserPostLikes'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [field] The field to sum over.
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [asCollectionGroup] Query the 'appUserPostLikes' as a collection group if true.
+  ///
+  /// Returns the sum of the values of the documents that match the query.
+  Future<double?> getSum({
+    required String field,
+    required String appUserId,
+    required String appUserPostId,
+    Query<ReadAppUserPostLike>? Function(Query<ReadAppUserPostLike> query)?
+        queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<ReadAppUserPostLike> query = asCollectionGroup
+        ? readAppUserPostLikesCollectionGroupReference
+        : readAppUserPostLikesCollectionReference(
+            appUserId: appUserId,
+            appUserPostId: appUserPostId,
+          );
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(sum(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getSum(field);
+  }
+
+  /// Returns the average of the values of the documents that match the query.
+  ///
+  /// This method returns the average of the values of the documents that match the query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [asCollectionGroup] parameter determines whether to query the 'appUserPostLikes'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [field] The field to average over.
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [asCollectionGroup] Query the 'appUserPostLikes' as a collection group if true.
+  ///
+  /// Returns the average of the values of the documents that match the query.
+  Future<double?> getAverage({
+    required String field,
+    required String appUserId,
+    required String appUserPostId,
+    Query<ReadAppUserPostLike>? Function(Query<ReadAppUserPostLike> query)?
+        queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<ReadAppUserPostLike> query = asCollectionGroup
+        ? readAppUserPostLikesCollectionGroupReference
+        : readAppUserPostLikesCollectionReference(
+            appUserId: appUserId,
+            appUserPostId: appUserPostId,
+          );
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(average(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getAverage(field);
   }
 
   /// Fetches a single [ReadAppUserPostLike] document from Cloud Firestore by its ID.

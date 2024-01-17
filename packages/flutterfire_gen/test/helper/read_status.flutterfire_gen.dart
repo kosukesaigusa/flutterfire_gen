@@ -293,22 +293,27 @@ final class BatchDeleteReadStatus extends BatchWriteReadStatus {
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
 /// operations on readStatus documents, along with additional utilities like counting
-/// documents.
+/// documents, and calculating sum and average values for specific fields.
 ///
-/// It includes methods to fetch, subscribe to, and count single or multiple [ReadReadStatus]
-/// documents, as well as methods to add, set, update, and delete documents.
+/// It includes methods to:
+///
+/// - Fetch single or multiple [ReadReadStatus] documents ([fetchDocuments], [fetchDocument]).
+/// - Subscribe to real-time updates of single or multiple [ReadReadStatus] documents ([subscribeDocuments], [subscribeDocument]).
+/// - Count documents based on queries ([count]).
+/// - Calculate sum ([getSum]) and average ([getAverage]) of specific fields across documents.
+/// - Add ([add]), set ([set]), update ([update]), and delete ([delete]) readStatus documents.
 ///
 /// The class uses Firebase Firestore as the backend, assuming [ReadReadStatus],
 /// [CreateReadStatus], [UpdateReadStatus] are models representing the data.
 ///
 /// Usage:
 ///
-/// - To fetch, subscribe to, or count one or more readStatus documents, use
-/// [fetchDocuments], [subscribeDocuments], [fetchDocument], [subscribeDocument], or [count].
-/// - To modify readStatus documents, use [add], [set], [update], or [delete].
+/// - To fetch or subscribe to readStatus documents, or to count them, use the corresponding fetch, subscribe, and count methods.
+/// - To modify readStatus documents, use the methods for adding, setting, updating, or deleting.
+/// - To perform aggregate calculations like sum and average, use [getSum] and [getAverage].
 ///
-/// This class is designed to abstract the complexities of direct Firestore
-/// usage and provide a straightforward API for readStatus document operations.
+/// This class abstracts the complexities of direct Firestore usage and provides
+/// a straightforward API for readStatus document operations.
 class ReadStatusQuery {
   /// Fetches a list of [ReadReadStatus] documents from Cloud Firestore.
   ///
@@ -321,7 +326,7 @@ class ReadStatusQuery {
   ///
   /// Parameters:
   ///
-  /// - [options] Optional `GetOptions` to define the source of the documents (server, cache).
+  /// - [options] Optional [GetOptions] to define the source of the documents (server, cache).
   /// - [queryBuilder] Optional function to build and customize the Firestore query.
   /// - [compare] Optional function to sort the ReadReadStatus documents.
   /// - [asCollectionGroup] Fetch the 'readStatuses' as a collection group if true.
@@ -429,6 +434,76 @@ class ReadStatusQuery {
     final aggregateQuery = await query.count();
     final aggregateQs = await aggregateQuery.get(source: source);
     return aggregateQs.count;
+  }
+
+  /// Returns the sum of the values of the documents that match the query.
+  ///
+  /// This method returns the sum of the values of the documents that match the query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [asCollectionGroup] parameter determines whether to query the 'readStatuses'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [field] The field to sum over.
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [asCollectionGroup] Query the 'readStatuses' as a collection group if true.
+  ///
+  /// Returns the sum of the values of the documents that match the query.
+  Future<double?> getSum({
+    required String field,
+    required String chatRoomId,
+    Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<ReadReadStatus> query = asCollectionGroup
+        ? readReadStatusesCollectionGroupReference
+        : readReadStatusesCollectionReference(
+            chatRoomId: chatRoomId,
+          );
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(sum(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getSum(field);
+  }
+
+  /// Returns the average of the values of the documents that match the query.
+  ///
+  /// This method returns the average of the values of the documents that match the query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [asCollectionGroup] parameter determines whether to query the 'readStatuses'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [field] The field to average over.
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [asCollectionGroup] Query the 'readStatuses' as a collection group if true.
+  ///
+  /// Returns the average of the values of the documents that match the query.
+  Future<double?> getAverage({
+    required String field,
+    required String chatRoomId,
+    Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<ReadReadStatus> query = asCollectionGroup
+        ? readReadStatusesCollectionGroupReference
+        : readReadStatusesCollectionReference(
+            chatRoomId: chatRoomId,
+          );
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(average(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getAverage(field);
   }
 
   /// Fetches a single [ReadReadStatus] document from Cloud Firestore by its ID.

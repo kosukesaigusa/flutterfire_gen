@@ -326,22 +326,27 @@ final class BatchDeleteAppUserPost extends BatchWriteAppUserPost {
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
 /// operations on appUserPost documents, along with additional utilities like counting
-/// documents.
+/// documents, and calculating sum and average values for specific fields.
 ///
-/// It includes methods to fetch, subscribe to, and count single or multiple [ReadAppUserPost]
-/// documents, as well as methods to add, set, update, and delete documents.
+/// It includes methods to:
+///
+/// - Fetch single or multiple [ReadAppUserPost] documents ([fetchDocuments], [fetchDocument]).
+/// - Subscribe to real-time updates of single or multiple [ReadAppUserPost] documents ([subscribeDocuments], [subscribeDocument]).
+/// - Count documents based on queries ([count]).
+/// - Calculate sum ([getSum]) and average ([getAverage]) of specific fields across documents.
+/// - Add ([add]), set ([set]), update ([update]), and delete ([delete]) appUserPost documents.
 ///
 /// The class uses Firebase Firestore as the backend, assuming [ReadAppUserPost],
 /// [CreateAppUserPost], [UpdateAppUserPost] are models representing the data.
 ///
 /// Usage:
 ///
-/// - To fetch, subscribe to, or count one or more appUserPost documents, use
-/// [fetchDocuments], [subscribeDocuments], [fetchDocument], [subscribeDocument], or [count].
-/// - To modify appUserPost documents, use [add], [set], [update], or [delete].
+/// - To fetch or subscribe to appUserPost documents, or to count them, use the corresponding fetch, subscribe, and count methods.
+/// - To modify appUserPost documents, use the methods for adding, setting, updating, or deleting.
+/// - To perform aggregate calculations like sum and average, use [getSum] and [getAverage].
 ///
-/// This class is designed to abstract the complexities of direct Firestore
-/// usage and provide a straightforward API for appUserPost document operations.
+/// This class abstracts the complexities of direct Firestore usage and provides
+/// a straightforward API for appUserPost document operations.
 class AppUserPostQuery {
   /// Fetches a list of [ReadAppUserPost] documents from Cloud Firestore.
   ///
@@ -354,7 +359,7 @@ class AppUserPostQuery {
   ///
   /// Parameters:
   ///
-  /// - [options] Optional `GetOptions` to define the source of the documents (server, cache).
+  /// - [options] Optional [GetOptions] to define the source of the documents (server, cache).
   /// - [queryBuilder] Optional function to build and customize the Firestore query.
   /// - [compare] Optional function to sort the ReadAppUserPost documents.
   /// - [asCollectionGroup] Fetch the 'appUserPosts' as a collection group if true.
@@ -465,6 +470,78 @@ class AppUserPostQuery {
     final aggregateQuery = await query.count();
     final aggregateQs = await aggregateQuery.get(source: source);
     return aggregateQs.count;
+  }
+
+  /// Returns the sum of the values of the documents that match the query.
+  ///
+  /// This method returns the sum of the values of the documents that match the query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [asCollectionGroup] parameter determines whether to query the 'appUserPosts'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [field] The field to sum over.
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [asCollectionGroup] Query the 'appUserPosts' as a collection group if true.
+  ///
+  /// Returns the sum of the values of the documents that match the query.
+  Future<double?> getSum({
+    required String field,
+    required String appUserId,
+    Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
+        queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<ReadAppUserPost> query = asCollectionGroup
+        ? readAppUserPostsCollectionGroupReference
+        : readAppUserPostsCollectionReference(
+            appUserId: appUserId,
+          );
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(sum(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getSum(field);
+  }
+
+  /// Returns the average of the values of the documents that match the query.
+  ///
+  /// This method returns the average of the values of the documents that match the query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [asCollectionGroup] parameter determines whether to query the 'appUserPosts'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [field] The field to average over.
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [asCollectionGroup] Query the 'appUserPosts' as a collection group if true.
+  ///
+  /// Returns the average of the values of the documents that match the query.
+  Future<double?> getAverage({
+    required String field,
+    required String appUserId,
+    Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
+        queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<ReadAppUserPost> query = asCollectionGroup
+        ? readAppUserPostsCollectionGroupReference
+        : readAppUserPostsCollectionReference(
+            appUserId: appUserId,
+          );
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(average(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getAverage(field);
   }
 
   /// Fetches a single [ReadAppUserPost] document from Cloud Firestore by its ID.
