@@ -1,6 +1,8 @@
 ## Unreleased changes
 
 * Add `BuildYamlConfig` tests.
+* Add `CodeGenerationConfig` tests.
+* Generate `getSum` and `getAverage` methods.
 
 ## 0.4.1
 

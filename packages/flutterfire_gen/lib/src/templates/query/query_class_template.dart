@@ -154,6 +154,42 @@ ${docCommentTemplate.forClass()}class ${config.baseClassName}Query {
     return aggregateQs.count;
   }
 
+  ${docCommentTemplate.forGetSumMethod()}Future<double?> getSum({
+    required String field,
+    $documentIdMethodParametersDefinition
+    Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<${config.readClassName}> query = asCollectionGroup
+        ? ${config.collectionGroupReferenceName}
+        : ${_collectionReference(ReferenceClassType.read)};
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(sum(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getSum(field);
+  }
+
+  ${docCommentTemplate.forGetAverageMethod()}Future<double?> getAverage({
+    required String field,
+    $documentIdMethodParametersDefinition
+    Query<${config.readClassName}>? Function(Query<${config.readClassName}> query)? queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<${config.readClassName}> query = asCollectionGroup
+        ? ${config.collectionGroupReferenceName}
+        : ${_collectionReference(ReferenceClassType.read)};
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(average(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getAverage(field);
+  }
+
   ${docCommentTemplate.forFetchDocumentMethod()}Future<${config.readClassName}?> fetchDocument({
     $documentIdMethodParametersDefinition
     required String ${config.documentId},

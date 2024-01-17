@@ -993,22 +993,27 @@ final class BatchDeleteEntity extends BatchWriteEntity {
 ///
 /// This class provides methods to perform CRUD (Create, Read, Update, Delete)
 /// operations on entity documents, along with additional utilities like counting
-/// documents.
+/// documents, and calculating sum and average values for specific fields.
 ///
-/// It includes methods to fetch, subscribe to, and count single or multiple [ReadEntity]
-/// documents, as well as methods to add, set, update, and delete documents.
+/// It includes methods to:
+///
+/// - Fetch single or multiple [ReadEntity] documents ([fetchDocuments], [fetchDocument]).
+/// - Subscribe to real-time updates of single or multiple [ReadEntity] documents ([subscribeDocuments], [subscribeDocument]).
+/// - Count documents based on queries ([count]).
+/// - Calculate sum ([getSum]) and average ([getAverage]) of specific fields across documents.
+/// - Add ([add]), set ([set]), update ([update]), and delete ([delete]) entity documents.
 ///
 /// The class uses Firebase Firestore as the backend, assuming [ReadEntity],
 /// [CreateEntity], [UpdateEntity] are models representing the data.
 ///
 /// Usage:
 ///
-/// - To fetch, subscribe to, or count one or more entity documents, use
-/// [fetchDocuments], [subscribeDocuments], [fetchDocument], [subscribeDocument], or [count].
-/// - To modify entity documents, use [add], [set], [update], or [delete].
+/// - To fetch or subscribe to entity documents, or to count them, use the corresponding fetch, subscribe, and count methods.
+/// - To modify entity documents, use the methods for adding, setting, updating, or deleting.
+/// - To perform aggregate calculations like sum and average, use [getSum] and [getAverage].
 ///
-/// This class is designed to abstract the complexities of direct Firestore
-/// usage and provide a straightforward API for entity document operations.
+/// This class abstracts the complexities of direct Firestore usage and provides
+/// a straightforward API for entity document operations.
 class EntityQuery {
   /// Fetches a list of [ReadEntity] documents from Cloud Firestore.
   ///
@@ -1021,7 +1026,7 @@ class EntityQuery {
   ///
   /// Parameters:
   ///
-  /// - [options] Optional `GetOptions` to define the source of the documents (server, cache).
+  /// - [options] Optional [GetOptions] to define the source of the documents (server, cache).
   /// - [queryBuilder] Optional function to build and customize the Firestore query.
   /// - [compare] Optional function to sort the ReadEntity documents.
   /// - [asCollectionGroup] Fetch the 'entities' as a collection group if true.
@@ -1120,6 +1125,70 @@ class EntityQuery {
     final aggregateQuery = await query.count();
     final aggregateQs = await aggregateQuery.get(source: source);
     return aggregateQs.count;
+  }
+
+  /// Returns the sum of the values of the documents that match the query.
+  ///
+  /// This method returns the sum of the values of the documents that match the query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [asCollectionGroup] parameter determines whether to query the 'entities'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [field] The field to sum over.
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [asCollectionGroup] Query the 'entities' as a collection group if true.
+  ///
+  /// Returns the sum of the values of the documents that match the query.
+  Future<double?> getSum({
+    required String field,
+    Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<ReadEntity> query = asCollectionGroup
+        ? readEntitiesCollectionGroupReference
+        : readEntitiesCollectionReference;
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(sum(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getSum(field);
+  }
+
+  /// Returns the average of the values of the documents that match the query.
+  ///
+  /// This method returns the average of the values of the documents that match the query.
+  /// You can customize the query by using the [queryBuilder].
+  /// The [asCollectionGroup] parameter determines whether to query the 'entities'
+  /// collection directly (false) or as a collection group across different
+  /// Firestore paths (true).
+  ///
+  /// Parameters:
+  ///
+  /// - [field] The field to average over.
+  /// - [queryBuilder] Optional function to build and customize the Firestore query.
+  /// - [asCollectionGroup] Query the 'entities' as a collection group if true.
+  ///
+  /// Returns the average of the values of the documents that match the query.
+  Future<double?> getAverage({
+    required String field,
+    Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
+    AggregateSource source = AggregateSource.server,
+    bool asCollectionGroup = false,
+  }) async {
+    Query<ReadEntity> query = asCollectionGroup
+        ? readEntitiesCollectionGroupReference
+        : readEntitiesCollectionReference;
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final aggregateQuery = await query.aggregate(average(field));
+    final aggregateQs = await aggregateQuery.get(source: source);
+    return aggregateQs.getAverage(field);
   }
 
   /// Fetches a single [ReadEntity] document from Cloud Firestore by its ID.
