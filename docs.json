@@ -25,7 +25,7 @@
   },
   "variables": {
     "versions": {
-      "flutterfire_gen": "0.4.1",
+      "flutterfire_gen": "0.4.2",
       "flutterfire_gen_annotation": "0.4.1",
       "flutterfire_gen_utils": "0.4.1"
     }
