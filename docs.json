@@ -14,36 +14,36 @@
     ],
     "ja": [
       [
-        "Home",
+        "導入",
         "/"
       ],
       [
-        "Read documents",
-        "/read-documents"
+        "FirestoreDocument アノテーション",
+        "/firestore-document-annotation"
       ],
       [
-        "Create document",
-        "/create-document"
-      ],
-      [
-        "Update document",
-        "/update-document"
-      ],
-      [
-        "Delete document",
-        "/delete-document"
-      ],
-      [
-        "Query",
-        "/query"
-      ],
-      [
-        "Field annotations",
+        "フィールドに付与するアノテーション",
         "/field-annotations"
       ],
       [
-        "Another Page",
-        "/another-page"
+        "ドキュメントを読み取る",
+        "/read-documents"
+      ],
+      [
+        "ドキュメントを作成する",
+        "/create-document"
+      ],
+      [
+        "ドキュメントを更新する",
+        "/update-document"
+      ],
+      [
+        "ドキュメントを削除する",
+        "/delete-document"
+      ],
+      [
+        "クエリ",
+        "/query"
       ]
     ]
   },
