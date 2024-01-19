@@ -72,6 +72,7 @@ class Todo {
   final DateTime? updatedAt;
 }
 ```
+
 `@FirestoreDocument` アノテーションの `path` にはスキーマを定義するドキュメントのパスを指定します。
 
 ドキュメント ID のセグメントは `{}` で囲むことと `Id` で終わることを必要としています。
@@ -82,6 +83,8 @@ class Todo {
 
 `todo` ドキュメントの各フィールドに様々なアノテーションが付与されていますが、それらの説明は [フィールドに付与するアノテーション](/ja/field-annotations) を参照してください。
 
+## コードを生成する
+
 `build_runner` を実行することで、`todo.flutterfire_gen.dart` が生成されます。
 
 ```sh
@@ -90,6 +93,99 @@ dart run build_runner build --delete-conflicting-outputs
 
 `todo.flutterfire_gen.dart` を確認すると、様々なコードが生成されていることがわかります。
 
+## 生成されたクエリクラスを活用する
+
 中でも、`TodoQuery` クラスをよく使用することになるでしょう。
 
-`TodoQuery` クラスは `todos` コレクションのドキュメントの読み書きする一通りのメソッドを提供しています。
+`TodoQuery` クラスは `todos` コレクションのドキュメントの一通りの読み書きをするメソッドを提供しています。すべての処理を最適な方法で型安全に行うことができます。
+
+クエリクラスの詳細については [クエリクラス](/ja/query) を参照してください。
+
+### 読み取り処理を実行する
+
+たとえば、`todo` コレクションのドキュメントを一括取得するには `fetchDocuments` メソッドを呼び出します。
+
+```dart
+final query = TodoQuery();
+final List<ReadTodo> todos = await query.fetchDocuments();
+```
+
+返り値は `Future<List<ReadTodo>>` 型です。
+
+`ReadTodo` は `todo` ドキュメントを読み取りするとき専用の型です。
+
+`Todo` クラスのスキーマ定義において、そのドキュメント ID のフィールドを明示的に定義してはいませんが、`ReadTodo` には `String` 型の `todoId` が必ず含まれています。
+
+これが `flutterfire_gen` パッケージを使用すメリットの一つです。
+
+```dart
+final ReadTodo todo = todos.first!;
+print(todo.todoId); // fetched document ID.
+```
+
+読み取り専用の型や読み取り処理の詳細については [ドキュメントを読み取る](/ja/read-documents) を参照してください。
+
+### 作成処理を実行する
+
+`todo` コレクションにドキュメントを作成するには `add` メソッドを呼び出します。
+
+```dart
+final query = TodoQuery();
+final DocumentReference<CreateTodo> documentReference = await query.add(
+  createTodo: const CreateTodo(title: 'A new todo title'),
+);
+print(documentReference.id); // created document ID.
+```
+
+`CreateTodo` 型は `todo` ドキュメントを作成するとき専用のインターフェースとして機能します。
+
+`isCompleted` フィールドには `@CreateDefault(false)` のアノテーションを付与していたため、任意パラメータとなっており、省略した場合にはデフォルトで `false` が設定されます。
+
+ドキュメントの作成日時を表す `createdAt` フィールドや、更新日時を表す `updatedAt` フィールドには、`@alwaysUseFieldValueServerTimestampWhenCreating` や `@alwaysUseFieldValueServerTimestampWhenUpdating` のアノテーションを付与したため、自動的に `FieldValue.serverTimestamp()` が設定されます。
+
+読み取り時には必ず得られるドキュメント ID は、当然ドキュメントの作成 (`add`) 時には与える必要がありません。
+
+`flutterfire_gen` パッケージで生成されたコードが、読み取りや作成の処理で異なる最適な処理とインターフェースを提供する恩恵です。
+
+作成専用のインターフェースや作成処理の詳細については [ドキュメントを作成する](/ja/create-documents) を参照してください。
+
+### 更新処理を実行する
+
+`todo` コレクションのドキュメントを更新するには `update` メソッドを呼び出します。
+
+```dart
+final query = TodoQuery();
+await query.update(
+  todoId: 'todoId',
+  updateTodo: const UpdateTodo(isCompleted: true),
+);
+```
+
+`UpdateTodo` 型は `todo` ドキュメントを更新するとき専用のインターフェースとして機能します。
+
+更新可能なフィールドをすべて任意引数として受け付けます。
+
+上記の例では指定した `isCompleted` フィールドのみが更新されます。
+
+ドキュメントの更新日時を表す `updatedAt` フィールドには、`@alwaysUseFieldValueServerTimestampWhenUpdating` のアノテーションを付与したため、自動的に `FieldValue.serverTimestamp()` が設定されます。
+
+更新専用のインターフェースや更新処理の詳細については [ドキュメントを更新する](/ja/update-documents) を参照してください。
+
+### 削除処理を実行する
+
+`todo` コレクションのドキュメントを削除するには `delete` メソッドを呼び出します。
+
+```dart
+final query = TodoQuery();
+await query.delete(todoId: 'todoId');
+```
+
+ドキュメントの削除は、ドキュメント ID を指定するだけで実行できるので、特別なインターフェースは提供されません。
+
+削除処理の詳細については [ドキュメントを削除する](/ja/delete-documents) を参照してください。
+
+## 次のステップ
+
+さて、以上で `flutterfire_gen` パッケージの基本的な使い方を学びました。
+
+本ドキュメントの各ページで説明される詳細も参考にしながら、あなたのアプリケーションに合わせたドキュメントのスキーマを定義し、コードを生成して、快適な開発体験を楽しみましょう！

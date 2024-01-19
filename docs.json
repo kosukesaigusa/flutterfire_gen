@@ -18,6 +18,30 @@
         "/"
       ],
       [
+        "Read documents",
+        "/read-documents"
+      ],
+      [
+        "Create document",
+        "/create-document"
+      ],
+      [
+        "Update document",
+        "/update-document"
+      ],
+      [
+        "Delete document",
+        "/delete-document"
+      ],
+      [
+        "Query",
+        "/query"
+      ],
+      [
+        "Field annotations",
+        "/field-annotations"
+      ],
+      [
         "Another Page",
         "/another-page"
       ]
