@@ -36,3 +36,60 @@ dev_dependencies:
   build_runner:
   flutterfire_gen: ^{{ versions.flutterfire_gen }}
 ```
+
+## ドキュメントのスキーマを定義する
+
+`@FirestoreDocument` アノテーションを付与して、Cloud Firestore のドキュメントのスキーマを定義することができます。
+
+下記は `todos` コレクションの `Todo` ドキュメントを定義している記述です。
+
+```dart title="todo.dart"
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+
+part 'todo.flutterfire_gen.dart';
+
+@FirestoreDocument(path: 'todos/{todoId}')
+class Todo {
+  const Todo({
+    required this.title,
+    required this.isCompleted,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  final String title;
+
+  @ReadDefault(false)
+  @CreateDefault(false)
+  final bool isCompleted;
+
+  @alwaysUseFieldValueServerTimestampWhenCreating
+  final DateTime? createdAt;
+
+  @alwaysUseFieldValueServerTimestampWhenCreating
+  @alwaysUseFieldValueServerTimestampWhenUpdating
+  final DateTime? updatedAt;
+}
+```
+`@FirestoreDocument` アノテーションの `path` にはスキーマを定義するドキュメントのパスを指定します。
+
+ドキュメント ID のセグメントは `{}` で囲むことと `Id` で終わることを必要としています。
+
+```dart
+@FirestoreDocument(path: 'todos/{todoId}')
+```
+
+`todo` ドキュメントの各フィールドに様々なアノテーションが付与されていますが、それらの説明は [フィールドに付与するアノテーション](/ja/field-annotations) を参照してください。
+
+`build_runner` を実行することで、`todo.flutterfire_gen.dart` が生成されます。
+
+```sh
+dart run build_runner build --delete-conflicting-outputs
+```
+
+`todo.flutterfire_gen.dart` を確認すると、様々なコードが生成されていることがわかります。
+
+中でも、`TodoQuery` クラスをよく使用することになるでしょう。
+
+`TodoQuery` クラスは `todos` コレクションのドキュメントの読み書きする一通りのメソッドを提供しています。
