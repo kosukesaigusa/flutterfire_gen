@@ -147,7 +147,7 @@ print(documentReference.id); // created document ID.
 
 `flutterfire_gen` パッケージで生成されたコードが、読み取りや作成の処理で異なる最適な処理とインターフェースを提供する恩恵です。
 
-作成専用のインターフェースや作成処理の詳細については [ドキュメントを作成する](/create-documents) を参照してください。
+作成専用のインターフェースや作成処理の詳細については [ドキュメントを作成する](/create-document) を参照してください。
 
 ### 更新処理を実行する
 
@@ -169,7 +169,7 @@ await query.update(
 
 ドキュメントの更新日時を表す `updatedAt` フィールドには、`@alwaysUseFieldValueServerTimestampWhenUpdating` のアノテーションを付与したため、自動的に `FieldValue.serverTimestamp()` が設定されます。
 
-更新専用のインターフェースや更新処理の詳細については [ドキュメントを更新する](/update-documents) を参照してください。
+更新専用のインターフェースや更新処理の詳細については [ドキュメントを更新する](/update-document) を参照してください。
 
 ### 削除処理を実行する
 
@@ -182,7 +182,7 @@ await query.delete(todoId: 'todoId');
 
 ドキュメントの削除は、ドキュメント ID を指定するだけで実行できるので、特別なインターフェースは提供されません。
 
-削除処理の詳細については [ドキュメントを削除する](/delete-documents) を参照してください。
+削除処理の詳細については [ドキュメントを削除する](/delete-document) を参照してください。
 
 ## 次のステップ
 
