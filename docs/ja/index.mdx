@@ -1,3 +1,8 @@
+---
+next: /firestore-document-annotation
+nextTitle: FirestoreDocument アノテーション
+---
+
 # 導入
 
 ## インストール
@@ -81,7 +86,7 @@ class Todo {
 @FirestoreDocument(path: 'todos/{todoId}')
 ```
 
-`todo` ドキュメントの各フィールドに様々なアノテーションが付与されていますが、それらの説明は [フィールドに付与するアノテーション](/ja/field-annotations) を参照してください。
+`todo` ドキュメントの各フィールドに様々なアノテーションが付与されていますが、それらの説明は [フィールドに付与するアノテーション](/field-annotations) を参照してください。
 
 ## コードを生成する
 
@@ -99,7 +104,7 @@ dart run build_runner build --delete-conflicting-outputs
 
 `TodoQuery` クラスは `todos` コレクションのドキュメントの一通りの読み書きをするメソッドを提供しています。すべての処理を最適な方法で型安全に行うことができます。
 
-クエリクラスの詳細については [クエリクラス](/ja/query) を参照してください。
+クエリクラスの詳細については [クエリクラス](/query) を参照してください。
 
 ### 読み取り処理を実行する
 
@@ -123,7 +128,7 @@ final ReadTodo todo = todos.first!;
 print(todo.todoId); // fetched document ID.
 ```
 
-読み取り専用の型や読み取り処理の詳細については [ドキュメントを読み取る](/ja/read-documents) を参照してください。
+読み取り専用の型や読み取り処理の詳細については [ドキュメントを読み取る](/read-documents) を参照してください。
 
 ### 作成処理を実行する
 
@@ -147,7 +152,7 @@ print(documentReference.id); // created document ID.
 
 `flutterfire_gen` パッケージで生成されたコードが、読み取りや作成の処理で異なる最適な処理とインターフェースを提供する恩恵です。
 
-作成専用のインターフェースや作成処理の詳細については [ドキュメントを作成する](/ja/create-documents) を参照してください。
+作成専用のインターフェースや作成処理の詳細については [ドキュメントを作成する](/create-documents) を参照してください。
 
 ### 更新処理を実行する
 
@@ -169,7 +174,7 @@ await query.update(
 
 ドキュメントの更新日時を表す `updatedAt` フィールドには、`@alwaysUseFieldValueServerTimestampWhenUpdating` のアノテーションを付与したため、自動的に `FieldValue.serverTimestamp()` が設定されます。
 
-更新専用のインターフェースや更新処理の詳細については [ドキュメントを更新する](/ja/update-documents) を参照してください。
+更新専用のインターフェースや更新処理の詳細については [ドキュメントを更新する](/update-documents) を参照してください。
 
 ### 削除処理を実行する
 
@@ -182,7 +187,7 @@ await query.delete(todoId: 'todoId');
 
 ドキュメントの削除は、ドキュメント ID を指定するだけで実行できるので、特別なインターフェースは提供されません。
 
-削除処理の詳細については [ドキュメントを削除する](/ja/delete-documents) を参照してください。
+削除処理の詳細については [ドキュメントを削除する](/delete-documents) を参照してください。
 
 ## 次のステップ
 
