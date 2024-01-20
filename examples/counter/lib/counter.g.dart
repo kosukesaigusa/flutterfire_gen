@@ -20,7 +20,7 @@ final counterQueryProvider = AutoDisposeProvider<CounterQuery>.internal(
 );
 
 typedef CounterQueryRef = AutoDisposeProviderRef<CounterQuery>;
-String _$counterListHash() => r'109caede0afd74907105559caea3fe4f447a572d';
+String _$counterListHash() => r'0c05a52816154a97df1cb22f22a96e34b2641d6b';
 
 /// See also [CounterList].
 @ProviderFor(CounterList)

@@ -84,14 +84,14 @@ class Counter {
 /// automatically set to the server's timestamp.
 class CreateCounterData {
   const CreateCounterData({
-    required this.value,
+    this.value,
   });
 
-  final FirestoreData<int> value;
+  final FirestoreData<int>? value;
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{
-      'value': value.value,
+      'value': value?.value ?? 0,
       'createdAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
     };
