@@ -1,0 +1,175 @@
+# Customization with build.yaml
+
+## Customizable Options
+
+The `flutterfire_gen` package allows you to define the schema for Cloud Firestore documents using the `@FirestoreDocument` annotation.
+
+You can change the behavior of code generation by customizing the `options` in `build.yaml`.
+
+Customizable settings should be specified under `targets > $default > builders > flutterfire_gen > options` in `build.yaml`.
+
+The customizable options and their default values are as follows. If the default values are sufficient, no additional specifications are necessary.
+
+```yaml title="build.yaml"
+targets:
+  $default:
+    builders:
+      flutterfire_gen:
+        options:
+          schema_definition_class_prefix: ""
+          read_class_prefix: "Read"
+          read_class_suffix: ""
+          create_class_prefix: "Create"
+          create_class_suffix: ""
+          update_class_prefix: "Update"
+          update_class_suffix: ""
+          delete_class_prefix: "Delete"
+          delete_class_suffix: ""
+          include_path_field: false
+          include_document_reference_field: false
+          generate_copy_with: false
+```
+
+### schema_definition_class_prefix
+
+`schema_definition_class_prefix` specifies the class name prefix for schema definition classes of classes annotated with `@FirestoreDocument`.
+
+The default value is an empty string `""`.
+
+For example, if you specify a prefix like `_$`, the class name for the schema definition of the `todo` document in the `todos` collection would be defined as `_$Todo`.
+
+```yaml title="build.yaml"
+targets:
+  $default:
+    builders:
+      flutterfire_gen:
+        options:
+          schema_definition_class_prefix: "_$"
+```
+
+```dart title="todo.dart"
+@FirestoreDocument(path: 'todos/{todoId}')
+class _$Todo {
+  /** omitted */
+}
+```
+
+This approach makes it clear that the class is for schema definition and prevents the schema definition classes from being referenced from other files.
+
+### read_class_prefix
+
+`read_class_prefix` specifies the class name prefix for the generated read-only types.
+
+The default value is `"Read"`.
+
+Thus, by default, the read-only type would be named `ReadTodo`.
+
+For example, if you want to use the most intuitive name `Todo` for the read-only type, ensure that the schema definition class name does not conflict with the read-only class name by:
+
+- Setting `schema_definition_class_prefix` to `_$`
+- Setting `read_class_prefix` to an empty string `""`
+
+```yaml title="build.yaml"
+targets:
+  $default:
+    builders:
+      flutterfire_gen:
+        options:
+          schema_definition_class_prefix: "_$"
+          read_class_prefix: ""
+```
+
+```dart title="todo.dart"
+@FirestoreDocument(path: 'todos/{todoId}')
+class _$Todo {
+  /** omitted */
+}
+```
+
+With the above settings, the generated read-only class name would be `Todo`.
+
+```dart
+final query = TodoQuery();
+final DocumentReference<Todo> documentReference = await query.add(
+  createTodo: const CreateTodo(title: 'A new todo title'),
+);
+print(documentReference.id); // created document ID.
+```
+
+### read_class_suffix
+
+`read_class_suffix` specifies the class name suffix for the generated read-only types.
+
+The default value is an empty string `""`.
+
+### create_class_prefix
+
+`create_class_prefix` specifies the class name prefix for the generated creation types.
+
+The default value is `"Create"`.
+
+Thus, by default, the creation type would be named `CreateTodo`.
+
+### create_class_suffix
+
+`create_class_suffix` specifies the class name suffix for the generated creation types.
+
+The default value is an empty string `""`.
+
+You might consider specifying `"Data"`, `"Interface"`, etc.
+
+### update_class_prefix
+
+`update_class_prefix` specifies the class name prefix for the generated update types.
+
+The default value is `"Update"`.
+
+Thus, by default, the update type would be named `UpdateTodo`.
+
+### update_class_suffix
+
+`update_class_suffix` specifies the class name suffix for the generated update types.
+
+The default value is an empty string `""`.
+
+You might consider specifying `"Data"`, `"Interface"`, etc.
+
+### delete_class_prefix
+
+`delete_class_prefix` specifies the class name prefix for the generated deletion types.
+
+The default value is `"Delete"`.
+
+Thus, by default, the deletion type would be named `DeleteTodo`.
+
+### delete_class_suffix
+
+`delete_class_suffix` specifies the class name suffix for the generated deletion types.
+
+The default value is an empty string `""`.
+
+### include_path_field
+
+`include_path_field` specifies whether to include the `path` of the read document in the generated read-only class.
+
+The default value is `false`.
+
+### include_document_reference_field
+
+`include_document_reference_field` specifies whether to include the `DocumentReference` of the read document in the generated read-only class.
+
+The default value is `false`.
+
+### generate_copy_with
+
+`generate_copy_with` specifies whether to include the `copyWith` method in the generated read-only class.
+
+The default value is `false`.
+
+## FirestoreDocument Annotation Settings
+
+The settings in `build.yaml` apply to the entire project's `flutterfire_gen` generated code.
+
+If you want to change settings for each class annotated with `@FirestoreDocument`, you can do so using the parameters of the `@FirestoreDocument` annotation.
+
+For details, see [FirestoreDocument Annotation](/firestore-document-annotation).
