@@ -1,0 +1,171 @@
+# build.yaml でカスタマイズする
+
+## カスタマイズ可能なオプション
+
+`flutterfire_gen` パッケージでは `@FirestoreDocument` アノテーションを付与して、Cloud Firestore のドキュメントのスキーマを定義します。
+
+`build.yaml` の `options` をカスタマイズすることで、コード生成の挙動を変更することができます。
+
+`build.yaml` の `targets > $default > builders > flutterfire_gen > options` にカスタマイズしたい設定を記述します。
+
+カスタマイズ可能なオプションとデフォルト値は以下の通りです。
+
+デフォルト値のままで良い場合は何も記述する必要はありません。
+
+```yaml title="build.yaml"
+targets:
+  $default:
+    builders:
+      flutterfire_gen:
+        options:
+          schema_definition_class_prefix: ""
+          read_class_prefix: "Read"
+          read_class_suffix: ""
+          create_class_prefix: "Create"
+          create_class_suffix: ""
+          update_class_prefix: "Update"
+          update_class_suffix: ""
+          delete_class_prefix: "Delete"
+          delete_class_suffix: ""
+          include_path_field: false
+          include_document_reference_field: false
+          generate_copy_with: false
+```
+
+### schema_definition_class_prefix
+
+`schema_definition_class_prefix` には、`@FirestoreDocument` アノテーションを付与したクラスのスキーマ定義クラスのクラス名の接頭辞を指定します。
+
+デフォルト値は空文字 `""` です。
+
+たとえば `_$` のような接頭辞を指定した場合、`todos` コレクションの `todo` ドキュメントのスキーマ定義のクラス名は `_$Todo` のように定義することを強制させられます。
+
+```yaml title="build.yaml"
+targets:
+  $default:
+    builders:
+      flutterfire_gen:
+        options:
+          schema_definition_class_prefix: "_$"
+```
+
+```dart title="todo.dart"
+@FirestoreDocument(path: 'todos/{todoId}')
+class _$Todo {
+  /** omitted */
+}
+```
+
+このようにすることで、スキーマ定義用のクラスであることを分かりやすくしたり、スキーマ定義用のクラスを他のファイルから参照できないようにしたりすることができます。
+
+### read_class_prefix
+
+`read_class_prefix` には、生成される読み取り専用型のクラス名の接頭辞を指定します。
+
+デフォルト値は `"Read"` です。
+
+よって、デフォルトでは読み取り専用の型として `ReadTodo` のようなクラス名が生成されます。
+
+たとえば、読み取り専用の型には `Todo` という最も直感的な名前を採用したい場合には、スキーマ定義のクラス名と読み取り専用のクラス名が衝突しないように、
+
+- `schema_definition_class_prefix` に `_$` を指定する
+- `read_class_prefix` に空文字 `""` を指定する
+
+方法が考えられます。
+
+```yaml title="build.yaml"
+targets:
+  $default:
+    builders:
+      flutterfire_gen:
+        options:
+          schema_definition_class_prefix: "_$"
+          read_class_prefix: ""
+```
+
+```dart title="todo.dart"
+@FirestoreDocument(path: 'todos/{todoId}')
+class _$Todo {
+  /** omitted */
+}
+```
+
+上記の設定から生成される読み取り専用のクラス名は `Todo` となります。
+
+```dart
+final query = TodoQuery();
+final DocumentReference<Todo> documentReference = await query.add(
+  createTodo: const CreateTodo(title: 'A new todo title'),
+);
+print(documentReference.id); // created document ID.
+```
+
+### read_class_suffix
+
+`read_class_suffix` には、生成される読み取り専用型のクラス名の接尾辞を指定します。
+
+デフォルト値は空文字 `""` です。
+
+### create_class_prefix
+
+`create_class_prefix` には、生成される作成用の型のクラス名の接頭辞を指定します。
+
+デフォルト値は `"Create"` です。
+
+よって、デフォルトでは作成用の型として `CreateTodo` のようなクラス名が生成されます。
+
+### create_class_suffix
+
+`create_class_suffix` には、生成される作成用の型のクラス名の接尾辞を指定します。
+
+デフォルト値は空文字 `""` です。
+
+たとえば `"Data"`, `"Interface"` などを指定することがあるかもしれません。
+
+### update_class_prefix
+
+`update_class_prefix` には、生成される更新用の型のクラス名の接頭辞を指定します。
+
+デフォルト値は `"Update"` です。
+
+よって、デフォルトでは更新用の型として `UpdateTodo` のようなクラス名が生成されます。
+
+### update_class_suffix
+
+`update_class_suffix` には、生成される更新用の型のクラス名の接尾辞を指定します。
+
+デフォルト値は空文字 `""` です。
+
+たとえば `"Data"`, `"Interface"` などを指定することがあるかもしれません。
+
+### delete_class_prefix
+
+`delete_class_prefix` には、生成される削除用の型のクラス名の接頭辞を指定します。
+
+デフォルト値は `"Delete"` です。
+
+よって、デフォルトでは削除用の型として `DeleteTodo` のようなクラス名が生成されます。
+
+### delete_class_suffix
+
+`delete_class_suffix` には、生成される削除用の型のクラス名の接尾辞を指定します。
+
+デフォルト値は空文字 `""` です。
+
+## include_path_field
+
+`include_path_field` には、生成される読み取り専用のクラスに、読み取ったドキュメントの `path` を含めるかどうかを指定します。
+
+デフォルト値は `false` です。
+
+## include_document_reference_field
+
+`include_document_reference_field` には、生成される読み取り専用のクラスに、読み取ったドキュメントの `DocumentReference` を含めるかどうかを指定します。
+
+デフォルト値は `false` です。
+
+## generate_copy_with
+
+`generate_copy_with` には、生成される読み取り専用のクラスに、`copyWith` メソッドを含めるかどうかを指定します。
+
+デフォルト値は `false` です。
