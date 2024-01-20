@@ -1,3 +1,8 @@
+## Unreleased changes
+
+* Update documents.
+* Enable to combine `@allowFieldValue` annotation with `@CreateDefault` and `@UpdateDefault`.
+
 ## 0.4.2
 
 * Add `BuildYamlConfig` tests.
