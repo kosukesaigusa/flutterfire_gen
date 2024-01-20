@@ -1,1 +1,266 @@
 # フィールドに付与するアノテーション
+
+`flutterfire_gen` パッケージで Cloud Firestore のドキュメントのスキーマを定義しますが、各フィールドの定義には様々なアノテーションを付与して、各フィールドに対するコード生成の振る舞いをカスタマイズすることができます。
+
+## Default 値を設定するアノテーション
+
+`flutterfire_gen` パッケージでは、読み取り、作成、更新（、削除）の各操作に最適な異なる処理を生成します。
+
+Default 値も、読み取り、作成、更新の各操作に対してそれぞれ設定することができます。
+
+### 読み取り時のデフォル値を設定する
+
+読み取り時のデフォルト値は `@ReadDefalut` アノテーションで設定します。
+
+下記では `todos` コレクションのドキュメントの `isCompleted` フィールドに `@ReadDefault(false)` を付与しています。
+
+こうすることで、`todo` ドキュメントの読み取り時に、`isCompleted` が `null` の場合には代わりに `false` が格納されます。
+
+```dart title="todo.dart"
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+
+part 'todo.flutterfire_gen.dart';
+
+@FirestoreDocument(path: 'todos/{todoId}')
+class Todo {
+  const Todo({
+    required this.isCompleted,
+  });
+
+  @ReadDefault(false)
+  final bool isCompleted;
+}
+```
+
+`isCompleted` フィールドは、Cloud Firestore のドキュメントとしては null になる可能性があっても、Flutter/Dart では non-nullable な `bool` 型として扱いたい、`null` の場合には `false` とすれば問題ないという場合に便利です。
+
+### 作成時のデフォルト値を設定する
+
+作成時のデフォルト値は `@CreateDefault` アノテーションで設定します。
+
+下記では `counters` コレクションのドキュメントの `value` フィールドに `@CreateDefault(0)` を付与しています。
+
+こうすることで、`counter` ドキュメントの作成時に、`value` に特に値を指定しなければ `0` が保存されます。
+
+```dart title="counter.dart"
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+
+part 'counter.flutterfire_gen.dart';
+
+@FirestoreDocument(path: 'counters/{counterId}')
+class Counter {
+  const Counter({
+    required this.value,
+  });
+
+  @CreateDefault(0)
+  final int value;
+}
+```
+
+例えば下記のように、`counters` コレクションのドキュメントを作成する際のインターフェースである `CreateCounter` 型に `value` の値を与えなければ、`value` フィールドは `0` としてドキュメントが作成されます。
+
+```dart
+final query = CounterQuery();
+final DocumentReference<CreateCounter> documentReference =
+    await query.add(createCounter: const CreateCounter());
+```
+
+もちろん `value` フィールドに値を与えることもできます。その場合は、その値が保存されます。
+
+```dart
+final query = CounterQuery();
+final DocumentReference<CreateCounter> documentReference =
+    await query.add(createCounter: const CreateCounter(value: 1));
+```
+
+### 更新時のデフォルト値を設定する
+
+更新時のデフォルト値は `@UpdateDefault` アノテーションで設定します。
+
+下記では `messages` コレクションのドキュメントの `isEdited` フィールドに `@UpdateDefault(true)` を付与しています。
+
+こうすることで、`message` ドキュメントの更新時に、`isEdited` に特に値を指定しなければ `true` が保存されます。
+
+```dart title="message.dart"
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+
+part 'message.flutterfire_gen.dart';
+
+@FirestoreDocument(path: 'messages/{messageId}')
+class Message {
+  const Message({
+    required this.content,
+    required this.value,
+  });
+
+  final String content,
+
+  @UpdateDefault(true)
+  final bool isEdited;
+}
+```
+
+例えば下記のように、`messages` コレクションのドキュメントを更新する際のインターフェースである `UpdateMessage` 型に `isEdited` の値を与えなければ、`isEdited` フィールドは `true` としてドキュメントが更新されます。
+
+```dart
+final query = MessageQuery();
+await query.update(
+  messageId: 'messageId',
+  updateMessage: const UpdateMessage(
+    content: 'An updated content',
+  ),
+);
+```
+
+もちろん `isEdited` フィールドに値を与えることもできます。その場合は、その値が保存されます。
+
+```dart
+final query = MessageQuery();
+await query.update(
+  messageId: 'messageId',
+  updateMessage: const UpdateMessage(
+    content: 'An updated content',
+    isEdited: false,
+  ),
+);
+```
+
+## FieldValue で書き込むアノテーション
+
+Cloud Firestore のドキュメントを作成したり更新したりする際には、実際に保存される値そのものを指定する以外にも、`FieldValue` を使用することもできます。
+
+`flutterfire_gen` パッケージでも、それに対応したコードを生成することができます。
+
+`flutterfire_gen` によるコード生成で `FieldValue` を使用した書き込みを行いたい場合には、`flutterfire_gen_utils` パッケージを import する必要があります。
+
+```diff
+import 'package:cloud_firestore/cloud_firestore.dart';
++ import 'package:flutterfire_gen_utils/flutterfire_gen_utils.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+
+part 'counter.flutterfire_gen.dart';
+
+/** omitted */
+```
+
+`counters` コレクションのドキュメントの `value` フィールドを、実際の整数値でも `FieldValue` でも書き込めるようにするために、`@allowFieldValue` アノテーションを付与しています。
+
+```dart title="counter.dart"
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_gen_utils/flutterfire_gen_utils.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+
+part 'counter.flutterfire_gen.dart';
+
+@FirestoreDocument(path: 'counters/{counterId}')
+class Counter {
+  const Counter({
+    required this.value,
+  });
+
+  @allowFieldValue
+  final int value;
+}
+```
+
+`counters` コレクションのドキュメントの `value` フィールドを実際の値（例：`1`）で更新したい場合には、`ActualValue` 型を与えます。
+
+```dart
+final query = CounterQuery();
+await query.update(
+  counterId: 'counterId',
+  updateCounter: const UpdateCounter(value: ActualValue<int>(1)),
+);
+```
+
+`counters` コレクションのドキュメントの `value` フィールドを、現在の値に `1` 加算した値で更新したい場合には `FieldValueData` 型を与えます。
+
+```dart
+final query = CounterQuery();
+await query.update(
+  counterId: 'counterId',
+  updateCounter: UpdateCounter(value: FieldValueData(FieldValue.increment(1))),
+);
+```
+
+スキーマ定義を行う `Counter` クラスでは単なる `int` 型で `value` フィールドを定義していますが、`flutterfire_gen` パッケージでは、読み取り、作成、更新（、削除）の各操作に最適な処理やインターフェースを別々に生成するので、対象のフィールドに `@allowFieldValue` を与えることで、このように `FieldValue` を使用した書き込みにも対応することができます。
+
+## 書き込み時に自動でサーバ時間を使用するアノテーション
+
+ドキュメントの作成時や更新時には、`createdAt` や `updatedAt` のようなフィールドにサーバ時間を自動で適用したい場合が頻繁にあります。
+
+`FieldValue.serverTimestamp()` を使用することでサーバ時間を自動で適用することができますが、`flutterfire_gen` パッケージでは、`@alwaysUseFieldValueServerTimestampWhenCreating` アノテーションや `@alwaysUseFieldValueServerTimestampWhenUpdating` アノテーションを適用することで、ドキュメントの作成時や更新時にはそれを意識しないインターフェースで実装することができます。
+
+たとえば下記では、`todos` コレクションのドキュメントのスキーマ定義をしています。
+
+```dart title="todo.dart"
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
+
+part 'todo.flutterfire_gen.dart';
+
+@FirestoreDocument(path: 'todos/{todoId}')
+class Todo {
+  const Todo({
+    required this.title,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  final String title;
+
+  @alwaysUseFieldValueServerTimestampWhenCreating
+  final DateTime? createdAt;
+
+  @alwaysUseFieldValueServerTimestampWhenCreating
+  @alwaysUseFieldValueServerTimestampWhenUpdating
+  final DateTime? updatedAt;
+}
+```
+
+`todos` コレクションのドキュメントの作成時のインターフェースである `CreateTodo` には `createdAt` や `updatedAt` を適用する必要はありません。生成されたコードの内部で自動で `FieldValue.serverTimestamp()` が適用されます。
+
+```dart
+final query = TodoQuery();
+final DocumentReference<CreateTodo> documentReference = await query.add(
+  createTodo: const CreateTodo(title: 'A new todo title'),
+);
+```
+
+同様に、`todos` コレクションのドキュメントの更新時のインターフェースである `UpdateTodo` には `updatedAt` を適用する必要はありません。生成されたコードの内部で自動で `FieldValue.serverTimestamp()` が適用されます。
+
+`createdAt` フィールドには、更新時にサーバ時間を自動で適用するための `@alwaysUseFieldValueServerTimestampWhenUpdating` アノテーションは付与されていないので、所望の値で更新することができます。
+
+```dart
+final query = TodoQuery();
+await query.update(
+  todoId: 'todoId',
+  updateTodo: UpdateTodo(
+    title: 'An updated todo title',
+    createdAt: DateTime(1970),
+  ),
+);
+```
+
+また、通常 Dart の `DateTime` 型と Cloud Firestore の `Timestamp` 型との間の変換には `JsonConverter` の適用が必要ですが、`flutterfire_gen` パッケージでは自動でその変換が行われます。
+
+## JsonConverter を適用するアノテーション
+
+`flutterfire_gen` パッケージでは、Dart で取り扱う型と Cloud Firestore で取り扱う型との間の変換を行うために、`JsonConverter` を使用することができます。
+
+あなたの `pubspec.yaml` に予め `json_annotation` パッケージを追加してください。
+
+```yaml title="pubspec.yaml"
+dependencies:
+  json_annotation:
+```
+
+使用方法については [json_annotation](https://pub.dev/packages/json_annotation) を参照してください。
+
+## JsonPostProcessor を適用するアノテーション
+
+🚧🚧🚧 準備中です 🚧🚧🚧

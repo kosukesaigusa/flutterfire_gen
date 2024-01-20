@@ -152,20 +152,28 @@ print(documentReference.id); // created document ID.
 
 デフォルト値は空文字 `""` です。
 
-## include_path_field
+### include_path_field
 
 `include_path_field` には、生成される読み取り専用のクラスに、読み取ったドキュメントの `path` を含めるかどうかを指定します。
 
 デフォルト値は `false` です。
 
-## include_document_reference_field
+### include_document_reference_field
 
 `include_document_reference_field` には、生成される読み取り専用のクラスに、読み取ったドキュメントの `DocumentReference` を含めるかどうかを指定します。
 
 デフォルト値は `false` です。
 
-## generate_copy_with
+### generate_copy_with
 
 `generate_copy_with` には、生成される読み取り専用のクラスに、`copyWith` メソッドを含めるかどうかを指定します。
 
 デフォルト値は `false` です。
+
+## FirestoreDocument アノテーションで設定する
+
+上記のように `build.yaml` で設定した内容はプロジェクト全体の `flutterfire_gen` で生成するコードに適用されます。
+
+もし `@FirestoreDocument` アノテーションを適用したクラスごとに設定を変更したい場合は、`@FirestoreDocument` アノテーションのパラメータで設定することができます。
+
+詳細は [FirestoreDocument アノテーション](/firestore-document-annotation) を参照してください。
