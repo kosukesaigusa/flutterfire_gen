@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterfire_gen_annotation/flutterfire_gen_annotation.dart';
 import 'package:flutterfire_gen_utils/flutterfire_gen_utils.dart';
@@ -18,10 +16,9 @@ class CounterList extends _$CounterList {
       ref.watch(counterQueryProvider).fetchDocuments();
 
   Future<void> addCounter() async {
-    final randomInt = Random().nextInt(5);
-    await ref.read(counterQueryProvider).add(
-          createCounterData: CreateCounterData(value: ActualValue(randomInt)),
-        );
+    await ref
+        .read(counterQueryProvider)
+        .add(createCounterData: const CreateCounterData());
     ref.invalidateSelf();
   }
 
@@ -84,6 +81,7 @@ class _$Counter {
     required this.updatedAt,
   });
 
+  @CreateDefault(0)
   @allowFieldValue
   final int value;
 

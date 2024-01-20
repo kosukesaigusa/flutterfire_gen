@@ -153,7 +153,7 @@ class ToJsonFieldParser {
     }
 
     if (isFieldValueAllowed) {
-      if (dartType.isNullableType) {
+      if (dartType.isNullableType || hasDefaultValue) {
         if (assertNonNull) {
           return '$name!.value$defaultValueExpression';
         } else {
