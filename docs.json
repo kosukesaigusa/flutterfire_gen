@@ -5,12 +5,44 @@
   "sidebar": {
     "en": [
       [
-        "Home",
+        "Introduction",
         "/"
       ],
       [
-        "Another Page",
-        "/another-page"
+        "Customization with build.yaml",
+        "/build-yaml"
+      ],
+      [
+        "Annotations for Fields",
+        "/field-annotations"
+      ],
+      [
+        "Reading Documents",
+        "/read-documents"
+      ],
+      [
+        "Creating Documents",
+        "/create-documents"
+      ],
+      [
+        "Updating Documents",
+        "/update-documents"
+      ],
+      [
+        "Deleting Documents",
+        "/delete-documents"
+      ],
+      [
+        "Writing with FieldValue",
+        "/field-value"
+      ],
+      [
+        "Query",
+        "/query"
+      ],
+      [
+        "FirestoreDocument Annotation",
+        "/firestore-document-annotation"
       ]
     ],
     "ja": [
@@ -32,15 +64,15 @@
       ],
       [
         "ドキュメントを作成する",
-        "/create-document"
+        "/create-documents"
       ],
       [
         "ドキュメントを更新する",
-        "/update-document"
+        "/update-documents"
       ],
       [
         "ドキュメントを削除する",
-        "/delete-document"
+        "/delete-documents"
       ],
       [
         "FieldValue を用いて書き込む",
