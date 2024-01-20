@@ -1,5 +1,6 @@
 {
   "name": "flutterfire_gen",
+  "description": "flutterfire_gen is a package for automatic code generation for Cloud Firestore. It supports efficient CRUD operations with type-safe interfaces and methods.",
   "theme": "#36B9B9",
   "sidebar": {
     "en": [
@@ -18,8 +19,8 @@
         "/"
       ],
       [
-        "FirestoreDocument アノテーション",
-        "/firestore-document-annotation"
+        "build.yaml でカスタマイズする",
+        "/build-yaml"
       ],
       [
         "フィールドに付与するアノテーション",
@@ -42,8 +43,16 @@
         "/delete-document"
       ],
       [
+        "FieldValue を用いて書き込む",
+        "/field-value"
+      ],
+      [
         "クエリ",
         "/query"
+      ],
+      [
+        "FirestoreDocument アノテーション",
+        "/firestore-document-annotation"
       ]
     ]
   },
