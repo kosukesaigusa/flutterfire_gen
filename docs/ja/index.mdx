@@ -103,7 +103,7 @@ dart run build_runner build --delete-conflicting-outputs
 
 ### 読み取り処理を実行する
 
-たとえば、`todo` コレクションのドキュメントを一括取得するには `fetchDocuments` メソッドを呼び出します。
+たとえば、`todos` コレクションのドキュメントを一括取得するには `fetchDocuments` メソッドを呼び出します。
 
 ```dart
 final query = TodoQuery();
@@ -127,7 +127,7 @@ print(todo.todoId); // fetched document ID.
 
 ### 作成処理を実行する
 
-`todo` コレクションにドキュメントを作成するには `add` メソッドを呼び出します。
+`todos` コレクションにドキュメントを作成するには `add` メソッドを呼び出します。
 
 ```dart
 final query = TodoQuery();
@@ -151,7 +151,7 @@ print(documentReference.id); // created document ID.
 
 ### 更新処理を実行する
 
-`todo` コレクションのドキュメントを更新するには `update` メソッドを呼び出します。
+`todos` コレクションのドキュメントを更新するには `update` メソッドを呼び出します。
 
 ```dart
 final query = TodoQuery();
@@ -173,7 +173,7 @@ await query.update(
 
 ### 削除処理を実行する
 
-`todo` コレクションのドキュメントを削除するには `delete` メソッドを呼び出します。
+`todos` コレクションのドキュメントを削除するには `delete` メソッドを呼び出します。
 
 ```dart
 final query = TodoQuery();
