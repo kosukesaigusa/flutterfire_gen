@@ -1,7 +1,8 @@
-## Unreleased changes
+## 0.4.3
 
 * Update documents.
 * Enable to combine `@allowFieldValue` annotation with `@CreateDefault` and `@UpdateDefault`.
+* Update dependency package versions.
 
 ## 0.4.2
 
