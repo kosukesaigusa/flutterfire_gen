@@ -1,3 +1,9 @@
+## 0.5.0
+
+> [!NOTE]
+> This release has breaking changes.
+* Update `cloud_firestore` package version to `5.5.0`, which might be not compatible with previous versions.
+
 ## 0.4.1
 
 * Update `README.md`.
