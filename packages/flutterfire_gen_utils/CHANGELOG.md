@@ -1,3 +1,7 @@
+## 0.5.1
+
+* Update `cloud_firestore` dependency to `>=5.5.0` to support wider range of versions.
+
 ## 0.5.0
 
 > [!NOTE]

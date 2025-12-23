@@ -286,7 +286,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.5.0"
+    version: "0.5.1"
   flutterfire_gen_annotation:
     dependency: "direct main"
     description:
@@ -300,7 +300,7 @@ packages:
       path: "../../flutterfire_gen_utils"
       relative: true
     source: path
-    version: "0.5.0"
+    version: "0.5.1"
   frontend_server_client:
     dependency: transitive
     description:

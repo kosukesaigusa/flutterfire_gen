@@ -334,7 +334,7 @@ packages:
       path: "../../packages/flutterfire_gen"
       relative: true
     source: path
-    version: "0.5.0"
+    version: "0.5.1"
   flutterfire_gen_annotation:
     dependency: "direct main"
     description:
@@ -348,7 +348,7 @@ packages:
       path: "../../packages/flutterfire_gen_utils"
       relative: true
     source: path
-    version: "0.5.0"
+    version: "0.5.1"
   freezed_annotation:
     dependency: transitive
     description:

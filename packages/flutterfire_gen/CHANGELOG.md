@@ -1,3 +1,9 @@
+## 0.5.1
+
+* Update dependency versions to support wider range of `analyzer` versions (thanks to @tenpei-peso).
+* Update `source_gen` to `^2.0.0`.
+* Update `cloud_firestore` dependency to `>=5.5.0` in `pubspec.yaml`.
+
 ## 0.5.0
 
 > [!NOTE]
