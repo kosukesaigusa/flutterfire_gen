@@ -28,3 +28,6 @@ linter:
     avoid_annotating_with_dynamic: false
     always_use_package_imports: false
     no_default_cases: false
+    functional_ref: false
+    specify_nonobvious_local_variable_types: false
+    document_ignores: false
