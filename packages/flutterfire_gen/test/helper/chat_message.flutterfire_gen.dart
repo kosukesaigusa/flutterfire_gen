@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -32,7 +33,7 @@ class ReadChatMessage {
   final Map<String, Map<String, String>> nestedMap;
 
   final Map<String, Map<int, List<Map<String, Map<String, dynamic>>>>>
-      deeplyNestedMap;
+  deeplyNestedMap;
 
   final ChatMessageType chatMessageType;
 
@@ -53,35 +54,43 @@ class ReadChatMessage {
   final DocumentReference<ReadChatMessage> chatMessageReference;
 
   factory ReadChatMessage.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return ReadChatMessage(
       senderId: extendedJson['senderId'] as String,
-      map: extendedJson['map'] as Map<String, dynamic>? ??
+      map:
+          extendedJson['map'] as Map<String, dynamic>? ??
           const <String, dynamic>{},
       nestedMap: (extendedJson['nestedMap'] as Map<String, dynamic>).map(
-          (k, v) => MapEntry(
-              k,
-              (v as Map<String, dynamic>)
-                  .map((k, v) => MapEntry(k, v as String)))),
+        (k, v) => MapEntry(
+          k,
+          (v as Map<String, dynamic>).map((k, v) => MapEntry(k, v as String)),
+        ),
+      ),
       deeplyNestedMap: (extendedJson['deeplyNestedMap'] as Map<String, dynamic>)
-          .map((k, v) => MapEntry(
-              k, v as Map<int, List<Map<String, Map<String, dynamic>>>>)),
-      chatMessageType: _chatMessageTypeConverter
-          .fromJson(extendedJson['chatMessageType'] as String),
+          .map(
+            (k, v) => MapEntry(
+              k,
+              v as Map<int, List<Map<String, Map<String, dynamic>>>>,
+            ),
+          ),
+      chatMessageType: _chatMessageTypeConverter.fromJson(
+        extendedJson['chatMessageType'] as String,
+      ),
       content: extendedJson['content'] as String? ?? '',
-      imageUrls: (extendedJson['imageUrls'] as List<dynamic>?)
+      imageUrls:
+          (extendedJson['imageUrls'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
       isDeleted: extendedJson['isDeleted'] as bool? ?? false,
       createdAt: (extendedJson['createdAt'] as Timestamp?)?.toDate(),
       updatedAt: (extendedJson['updatedAt'] as Timestamp?)?.toDate(),
+
       chatMessageId: extendedJson['chatMessageId'] as String,
       path: extendedJson['path'] as String,
-      chatMessageReference: extendedJson['chatMessageReference']
-          as DocumentReference<ReadChatMessage>,
+      chatMessageReference:
+          extendedJson['chatMessageReference']
+              as DocumentReference<ReadChatMessage>,
     );
   }
 
@@ -91,7 +100,9 @@ class ReadChatMessage {
       ...data,
       'chatMessageId': ds.id,
       'path': ds.reference.path,
-      'chatMessageReference': ds.reference.parent.doc(ds.id).withConverter(
+      'chatMessageReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) => ReadChatMessage.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
@@ -103,7 +114,7 @@ class ReadChatMessage {
     Map<String, dynamic>? map,
     Map<String, Map<String, String>>? nestedMap,
     Map<String, Map<int, List<Map<String, Map<String, dynamic>>>>>?
-        deeplyNestedMap,
+    deeplyNestedMap,
     ChatMessageType? chatMessageType,
     String? content,
     List<String>? imageUrls,
@@ -156,7 +167,7 @@ class CreateChatMessage {
   final Map<String, Map<String, String>> nestedMap;
 
   final Map<String, Map<int, List<Map<String, Map<String, dynamic>>>>>
-      deeplyNestedMap;
+  deeplyNestedMap;
 
   final ChatMessageType chatMessageType;
 
@@ -182,8 +193,9 @@ class CreateChatMessage {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -214,7 +226,7 @@ class UpdateChatMessage {
   final Map<String, Map<String, String>>? nestedMap;
 
   final Map<String, Map<int, List<Map<String, Map<String, dynamic>>>>>?
-      deeplyNestedMap;
+  deeplyNestedMap;
 
   final ChatMessageType? chatMessageType;
 
@@ -244,8 +256,9 @@ class UpdateChatMessage {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -258,96 +271,92 @@ class DeleteChatMessage {}
 /// Firestore documents to [ReadChatMessage] objects.
 CollectionReference<ReadChatMessage> readChatMessagesCollectionReference({
   required String chatRoomId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('chatMessages')
-        .withConverter<ReadChatMessage>(
-          fromFirestore: (ds, _) => ReadChatMessage.fromDocumentSnapshot(ds),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('chatRooms')
+    .doc(chatRoomId)
+    .collection('chatMessages')
+    .withConverter<ReadChatMessage>(
+      fromFirestore: (ds, _) => ReadChatMessage.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific ChatMessage document.
 DocumentReference<ReadChatMessage> readChatMessageDocumentReference({
   required String chatRoomId,
+
   required String chatMessageId,
-}) =>
-    readChatMessagesCollectionReference(
-      chatRoomId: chatRoomId,
-    ).doc(chatMessageId);
+}) => readChatMessagesCollectionReference(
+  chatRoomId: chatRoomId,
+).doc(chatMessageId);
 
 /// Reference to the 'chatMessages' collection with a converter for [CreateChatMessage].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateChatMessage] objects to Firestore document data.
 CollectionReference<CreateChatMessage> createChatMessagesCollectionReference({
   required String chatRoomId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('chatMessages')
-        .withConverter<CreateChatMessage>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('chatRooms')
+    .doc(chatRoomId)
+    .collection('chatMessages')
+    .withConverter<CreateChatMessage>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific ChatMessage document.
 DocumentReference<CreateChatMessage> createChatMessageDocumentReference({
   required String chatRoomId,
+
   required String chatMessageId,
-}) =>
-    createChatMessagesCollectionReference(
-      chatRoomId: chatRoomId,
-    ).doc(chatMessageId);
+}) => createChatMessagesCollectionReference(
+  chatRoomId: chatRoomId,
+).doc(chatMessageId);
 
 /// Reference to the 'chatMessages' collection with a converter for [UpdateChatMessage].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateChatMessage] objects to Firestore document data.
 CollectionReference<UpdateChatMessage> updateChatMessagesCollectionReference({
   required String chatRoomId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('chatMessages')
-        .withConverter<UpdateChatMessage>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('chatRooms')
+    .doc(chatRoomId)
+    .collection('chatMessages')
+    .withConverter<UpdateChatMessage>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific ChatMessage document.
 DocumentReference<UpdateChatMessage> updateChatMessageDocumentReference({
   required String chatRoomId,
+
   required String chatMessageId,
-}) =>
-    updateChatMessagesCollectionReference(
-      chatRoomId: chatRoomId,
-    ).doc(chatMessageId);
+}) => updateChatMessagesCollectionReference(
+  chatRoomId: chatRoomId,
+).doc(chatMessageId);
 
 /// Reference to the 'chatMessages' collection with a converter for [DeleteChatMessage].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
 CollectionReference<DeleteChatMessage> deleteChatMessagesCollectionReference({
   required String chatRoomId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('chatMessages')
-        .withConverter<DeleteChatMessage>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('chatRooms')
+    .doc(chatRoomId)
+    .collection('chatMessages')
+    .withConverter<DeleteChatMessage>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific ChatMessage document.
 DocumentReference<DeleteChatMessage> deleteChatMessageDocumentReference({
   required String chatRoomId,
+
   required String chatMessageId,
-}) =>
-    deleteChatMessagesCollectionReference(
-      chatRoomId: chatRoomId,
-    ).doc(chatMessageId);
+}) => deleteChatMessagesCollectionReference(
+  chatRoomId: chatRoomId,
+).doc(chatMessageId);
 
 /// Reference to the 'chatMessages' collection group with a converter for [ReadChatMessage].
 /// This allows for type-safe read operations from Firestore, converting
@@ -385,6 +394,7 @@ sealed class BatchWriteChatMessage {
 final class BatchCreateChatMessage extends BatchWriteChatMessage {
   const BatchCreateChatMessage({
     required this.chatRoomId,
+
     required this.chatMessageId,
     required this.createChatMessage,
   });
@@ -404,6 +414,7 @@ final class BatchCreateChatMessage extends BatchWriteChatMessage {
 final class BatchUpdateChatMessage extends BatchWriteChatMessage {
   const BatchUpdateChatMessage({
     required this.chatRoomId,
+
     required this.chatMessageId,
     required this.updateChatMessage,
   });
@@ -423,6 +434,7 @@ final class BatchUpdateChatMessage extends BatchWriteChatMessage {
 final class BatchDeleteChatMessage extends BatchWriteChatMessage {
   const BatchDeleteChatMessage({
     required this.chatRoomId,
+
     required this.chatMessageId,
   });
 
@@ -476,17 +488,16 @@ class ChatMessageQuery {
   /// Returns a list of [ReadChatMessage] documents.
   Future<List<ReadChatMessage>> fetchDocuments({
     required String chatRoomId,
+
     GetOptions? options,
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
-        queryBuilder,
+    queryBuilder,
     int Function(ReadChatMessage lhs, ReadChatMessage rhs)? compare,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadChatMessage> query = asCollectionGroup
         ? readChatMessagesCollectionGroupReference
-        : readChatMessagesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readChatMessagesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -516,8 +527,9 @@ class ChatMessageQuery {
   /// - [asCollectionGroup] Query the 'chatMessages' as a collection group if true.
   Stream<List<ReadChatMessage>> subscribeDocuments({
     required String chatRoomId,
+
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
-        queryBuilder,
+    queryBuilder,
     int Function(ReadChatMessage lhs, ReadChatMessage rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
@@ -525,14 +537,13 @@ class ChatMessageQuery {
   }) {
     Query<ReadChatMessage> query = asCollectionGroup
         ? readChatMessagesCollectionGroupReference
-        : readChatMessagesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readChatMessagesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -563,16 +574,15 @@ class ChatMessageQuery {
   /// Returns the count of documents as an integer.
   Future<int?> count({
     required String chatRoomId,
+
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadChatMessage> query = asCollectionGroup
         ? readChatMessagesCollectionGroupReference
-        : readChatMessagesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readChatMessagesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -599,16 +609,15 @@ class ChatMessageQuery {
   Future<double?> getSum({
     required String field,
     required String chatRoomId,
+
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadChatMessage> query = asCollectionGroup
         ? readChatMessagesCollectionGroupReference
-        : readChatMessagesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readChatMessagesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -635,16 +644,15 @@ class ChatMessageQuery {
   Future<double?> getAverage({
     required String field,
     required String chatRoomId,
+
     Query<ReadChatMessage>? Function(Query<ReadChatMessage> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadChatMessage> query = asCollectionGroup
         ? readChatMessagesCollectionGroupReference
-        : readChatMessagesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readChatMessagesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -659,11 +667,13 @@ class ChatMessageQuery {
   /// You can control the data retrieval with [GetOptions].
   Future<ReadChatMessage?> fetchDocument({
     required String chatRoomId,
+
     required String chatMessageId,
     GetOptions? options,
   }) async {
     final ds = await readChatMessageDocumentReference(
       chatRoomId: chatRoomId,
+
       chatMessageId: chatMessageId,
     ).get(options);
     return ds.data();
@@ -675,12 +685,14 @@ class ChatMessageQuery {
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
   Stream<ReadChatMessage?> subscribeDocument({
     required String chatRoomId,
+
     required String chatMessageId,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
     var streamDs = readChatMessageDocumentReference(
       chatRoomId: chatRoomId,
+
       chatMessageId: chatMessageId,
     ).snapshots(includeMetadataChanges: includeMetadataChanges);
     if (excludePendingWrites) {
@@ -695,11 +707,11 @@ class ChatMessageQuery {
   /// [createChatMessage] data.
   Future<DocumentReference<CreateChatMessage>> add({
     required String chatRoomId,
+
     required CreateChatMessage createChatMessage,
-  }) =>
-      createChatMessagesCollectionReference(
-        chatRoomId: chatRoomId,
-      ).add(createChatMessage);
+  }) => createChatMessagesCollectionReference(
+    chatRoomId: chatRoomId,
+  ).add(createChatMessage);
 
   /// Sets a chatMessage document to Cloud Firestore.
   ///
@@ -707,14 +719,15 @@ class ChatMessageQuery {
   /// [createChatMessage] data.
   Future<void> set({
     required String chatRoomId,
+
     required String chatMessageId,
     required CreateChatMessage createChatMessage,
     SetOptions? options,
-  }) =>
-      createChatMessageDocumentReference(
-        chatRoomId: chatRoomId,
-        chatMessageId: chatMessageId,
-      ).set(createChatMessage, options);
+  }) => createChatMessageDocumentReference(
+    chatRoomId: chatRoomId,
+
+    chatMessageId: chatMessageId,
+  ).set(createChatMessage, options);
 
   /// Updates a chatMessage document in Cloud Firestore.
   ///
@@ -723,25 +736,27 @@ class ChatMessageQuery {
   /// The update is based on the structure defined in `UpdateChatMessage.toJson()`.
   Future<void> update({
     required String chatRoomId,
+
     required String chatMessageId,
     required UpdateChatMessage updateChatMessage,
-  }) =>
-      updateChatMessageDocumentReference(
-        chatRoomId: chatRoomId,
-        chatMessageId: chatMessageId,
-      ).update(updateChatMessage.toJson());
+  }) => updateChatMessageDocumentReference(
+    chatRoomId: chatRoomId,
+
+    chatMessageId: chatMessageId,
+  ).update(updateChatMessage.toJson());
 
   /// Deletes a chatMessage document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [chatMessageId].
   Future<void> delete({
     required String chatRoomId,
+
     required String chatMessageId,
-  }) =>
-      deleteChatMessageDocumentReference(
-        chatRoomId: chatRoomId,
-        chatMessageId: chatMessageId,
-      ).delete();
+  }) => deleteChatMessageDocumentReference(
+    chatRoomId: chatRoomId,
+
+    chatMessageId: chatMessageId,
+  ).delete();
 
   /// Performs a batch write operation in Firestore using a list of [BatchWriteChatMessage] tasks.
   ///
@@ -772,37 +787,45 @@ class ChatMessageQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateChatMessage(
-            chatRoomId: final chatRoomId,
-            chatMessageId: final chatMessageId,
-            createChatMessage: final createChatMessage,
-          ):
+          chatRoomId: final chatRoomId,
+
+          chatMessageId: final chatMessageId,
+          createChatMessage: final createChatMessage,
+        ):
           batch.set(
             createChatMessageDocumentReference(
               chatRoomId: chatRoomId,
+
               chatMessageId: chatMessageId,
             ),
             createChatMessage,
           );
         case BatchUpdateChatMessage(
-            chatRoomId: final chatRoomId,
-            chatMessageId: final chatMessageId,
-            updateChatMessage: final updateChatMessage,
-          ):
+          chatRoomId: final chatRoomId,
+
+          chatMessageId: final chatMessageId,
+          updateChatMessage: final updateChatMessage,
+        ):
           batch.update(
             updateChatMessageDocumentReference(
               chatRoomId: chatRoomId,
+
               chatMessageId: chatMessageId,
             ),
             updateChatMessage.toJson(),
           );
         case BatchDeleteChatMessage(
-            chatRoomId: final chatRoomId,
-            chatMessageId: final chatMessageId
-          ):
-          batch.delete(deleteChatMessageDocumentReference(
-            chatRoomId: chatRoomId,
-            chatMessageId: chatMessageId,
-          ));
+          chatRoomId: final chatRoomId,
+
+          chatMessageId: final chatMessageId,
+        ):
+          batch.delete(
+            deleteChatMessageDocumentReference(
+              chatRoomId: chatRoomId,
+
+              chatMessageId: chatMessageId,
+            ),
+          );
       }
     }
     return batch.commit();

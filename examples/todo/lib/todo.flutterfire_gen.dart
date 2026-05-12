@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -34,14 +35,13 @@ class Todo {
   final DocumentReference<Todo> todoReference;
 
   factory Todo.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return Todo(
       title: extendedJson['title'] as String,
       isCompleted: extendedJson['isCompleted'] as bool? ?? false,
       createdAt: (extendedJson['createdAt'] as Timestamp?)?.toDate(),
       updatedAt: (extendedJson['updatedAt'] as Timestamp?)?.toDate(),
+
       todoId: extendedJson['todoId'] as String,
       path: extendedJson['path'] as String,
       todoReference: extendedJson['todoReference'] as DocumentReference<Todo>,
@@ -54,7 +54,9 @@ class Todo {
       ...data,
       'todoId': ds.id,
       'path': ds.reference.path,
-      'todoReference': ds.reference.parent.doc(ds.id).withConverter(
+      'todoReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) => Todo.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
@@ -88,10 +90,7 @@ class Todo {
 /// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateTodoData {
-  const CreateTodoData({
-    required this.title,
-    this.isCompleted,
-  });
+  const CreateTodoData({required this.title, this.isCompleted});
 
   final String title;
 
@@ -107,8 +106,9 @@ class CreateTodoData {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -120,11 +120,7 @@ class CreateTodoData {
 /// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
 /// to the server's timestamp upon updating.
 class UpdateTodoData {
-  const UpdateTodoData({
-    this.title,
-    this.isCompleted,
-    this.createdAt,
-  });
+  const UpdateTodoData({this.title, this.isCompleted, this.createdAt});
 
   final String? title;
 
@@ -143,8 +139,9 @@ class UpdateTodoData {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -155,16 +152,15 @@ class DeleteTodo {}
 /// Reference to the 'todos' collection with a converter for [Todo].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [Todo] objects.
-final readTodosCollectionReference =
-    FirebaseFirestore.instance.collection('todos').withConverter<Todo>(
-          fromFirestore: (ds, _) => Todo.fromDocumentSnapshot(ds),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+final readTodosCollectionReference = FirebaseFirestore.instance
+    .collection('todos')
+    .withConverter<Todo>(
+      fromFirestore: (ds, _) => Todo.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific Todo document.
-DocumentReference<Todo> readTodoDocumentReference({
-  required String todoId,
-}) =>
+DocumentReference<Todo> readTodoDocumentReference({required String todoId}) =>
     readTodosCollectionReference.doc(todoId);
 
 /// Reference to the 'todos' collection with a converter for [CreateTodoData].
@@ -180,8 +176,7 @@ final createTodosCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific Todo document.
 DocumentReference<CreateTodoData> createTodoDocumentReference({
   required String todoId,
-}) =>
-    createTodosCollectionReference.doc(todoId);
+}) => createTodosCollectionReference.doc(todoId);
 
 /// Reference to the 'todos' collection with a converter for [UpdateTodoData].
 /// This allows for type-safe update operations in Firestore, converting
@@ -196,23 +191,22 @@ final updateTodosCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific Todo document.
 DocumentReference<UpdateTodoData> updateTodoDocumentReference({
   required String todoId,
-}) =>
-    updateTodosCollectionReference.doc(todoId);
+}) => updateTodosCollectionReference.doc(todoId);
 
 /// Reference to the 'todos' collection with a converter for [DeleteTodo].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
-final deleteTodosCollectionReference =
-    FirebaseFirestore.instance.collection('todos').withConverter<DeleteTodo>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+final deleteTodosCollectionReference = FirebaseFirestore.instance
+    .collection('todos')
+    .withConverter<DeleteTodo>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific Todo document.
 DocumentReference<DeleteTodo> deleteTodoDocumentReference({
   required String todoId,
-}) =>
-    deleteTodosCollectionReference.doc(todoId);
+}) => deleteTodosCollectionReference.doc(todoId);
 
 /// Reference to the 'todos' collection group with a converter for [Todo].
 /// This allows for type-safe read operations from Firestore, converting
@@ -220,11 +214,12 @@ DocumentReference<DeleteTodo> deleteTodoDocumentReference({
 /// into [Todo] objects. It facilitates unified handling of 'todos' documents
 /// scattered across different locations in Firestore, ensuring consistent
 /// data structure and manipulation.
-final readTodosCollectionGroupReference =
-    FirebaseFirestore.instance.collectionGroup('todos').withConverter<Todo>(
-          fromFirestore: (ds, _) => Todo.fromDocumentSnapshot(ds),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+final readTodosCollectionGroupReference = FirebaseFirestore.instance
+    .collectionGroup('todos')
+    .withConverter<Todo>(
+      fromFirestore: (ds, _) => Todo.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// A sealed class that serves as a base for representing batch write operations in Firestore.
 ///
@@ -247,10 +242,7 @@ sealed class BatchWriteTodo {
 /// creating new todo documents. It encapsulates the ID of the new todo document
 /// and the data required for creation.
 final class BatchCreateTodo extends BatchWriteTodo {
-  const BatchCreateTodo({
-    required this.todoId,
-    required this.createTodoData,
-  });
+  const BatchCreateTodo({required this.todoId, required this.createTodoData});
 
   final String todoId;
 
@@ -263,10 +255,7 @@ final class BatchCreateTodo extends BatchWriteTodo {
 /// the update of existing todo documents. It includes the todo document's ID
 /// and the data for the update.
 final class BatchUpdateTodo extends BatchWriteTodo {
-  const BatchUpdateTodo({
-    required this.todoId,
-    required this.updateTodoData,
-  });
+  const BatchUpdateTodo({required this.todoId, required this.updateTodoData});
 
   final String todoId;
 
@@ -279,9 +268,7 @@ final class BatchUpdateTodo extends BatchWriteTodo {
 /// only requires the ID of the todo document to be deleted, as no additional
 /// data is needed for deletion.
 final class BatchDeleteTodo extends BatchWriteTodo {
-  const BatchDeleteTodo({
-    required this.todoId,
-  });
+  const BatchDeleteTodo({required this.todoId});
 
   final String todoId;
 }
@@ -378,8 +365,9 @@ class TodoQuery {
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -441,6 +429,7 @@ class TodoQuery {
   /// Returns the sum of the values of the documents that match the query.
   Future<double?> getSum({
     required String field,
+
     Query<Todo>? Function(Query<Todo> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -473,6 +462,7 @@ class TodoQuery {
   /// Returns the average of the values of the documents that match the query.
   Future<double?> getAverage({
     required String field,
+
     Query<Todo>? Function(Query<Todo> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -496,9 +486,7 @@ class TodoQuery {
     required String todoId,
     GetOptions? options,
   }) async {
-    final ds = await readTodoDocumentReference(
-      todoId: todoId,
-    ).get(options);
+    final ds = await readTodoDocumentReference(todoId: todoId).get(options);
     return ds.data();
   }
 
@@ -526,8 +514,7 @@ class TodoQuery {
   /// [createTodo] data.
   Future<DocumentReference<CreateTodoData>> add({
     required CreateTodoData createTodoData,
-  }) =>
-      createTodosCollectionReference.add(createTodoData);
+  }) => createTodosCollectionReference.add(createTodoData);
 
   /// Sets a todo document to Cloud Firestore.
   ///
@@ -538,9 +525,7 @@ class TodoQuery {
     required CreateTodoData createTodoData,
     SetOptions? options,
   }) =>
-      createTodoDocumentReference(
-        todoId: todoId,
-      ).set(createTodoData, options);
+      createTodoDocumentReference(todoId: todoId).set(createTodoData, options);
 
   /// Updates a todo document in Cloud Firestore.
   ///
@@ -550,20 +535,15 @@ class TodoQuery {
   Future<void> update({
     required String todoId,
     required UpdateTodoData updateTodoData,
-  }) =>
-      updateTodoDocumentReference(
-        todoId: todoId,
-      ).update(updateTodoData.toJson());
+  }) => updateTodoDocumentReference(
+    todoId: todoId,
+  ).update(updateTodoData.toJson());
 
   /// Deletes a todo document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [todoId].
-  Future<void> delete({
-    required String todoId,
-  }) =>
-      deleteTodoDocumentReference(
-        todoId: todoId,
-      ).delete();
+  Future<void> delete({required String todoId}) =>
+      deleteTodoDocumentReference(todoId: todoId).delete();
 
   /// Performs a batch write operation in Firestore using a list of [BatchWriteTodo] tasks.
   ///
@@ -594,29 +574,23 @@ class TodoQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateTodo(
-            todoId: final todoId,
-            createTodoData: final createTodoData,
-          ):
+          todoId: final todoId,
+          createTodoData: final createTodoData,
+        ):
           batch.set(
-            createTodoDocumentReference(
-              todoId: todoId,
-            ),
+            createTodoDocumentReference(todoId: todoId),
             createTodoData,
           );
         case BatchUpdateTodo(
-            todoId: final todoId,
-            updateTodoData: final updateTodoData,
-          ):
+          todoId: final todoId,
+          updateTodoData: final updateTodoData,
+        ):
           batch.update(
-            updateTodoDocumentReference(
-              todoId: todoId,
-            ),
+            updateTodoDocumentReference(todoId: todoId),
             updateTodoData.toJson(),
           );
         case BatchDeleteTodo(todoId: final todoId):
-          batch.delete(deleteTodoDocumentReference(
-            todoId: todoId,
-          ));
+          batch.delete(deleteTodoDocumentReference(todoId: todoId));
       }
     }
     return batch.commit();

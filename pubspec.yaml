@@ -1,0 +1,12 @@
+name: flutterfire_gen_workspace
+publish_to: 'none'
+
+environment:
+  sdk: '>=3.9.0 <4.0.0'
+
+workspace:
+  - packages/flutterfire_gen
+  - packages/flutterfire_gen_annotation
+  - packages/flutterfire_gen_utils
+  - examples/counter
+  - examples/todo

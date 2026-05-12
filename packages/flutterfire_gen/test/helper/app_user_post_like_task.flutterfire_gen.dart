@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -40,10 +41,12 @@ class ReadAppUserPostLikeTask {
       appUserId: extendedJson['appUserId'] as String,
       appUserPostId: extendedJson['appUserPostId'] as String,
       appUserPostLikeId: extendedJson['appUserPostLikeId'] as String,
+
       appUserPostLikeTaskId: extendedJson['appUserPostLikeTaskId'] as String,
       path: extendedJson['path'] as String,
-      appUserPostLikeTaskReference: extendedJson['appUserPostLikeTaskReference']
-          as DocumentReference<ReadAppUserPostLikeTask>,
+      appUserPostLikeTaskReference:
+          extendedJson['appUserPostLikeTaskReference']
+              as DocumentReference<ReadAppUserPostLikeTask>,
     );
   }
 
@@ -53,12 +56,13 @@ class ReadAppUserPostLikeTask {
       ...data,
       'appUserPostLikeTaskId': ds.id,
       'path': ds.reference.path,
-      'appUserPostLikeTaskReference':
-          ds.reference.parent.doc(ds.id).withConverter(
-                fromFirestore: (ds, _) =>
-                    ReadAppUserPostLikeTask.fromDocumentSnapshot(ds),
-                toFirestore: (obj, _) => throw UnimplementedError(),
-              ),
+      'appUserPostLikeTaskReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
+            fromFirestore: (ds, _) =>
+                ReadAppUserPostLikeTask.fromDocumentSnapshot(ds),
+            toFirestore: (obj, _) => throw UnimplementedError(),
+          ),
     });
   }
 
@@ -115,8 +119,9 @@ class CreateAppUserPostLikeTask {
     ];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -154,8 +159,9 @@ class UpdateAppUserPostLikeTask {
     ];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -176,10 +182,9 @@ final readAppUserPostLikeTasksCollectionReference = FirebaseFirestore.instance
 
 /// Creates a [DocumentReference] for a specific AppUserPostLikeTask document.
 DocumentReference<ReadAppUserPostLikeTask>
-    readAppUserPostLikeTaskDocumentReference({
+readAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
-}) =>
-        readAppUserPostLikeTasksCollectionReference.doc(appUserPostLikeTaskId);
+}) => readAppUserPostLikeTasksCollectionReference.doc(appUserPostLikeTaskId);
 
 /// Reference to the 'appUserPostLikeTasks' collection with a converter for [CreateAppUserPostLikeTask].
 /// This enables type-safe create operations in Firestore, converting
@@ -193,11 +198,9 @@ final createAppUserPostLikeTasksCollectionReference = FirebaseFirestore.instance
 
 /// Creates a [DocumentReference] for a specific AppUserPostLikeTask document.
 DocumentReference<CreateAppUserPostLikeTask>
-    createAppUserPostLikeTaskDocumentReference({
+createAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
-}) =>
-        createAppUserPostLikeTasksCollectionReference
-            .doc(appUserPostLikeTaskId);
+}) => createAppUserPostLikeTasksCollectionReference.doc(appUserPostLikeTaskId);
 
 /// Reference to the 'appUserPostLikeTasks' collection with a converter for [UpdateAppUserPostLikeTask].
 /// This allows for type-safe update operations in Firestore, converting
@@ -211,11 +214,9 @@ final updateAppUserPostLikeTasksCollectionReference = FirebaseFirestore.instance
 
 /// Creates a [DocumentReference] for a specific AppUserPostLikeTask document.
 DocumentReference<UpdateAppUserPostLikeTask>
-    updateAppUserPostLikeTaskDocumentReference({
+updateAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
-}) =>
-        updateAppUserPostLikeTasksCollectionReference
-            .doc(appUserPostLikeTaskId);
+}) => updateAppUserPostLikeTasksCollectionReference.doc(appUserPostLikeTaskId);
 
 /// Reference to the 'appUserPostLikeTasks' collection with a converter for [DeleteAppUserPostLikeTask].
 /// This reference is used specifically for delete operations and does not
@@ -229,11 +230,9 @@ final deleteAppUserPostLikeTasksCollectionReference = FirebaseFirestore.instance
 
 /// Creates a [DocumentReference] for a specific AppUserPostLikeTask document.
 DocumentReference<DeleteAppUserPostLikeTask>
-    deleteAppUserPostLikeTaskDocumentReference({
+deleteAppUserPostLikeTaskDocumentReference({
   required String appUserPostLikeTaskId,
-}) =>
-        deleteAppUserPostLikeTasksCollectionReference
-            .doc(appUserPostLikeTaskId);
+}) => deleteAppUserPostLikeTasksCollectionReference.doc(appUserPostLikeTaskId);
 
 /// Reference to the 'appUserPostLikeTasks' collection group with a converter for [ReadAppUserPostLikeTask].
 /// This allows for type-safe read operations from Firestore, converting
@@ -306,9 +305,7 @@ final class BatchUpdateAppUserPostLikeTask
 /// data is needed for deletion.
 final class BatchDeleteAppUserPostLikeTask
     extends BatchWriteAppUserPostLikeTask {
-  const BatchDeleteAppUserPostLikeTask({
-    required this.appUserPostLikeTaskId,
-  });
+  const BatchDeleteAppUserPostLikeTask({required this.appUserPostLikeTaskId});
 
   final String appUserPostLikeTaskId;
 }
@@ -359,10 +356,11 @@ class AppUserPostLikeTaskQuery {
   Future<List<ReadAppUserPostLikeTask>> fetchDocuments({
     GetOptions? options,
     Query<ReadAppUserPostLikeTask>? Function(
-            Query<ReadAppUserPostLikeTask> query)?
-        queryBuilder,
+      Query<ReadAppUserPostLikeTask> query,
+    )?
+    queryBuilder,
     int Function(ReadAppUserPostLikeTask lhs, ReadAppUserPostLikeTask rhs)?
-        compare,
+    compare,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadAppUserPostLikeTask> query = asCollectionGroup
@@ -397,10 +395,11 @@ class AppUserPostLikeTaskQuery {
   /// - [asCollectionGroup] Query the 'appUserPostLikeTasks' as a collection group if true.
   Stream<List<ReadAppUserPostLikeTask>> subscribeDocuments({
     Query<ReadAppUserPostLikeTask>? Function(
-            Query<ReadAppUserPostLikeTask> query)?
-        queryBuilder,
+      Query<ReadAppUserPostLikeTask> query,
+    )?
+    queryBuilder,
     int Function(ReadAppUserPostLikeTask lhs, ReadAppUserPostLikeTask rhs)?
-        compare,
+    compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
     bool asCollectionGroup = false,
@@ -411,8 +410,9 @@ class AppUserPostLikeTaskQuery {
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -443,8 +443,9 @@ class AppUserPostLikeTaskQuery {
   /// Returns the count of documents as an integer.
   Future<int?> count({
     Query<ReadAppUserPostLikeTask>? Function(
-            Query<ReadAppUserPostLikeTask> query)?
-        queryBuilder,
+      Query<ReadAppUserPostLikeTask> query,
+    )?
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
@@ -476,9 +477,11 @@ class AppUserPostLikeTaskQuery {
   /// Returns the sum of the values of the documents that match the query.
   Future<double?> getSum({
     required String field,
+
     Query<ReadAppUserPostLikeTask>? Function(
-            Query<ReadAppUserPostLikeTask> query)?
-        queryBuilder,
+      Query<ReadAppUserPostLikeTask> query,
+    )?
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
@@ -510,9 +513,11 @@ class AppUserPostLikeTaskQuery {
   /// Returns the average of the values of the documents that match the query.
   Future<double?> getAverage({
     required String field,
+
     Query<ReadAppUserPostLikeTask>? Function(
-            Query<ReadAppUserPostLikeTask> query)?
-        queryBuilder,
+      Query<ReadAppUserPostLikeTask> query,
+    )?
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
@@ -565,9 +570,9 @@ class AppUserPostLikeTaskQuery {
   /// [createAppUserPostLikeTask] data.
   Future<DocumentReference<CreateAppUserPostLikeTask>> add({
     required CreateAppUserPostLikeTask createAppUserPostLikeTask,
-  }) =>
-      createAppUserPostLikeTasksCollectionReference
-          .add(createAppUserPostLikeTask);
+  }) => createAppUserPostLikeTasksCollectionReference.add(
+    createAppUserPostLikeTask,
+  );
 
   /// Sets a appUserPostLikeTask document to Cloud Firestore.
   ///
@@ -577,10 +582,9 @@ class AppUserPostLikeTaskQuery {
     required String appUserPostLikeTaskId,
     required CreateAppUserPostLikeTask createAppUserPostLikeTask,
     SetOptions? options,
-  }) =>
-      createAppUserPostLikeTaskDocumentReference(
-        appUserPostLikeTaskId: appUserPostLikeTaskId,
-      ).set(createAppUserPostLikeTask, options);
+  }) => createAppUserPostLikeTaskDocumentReference(
+    appUserPostLikeTaskId: appUserPostLikeTaskId,
+  ).set(createAppUserPostLikeTask, options);
 
   /// Updates a appUserPostLikeTask document in Cloud Firestore.
   ///
@@ -590,17 +594,14 @@ class AppUserPostLikeTaskQuery {
   Future<void> update({
     required String appUserPostLikeTaskId,
     required UpdateAppUserPostLikeTask updateAppUserPostLikeTask,
-  }) =>
-      updateAppUserPostLikeTaskDocumentReference(
-        appUserPostLikeTaskId: appUserPostLikeTaskId,
-      ).update(updateAppUserPostLikeTask.toJson());
+  }) => updateAppUserPostLikeTaskDocumentReference(
+    appUserPostLikeTaskId: appUserPostLikeTaskId,
+  ).update(updateAppUserPostLikeTask.toJson());
 
   /// Deletes a appUserPostLikeTask document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [appUserPostLikeTaskId].
-  Future<void> delete({
-    required String appUserPostLikeTaskId,
-  }) =>
+  Future<void> delete({required String appUserPostLikeTaskId}) =>
       deleteAppUserPostLikeTaskDocumentReference(
         appUserPostLikeTaskId: appUserPostLikeTaskId,
       ).delete();
@@ -634,9 +635,9 @@ class AppUserPostLikeTaskQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateAppUserPostLikeTask(
-            appUserPostLikeTaskId: final appUserPostLikeTaskId,
-            createAppUserPostLikeTask: final createAppUserPostLikeTask,
-          ):
+          appUserPostLikeTaskId: final appUserPostLikeTaskId,
+          createAppUserPostLikeTask: final createAppUserPostLikeTask,
+        ):
           batch.set(
             createAppUserPostLikeTaskDocumentReference(
               appUserPostLikeTaskId: appUserPostLikeTaskId,
@@ -644,9 +645,9 @@ class AppUserPostLikeTaskQuery {
             createAppUserPostLikeTask,
           );
         case BatchUpdateAppUserPostLikeTask(
-            appUserPostLikeTaskId: final appUserPostLikeTaskId,
-            updateAppUserPostLikeTask: final updateAppUserPostLikeTask,
-          ):
+          appUserPostLikeTaskId: final appUserPostLikeTaskId,
+          updateAppUserPostLikeTask: final updateAppUserPostLikeTask,
+        ):
           batch.update(
             updateAppUserPostLikeTaskDocumentReference(
               appUserPostLikeTaskId: appUserPostLikeTaskId,
@@ -654,11 +655,13 @@ class AppUserPostLikeTaskQuery {
             updateAppUserPostLikeTask.toJson(),
           );
         case BatchDeleteAppUserPostLikeTask(
-            appUserPostLikeTaskId: final appUserPostLikeTaskId
-          ):
-          batch.delete(deleteAppUserPostLikeTaskDocumentReference(
-            appUserPostLikeTaskId: appUserPostLikeTaskId,
-          ));
+          appUserPostLikeTaskId: final appUserPostLikeTaskId,
+        ):
+          batch.delete(
+            deleteAppUserPostLikeTaskDocumentReference(
+              appUserPostLikeTaskId: appUserPostLikeTaskId,
+            ),
+          );
       }
     }
     return batch.commit();

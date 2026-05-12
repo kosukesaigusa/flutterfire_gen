@@ -111,7 +111,7 @@ class FieldElementParser {
   ///
   /// Returns a [FieldConfig] that contains parsed configurations.
   FieldConfig parse(FieldElement element) {
-    final annotations = element.metadata;
+    final annotations = element.metadata.annotations;
     final readDefaultValueString = annotations
         .map(
           (annotation) => _parseDefaultAnnotation(
@@ -153,7 +153,7 @@ class FieldElementParser {
         .firstWhere((value) => value, orElse: () => false);
 
     return FieldConfig(
-      name: element.name,
+      name: element.name ?? '',
       dartType: element.type,
       readDefaultValueString: readDefaultValueString,
       createDefaultValueString: createDefaultValueString,
@@ -184,11 +184,13 @@ class FieldElementParser {
       return null;
     }
 
-    final defaultTypeString =
-        objectType.getDisplayString(withNullability: false);
-    final res =
-        source.substring('@$defaultTypeString('.length, source.length - 1);
-    final needsConstModifier = !objectType.isDartCoreString &&
+    final defaultTypeString = objectType.getDisplayString();
+    final res = source.substring(
+      '@$defaultTypeString('.length,
+      source.length - 1,
+    );
+    final needsConstModifier =
+        !objectType.isDartCoreString &&
         !res.trimLeft().startsWith('const') &&
         (res.contains('(') || res.contains('[') || res.contains('{'));
     if (needsConstModifier) {
@@ -240,8 +242,7 @@ class FieldElementParser {
       return null;
     }
 
-    final interfaceTypes = (objectType.element! as ClassElement)
-        .allSupertypes
+    final interfaceTypes = (objectType.element! as ClassElement).allSupertypes
         .where(typeChecker.isExactlyType);
     final typeArguments = interfaceTypes.first.typeArguments;
     if (typeArguments.length == 2) {
@@ -252,8 +253,8 @@ class FieldElementParser {
       if (match != null) {
         return JsonConverterConfig(
           jsonConverterString: match.group(1)!,
-          clientTypeString: clientType.getDisplayString(withNullability: true),
-          firestoreTypeString: jsonType.getDisplayString(withNullability: true),
+          clientTypeString: clientType.getDisplayString(),
+          firestoreTypeString: jsonType.getDisplayString(),
         );
       }
       return null;
@@ -276,8 +277,7 @@ class FieldElementParser {
       return null;
     }
 
-    final interfaceTypes = (objectType.element! as ClassElement)
-        .allSupertypes
+    final interfaceTypes = (objectType.element! as ClassElement).allSupertypes
         .where(typeChecker.isExactlyType);
     final typeArguments = interfaceTypes.first.typeArguments;
     if (typeArguments.length == 2) {
@@ -288,8 +288,8 @@ class FieldElementParser {
       if (match != null) {
         return JsonPostProcessorConfig(
           jsonPostProcessorString: match.group(1)!,
-          clientTypeString: clientType.getDisplayString(withNullability: true),
-          firestoreTypeString: jsonType.getDisplayString(withNullability: true),
+          clientTypeString: clientType.getDisplayString(),
+          firestoreTypeString: jsonType.getDisplayString(),
         );
       }
       return null;
@@ -305,19 +305,17 @@ class FieldElementParser {
 
   bool _parseAlwaysUseFieldValueServerTimestampWhenCreatingAnnotation(
     ElementAnnotation annotation,
-  ) =>
-      _parseBoolTypeAnnotation(
-        annotation: annotation,
-        typeChecker: alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker,
-      );
+  ) => _parseBoolTypeAnnotation(
+    annotation: annotation,
+    typeChecker: alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker,
+  );
 
   bool _parseAlwaysUseFieldValueServerTimestampWhenUpdatingAnnotation(
     ElementAnnotation annotation,
-  ) =>
-      _parseBoolTypeAnnotation(
-        annotation: annotation,
-        typeChecker: alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker,
-      );
+  ) => _parseBoolTypeAnnotation(
+    annotation: annotation,
+    typeChecker: alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker,
+  );
 
   bool _parseBoolTypeAnnotation({
     required ElementAnnotation annotation,

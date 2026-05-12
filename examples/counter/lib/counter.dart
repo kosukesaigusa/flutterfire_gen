@@ -7,7 +7,7 @@ part 'counter.flutterfire_gen.dart';
 part 'counter.g.dart';
 
 @riverpod
-CounterQuery counterQuery(CounterQueryRef _) => CounterQuery();
+CounterQuery counterQuery(Ref _) => CounterQuery();
 
 @riverpod
 class CounterList extends _$CounterList {
@@ -23,7 +23,9 @@ class CounterList extends _$CounterList {
   }
 
   Future<void> increment({required String counterId}) async {
-    await ref.read(counterQueryProvider).update(
+    await ref
+        .read(counterQueryProvider)
+        .update(
           counterId: counterId,
           updateCounterData: UpdateCounterData(
             value: FieldValueData(FieldValue.increment(1)),
@@ -32,10 +34,10 @@ class CounterList extends _$CounterList {
     ref.invalidateSelf();
   }
 
-  Future<void> decrement({
-    required String counterId,
-  }) async {
-    await ref.read(counterQueryProvider).update(
+  Future<void> decrement({required String counterId}) async {
+    await ref
+        .read(counterQueryProvider)
+        .update(
           counterId: counterId,
           updateCounterData: UpdateCounterData(
             value: FieldValueData(FieldValue.increment(-1)),
@@ -50,8 +52,9 @@ class CounterList extends _$CounterList {
   }
 
   Future<double> getAverage() async {
-    final average =
-        await ref.read(counterQueryProvider).getAverage(field: 'value');
+    final average = await ref
+        .read(counterQueryProvider)
+        .getAverage(field: 'value');
     return average ?? 0;
   }
 
@@ -61,9 +64,12 @@ class CounterList extends _$CounterList {
   }
 
   Future<void> deleteAll() async {
-    final counterIds = (await ref.read(counterListProvider.future))
-        .map((counter) => counter.counterId);
-    await ref.read(counterQueryProvider).batchWrite(
+    final counterIds = (await ref.read(
+      counterListProvider.future,
+    )).map((counter) => counter.counterId);
+    await ref
+        .read(counterQueryProvider)
+        .batchWrite(
           counterIds
               .map((counterId) => BatchDeleteCounter(counterId: counterId))
               .toList(),

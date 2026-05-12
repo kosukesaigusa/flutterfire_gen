@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -31,17 +32,17 @@ class ReadAppUserPostLike {
   final DocumentReference<ReadAppUserPostLike> appUserPostLikeReference;
 
   factory ReadAppUserPostLike.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return ReadAppUserPostLike(
       likedByAppUserId: extendedJson['likedByAppUserId'] as String,
       likedAt: (extendedJson['likedAt'] as Timestamp?)?.toDate(),
       updatedAt: (extendedJson['updatedAt'] as Timestamp?)?.toDate(),
+
       appUserPostLikeId: extendedJson['appUserPostLikeId'] as String,
       path: extendedJson['path'] as String,
-      appUserPostLikeReference: extendedJson['appUserPostLikeReference']
-          as DocumentReference<ReadAppUserPostLike>,
+      appUserPostLikeReference:
+          extendedJson['appUserPostLikeReference']
+              as DocumentReference<ReadAppUserPostLike>,
     );
   }
 
@@ -51,7 +52,9 @@ class ReadAppUserPostLike {
       ...data,
       'appUserPostLikeId': ds.id,
       'path': ds.reference.path,
-      'appUserPostLikeReference': ds.reference.parent.doc(ds.id).withConverter(
+      'appUserPostLikeReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) =>
                 ReadAppUserPostLike.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
@@ -85,9 +88,7 @@ class ReadAppUserPostLike {
 /// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateAppUserPostLike {
-  const CreateAppUserPostLike({
-    required this.likedByAppUserId,
-  });
+  const CreateAppUserPostLike({required this.likedByAppUserId});
 
   final String likedByAppUserId;
 
@@ -100,8 +101,9 @@ class CreateAppUserPostLike {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -113,10 +115,7 @@ class CreateAppUserPostLike {
 /// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
 /// to the server's timestamp upon updating.
 class UpdateAppUserPostLike {
-  const UpdateAppUserPostLike({
-    this.likedByAppUserId,
-    this.likedAt,
-  });
+  const UpdateAppUserPostLike({this.likedByAppUserId, this.likedAt});
 
   final String? likedByAppUserId;
 
@@ -132,8 +131,9 @@ class UpdateAppUserPostLike {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -145,125 +145,120 @@ class DeleteAppUserPostLike {}
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadAppUserPostLike] objects.
 CollectionReference<ReadAppUserPostLike>
-    readAppUserPostLikesCollectionReference({
+readAppUserPostLikesCollectionReference({
   required String appUserId,
   required String appUserPostId,
-}) =>
-        FirebaseFirestore.instance
-            .collection('appUsers')
-            .doc(appUserId)
-            .collection('appUserPosts')
-            .doc(appUserPostId)
-            .collection('appUserPostLikes')
-            .withConverter<ReadAppUserPostLike>(
-              fromFirestore: (ds, _) =>
-                  ReadAppUserPostLike.fromDocumentSnapshot(ds),
-              toFirestore: (_, __) => throw UnimplementedError(),
-            );
+}) => FirebaseFirestore.instance
+    .collection('appUsers')
+    .doc(appUserId)
+    .collection('appUserPosts')
+    .doc(appUserPostId)
+    .collection('appUserPostLikes')
+    .withConverter<ReadAppUserPostLike>(
+      fromFirestore: (ds, _) => ReadAppUserPostLike.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific AppUserPostLike document.
 DocumentReference<ReadAppUserPostLike> readAppUserPostLikeDocumentReference({
   required String appUserId,
   required String appUserPostId,
+
   required String appUserPostLikeId,
-}) =>
-    readAppUserPostLikesCollectionReference(
-      appUserId: appUserId,
-      appUserPostId: appUserPostId,
-    ).doc(appUserPostLikeId);
+}) => readAppUserPostLikesCollectionReference(
+  appUserId: appUserId,
+  appUserPostId: appUserPostId,
+).doc(appUserPostLikeId);
 
 /// Reference to the 'appUserPostLikes' collection with a converter for [CreateAppUserPostLike].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateAppUserPostLike] objects to Firestore document data.
 CollectionReference<CreateAppUserPostLike>
-    createAppUserPostLikesCollectionReference({
+createAppUserPostLikesCollectionReference({
   required String appUserId,
   required String appUserPostId,
-}) =>
-        FirebaseFirestore.instance
-            .collection('appUsers')
-            .doc(appUserId)
-            .collection('appUserPosts')
-            .doc(appUserPostId)
-            .collection('appUserPostLikes')
-            .withConverter<CreateAppUserPostLike>(
-              fromFirestore: (_, __) => throw UnimplementedError(),
-              toFirestore: (obj, _) => obj.toJson(),
-            );
+}) => FirebaseFirestore.instance
+    .collection('appUsers')
+    .doc(appUserId)
+    .collection('appUserPosts')
+    .doc(appUserPostId)
+    .collection('appUserPostLikes')
+    .withConverter<CreateAppUserPostLike>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific AppUserPostLike document.
 DocumentReference<CreateAppUserPostLike>
-    createAppUserPostLikeDocumentReference({
+createAppUserPostLikeDocumentReference({
   required String appUserId,
   required String appUserPostId,
+
   required String appUserPostLikeId,
-}) =>
-        createAppUserPostLikesCollectionReference(
-          appUserId: appUserId,
-          appUserPostId: appUserPostId,
-        ).doc(appUserPostLikeId);
+}) => createAppUserPostLikesCollectionReference(
+  appUserId: appUserId,
+  appUserPostId: appUserPostId,
+).doc(appUserPostLikeId);
 
 /// Reference to the 'appUserPostLikes' collection with a converter for [UpdateAppUserPostLike].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateAppUserPostLike] objects to Firestore document data.
 CollectionReference<UpdateAppUserPostLike>
-    updateAppUserPostLikesCollectionReference({
+updateAppUserPostLikesCollectionReference({
   required String appUserId,
   required String appUserPostId,
-}) =>
-        FirebaseFirestore.instance
-            .collection('appUsers')
-            .doc(appUserId)
-            .collection('appUserPosts')
-            .doc(appUserPostId)
-            .collection('appUserPostLikes')
-            .withConverter<UpdateAppUserPostLike>(
-              fromFirestore: (_, __) => throw UnimplementedError(),
-              toFirestore: (obj, _) => obj.toJson(),
-            );
+}) => FirebaseFirestore.instance
+    .collection('appUsers')
+    .doc(appUserId)
+    .collection('appUserPosts')
+    .doc(appUserPostId)
+    .collection('appUserPostLikes')
+    .withConverter<UpdateAppUserPostLike>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific AppUserPostLike document.
 DocumentReference<UpdateAppUserPostLike>
-    updateAppUserPostLikeDocumentReference({
+updateAppUserPostLikeDocumentReference({
   required String appUserId,
   required String appUserPostId,
+
   required String appUserPostLikeId,
-}) =>
-        updateAppUserPostLikesCollectionReference(
-          appUserId: appUserId,
-          appUserPostId: appUserPostId,
-        ).doc(appUserPostLikeId);
+}) => updateAppUserPostLikesCollectionReference(
+  appUserId: appUserId,
+  appUserPostId: appUserPostId,
+).doc(appUserPostLikeId);
 
 /// Reference to the 'appUserPostLikes' collection with a converter for [DeleteAppUserPostLike].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
 CollectionReference<DeleteAppUserPostLike>
-    deleteAppUserPostLikesCollectionReference({
+deleteAppUserPostLikesCollectionReference({
   required String appUserId,
   required String appUserPostId,
-}) =>
-        FirebaseFirestore.instance
-            .collection('appUsers')
-            .doc(appUserId)
-            .collection('appUserPosts')
-            .doc(appUserPostId)
-            .collection('appUserPostLikes')
-            .withConverter<DeleteAppUserPostLike>(
-              fromFirestore: (_, __) => throw UnimplementedError(),
-              toFirestore: (_, __) => throw UnimplementedError(),
-            );
+}) => FirebaseFirestore.instance
+    .collection('appUsers')
+    .doc(appUserId)
+    .collection('appUserPosts')
+    .doc(appUserPostId)
+    .collection('appUserPostLikes')
+    .withConverter<DeleteAppUserPostLike>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific AppUserPostLike document.
 DocumentReference<DeleteAppUserPostLike>
-    deleteAppUserPostLikeDocumentReference({
+deleteAppUserPostLikeDocumentReference({
   required String appUserId,
   required String appUserPostId,
+
   required String appUserPostLikeId,
-}) =>
-        deleteAppUserPostLikesCollectionReference(
-          appUserId: appUserId,
-          appUserPostId: appUserPostId,
-        ).doc(appUserPostLikeId);
+}) => deleteAppUserPostLikesCollectionReference(
+  appUserId: appUserId,
+  appUserPostId: appUserPostId,
+).doc(appUserPostLikeId);
 
 /// Reference to the 'appUserPostLikes' collection group with a converter for [ReadAppUserPostLike].
 /// This allows for type-safe read operations from Firestore, converting
@@ -302,6 +297,7 @@ final class BatchCreateAppUserPostLike extends BatchWriteAppUserPostLike {
   const BatchCreateAppUserPostLike({
     required this.appUserId,
     required this.appUserPostId,
+
     required this.appUserPostLikeId,
     required this.createAppUserPostLike,
   });
@@ -324,6 +320,7 @@ final class BatchUpdateAppUserPostLike extends BatchWriteAppUserPostLike {
   const BatchUpdateAppUserPostLike({
     required this.appUserId,
     required this.appUserPostId,
+
     required this.appUserPostLikeId,
     required this.updateAppUserPostLike,
   });
@@ -346,6 +343,7 @@ final class BatchDeleteAppUserPostLike extends BatchWriteAppUserPostLike {
   const BatchDeleteAppUserPostLike({
     required this.appUserId,
     required this.appUserPostId,
+
     required this.appUserPostLikeId,
   });
 
@@ -402,9 +400,10 @@ class AppUserPostLikeQuery {
   Future<List<ReadAppUserPostLike>> fetchDocuments({
     required String appUserId,
     required String appUserPostId,
+
     GetOptions? options,
     Query<ReadAppUserPostLike>? Function(Query<ReadAppUserPostLike> query)?
-        queryBuilder,
+    queryBuilder,
     int Function(ReadAppUserPostLike lhs, ReadAppUserPostLike rhs)? compare,
     bool asCollectionGroup = false,
   }) async {
@@ -444,8 +443,9 @@ class AppUserPostLikeQuery {
   Stream<List<ReadAppUserPostLike>> subscribeDocuments({
     required String appUserId,
     required String appUserPostId,
+
     Query<ReadAppUserPostLike>? Function(Query<ReadAppUserPostLike> query)?
-        queryBuilder,
+    queryBuilder,
     int Function(ReadAppUserPostLike lhs, ReadAppUserPostLike rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
@@ -460,8 +460,9 @@ class AppUserPostLikeQuery {
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -493,8 +494,9 @@ class AppUserPostLikeQuery {
   Future<int?> count({
     required String appUserId,
     required String appUserPostId,
+
     Query<ReadAppUserPostLike>? Function(Query<ReadAppUserPostLike> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
@@ -531,8 +533,9 @@ class AppUserPostLikeQuery {
     required String field,
     required String appUserId,
     required String appUserPostId,
+
     Query<ReadAppUserPostLike>? Function(Query<ReadAppUserPostLike> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
@@ -569,8 +572,9 @@ class AppUserPostLikeQuery {
     required String field,
     required String appUserId,
     required String appUserPostId,
+
     Query<ReadAppUserPostLike>? Function(Query<ReadAppUserPostLike> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
@@ -595,12 +599,14 @@ class AppUserPostLikeQuery {
   Future<ReadAppUserPostLike?> fetchDocument({
     required String appUserId,
     required String appUserPostId,
+
     required String appUserPostLikeId,
     GetOptions? options,
   }) async {
     final ds = await readAppUserPostLikeDocumentReference(
       appUserId: appUserId,
       appUserPostId: appUserPostId,
+
       appUserPostLikeId: appUserPostLikeId,
     ).get(options);
     return ds.data();
@@ -613,6 +619,7 @@ class AppUserPostLikeQuery {
   Stream<ReadAppUserPostLike?> subscribeDocument({
     required String appUserId,
     required String appUserPostId,
+
     required String appUserPostLikeId,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
@@ -620,6 +627,7 @@ class AppUserPostLikeQuery {
     var streamDs = readAppUserPostLikeDocumentReference(
       appUserId: appUserId,
       appUserPostId: appUserPostId,
+
       appUserPostLikeId: appUserPostLikeId,
     ).snapshots(includeMetadataChanges: includeMetadataChanges);
     if (excludePendingWrites) {
@@ -635,12 +643,12 @@ class AppUserPostLikeQuery {
   Future<DocumentReference<CreateAppUserPostLike>> add({
     required String appUserId,
     required String appUserPostId,
+
     required CreateAppUserPostLike createAppUserPostLike,
-  }) =>
-      createAppUserPostLikesCollectionReference(
-        appUserId: appUserId,
-        appUserPostId: appUserPostId,
-      ).add(createAppUserPostLike);
+  }) => createAppUserPostLikesCollectionReference(
+    appUserId: appUserId,
+    appUserPostId: appUserPostId,
+  ).add(createAppUserPostLike);
 
   /// Sets a appUserPostLike document to Cloud Firestore.
   ///
@@ -649,15 +657,16 @@ class AppUserPostLikeQuery {
   Future<void> set({
     required String appUserId,
     required String appUserPostId,
+
     required String appUserPostLikeId,
     required CreateAppUserPostLike createAppUserPostLike,
     SetOptions? options,
-  }) =>
-      createAppUserPostLikeDocumentReference(
-        appUserId: appUserId,
-        appUserPostId: appUserPostId,
-        appUserPostLikeId: appUserPostLikeId,
-      ).set(createAppUserPostLike, options);
+  }) => createAppUserPostLikeDocumentReference(
+    appUserId: appUserId,
+    appUserPostId: appUserPostId,
+
+    appUserPostLikeId: appUserPostLikeId,
+  ).set(createAppUserPostLike, options);
 
   /// Updates a appUserPostLike document in Cloud Firestore.
   ///
@@ -667,14 +676,15 @@ class AppUserPostLikeQuery {
   Future<void> update({
     required String appUserId,
     required String appUserPostId,
+
     required String appUserPostLikeId,
     required UpdateAppUserPostLike updateAppUserPostLike,
-  }) =>
-      updateAppUserPostLikeDocumentReference(
-        appUserId: appUserId,
-        appUserPostId: appUserPostId,
-        appUserPostLikeId: appUserPostLikeId,
-      ).update(updateAppUserPostLike.toJson());
+  }) => updateAppUserPostLikeDocumentReference(
+    appUserId: appUserId,
+    appUserPostId: appUserPostId,
+
+    appUserPostLikeId: appUserPostLikeId,
+  ).update(updateAppUserPostLike.toJson());
 
   /// Deletes a appUserPostLike document from Cloud Firestore.
   ///
@@ -682,13 +692,14 @@ class AppUserPostLikeQuery {
   Future<void> delete({
     required String appUserId,
     required String appUserPostId,
+
     required String appUserPostLikeId,
-  }) =>
-      deleteAppUserPostLikeDocumentReference(
-        appUserId: appUserId,
-        appUserPostId: appUserPostId,
-        appUserPostLikeId: appUserPostLikeId,
-      ).delete();
+  }) => deleteAppUserPostLikeDocumentReference(
+    appUserId: appUserId,
+    appUserPostId: appUserPostId,
+
+    appUserPostLikeId: appUserPostLikeId,
+  ).delete();
 
   /// Performs a batch write operation in Firestore using a list of [BatchWriteAppUserPostLike] tasks.
   ///
@@ -719,43 +730,51 @@ class AppUserPostLikeQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateAppUserPostLike(
-            appUserId: final appUserId,
-            appUserPostId: final appUserPostId,
-            appUserPostLikeId: final appUserPostLikeId,
-            createAppUserPostLike: final createAppUserPostLike,
-          ):
+          appUserId: final appUserId,
+          appUserPostId: final appUserPostId,
+
+          appUserPostLikeId: final appUserPostLikeId,
+          createAppUserPostLike: final createAppUserPostLike,
+        ):
           batch.set(
             createAppUserPostLikeDocumentReference(
               appUserId: appUserId,
               appUserPostId: appUserPostId,
+
               appUserPostLikeId: appUserPostLikeId,
             ),
             createAppUserPostLike,
           );
         case BatchUpdateAppUserPostLike(
-            appUserId: final appUserId,
-            appUserPostId: final appUserPostId,
-            appUserPostLikeId: final appUserPostLikeId,
-            updateAppUserPostLike: final updateAppUserPostLike,
-          ):
+          appUserId: final appUserId,
+          appUserPostId: final appUserPostId,
+
+          appUserPostLikeId: final appUserPostLikeId,
+          updateAppUserPostLike: final updateAppUserPostLike,
+        ):
           batch.update(
             updateAppUserPostLikeDocumentReference(
               appUserId: appUserId,
               appUserPostId: appUserPostId,
+
               appUserPostLikeId: appUserPostLikeId,
             ),
             updateAppUserPostLike.toJson(),
           );
         case BatchDeleteAppUserPostLike(
-            appUserId: final appUserId,
-            appUserPostId: final appUserPostId,
-            appUserPostLikeId: final appUserPostLikeId
-          ):
-          batch.delete(deleteAppUserPostLikeDocumentReference(
-            appUserId: appUserId,
-            appUserPostId: appUserPostId,
-            appUserPostLikeId: appUserPostLikeId,
-          ));
+          appUserId: final appUserId,
+          appUserPostId: final appUserPostId,
+
+          appUserPostLikeId: final appUserPostLikeId,
+        ):
+          batch.delete(
+            deleteAppUserPostLikeDocumentReference(
+              appUserId: appUserId,
+              appUserPostId: appUserPostId,
+
+              appUserPostLikeId: appUserPostLikeId,
+            ),
+          );
       }
     }
     return batch.commit();

@@ -49,23 +49,26 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
       );
     }
 
-    if (!element.name
-        .startsWith(_buildYamlConfig.schemaDefinitionClassPrefix)) {
+    final elementName = element.name ?? '';
+    if (!elementName.startsWith(_buildYamlConfig.schemaDefinitionClassPrefix)) {
       throw InvalidGenerationSourceError(
-        '${element.name} must start with '
+        '$elementName must start with '
         "'${_buildYamlConfig.schemaDefinitionClassPrefix}'. "
         'Because you set schema_definition_class_prefix to '
         "'${_buildYamlConfig.schemaDefinitionClassPrefix}' in build.yaml. "
-        'Failing element: ${element.name}',
+        'Failing element: $elementName',
         element: element,
       );
     }
 
-    final baseClassName = element.name
-        .replaceFirst(_buildYamlConfig.schemaDefinitionClassPrefix, '');
+    final baseClassName = elementName.replaceFirst(
+      _buildYamlConfig.schemaDefinitionClassPrefix,
+      '',
+    );
 
-    final annotation = const TypeChecker.fromRuntime(FirestoreDocument)
-        .firstAnnotationOf(element, throwOnUnresolved: false)!;
+    final annotation = const TypeChecker.typeNamed(
+      FirestoreDocument,
+    ).firstAnnotationOf(element, throwOnUnresolved: false)!;
 
     final config = CodeGenerationConfig(
       baseClassName: baseClassName,
@@ -74,7 +77,7 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
         decode: (obj) => obj.toStringValue()!,
         orElse: () => throw InvalidGenerationSourceError(
           'path field is required. '
-          'Failing element: ${element.name}',
+          'Failing element: $elementName',
           element: element,
         ),
       ),
@@ -136,22 +139,24 @@ class FlutterFireGen extends GeneratorForAnnotation<FirestoreDocument> {
       fieldConfigs: element.fields
           .map(
             const FieldElementParser(
-              readDefaultTypeChecker: TypeChecker.fromRuntime(ReadDefault),
-              createDefaultTypeChecker: TypeChecker.fromRuntime(CreateDefault),
-              updateDefaultTypeChecker: TypeChecker.fromRuntime(UpdateDefault),
-              jsonConverterTypeChecker: TypeChecker.fromRuntime(JsonConverter),
-              jsonPostProcessorTypeChecker:
-                  TypeChecker.fromRuntime(JsonPostProcessor),
-              allowFieldValueTypeChecker:
-                  TypeChecker.fromRuntime(AllowFieldValue),
+              readDefaultTypeChecker: TypeChecker.typeNamed(ReadDefault),
+              createDefaultTypeChecker: TypeChecker.typeNamed(CreateDefault),
+              updateDefaultTypeChecker: TypeChecker.typeNamed(UpdateDefault),
+              jsonConverterTypeChecker: TypeChecker.typeNamed(JsonConverter),
+              jsonPostProcessorTypeChecker: TypeChecker.typeNamed(
+                JsonPostProcessor,
+              ),
+              allowFieldValueTypeChecker: TypeChecker.typeNamed(
+                AllowFieldValue,
+              ),
               alwaysUseFieldValueServerTimestampWhenCreatingTypeChecker:
-                  TypeChecker.fromRuntime(
-                AlwaysUseFieldValueServerTimestampWhenCreating,
-              ),
+                  TypeChecker.typeNamed(
+                    AlwaysUseFieldValueServerTimestampWhenCreating,
+                  ),
               alwaysUseFieldValueServerTimestampWhenUpdatingTypeChecker:
-                  TypeChecker.fromRuntime(
-                AlwaysUseFieldValueServerTimestampWhenUpdating,
-              ),
+                  TypeChecker.typeNamed(
+                    AlwaysUseFieldValueServerTimestampWhenUpdating,
+                  ),
             ).parse,
           )
           .toList(),

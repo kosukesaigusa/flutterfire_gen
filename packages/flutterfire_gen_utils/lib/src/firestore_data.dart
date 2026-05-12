@@ -12,7 +12,7 @@ sealed class FirestoreData<T> {
   /// Retrieves the `FieldValue` representation of the data.
   FieldValue get fieldValue {
     return switch (this) {
-      FieldValueData(fieldValue: final fieldValue) => fieldValue,
+      FieldValueData(:final fieldValue) => fieldValue,
       ActualValue<T>(actualValue: final _) => throw UnimplementedError(),
     };
   }
@@ -21,15 +21,15 @@ sealed class FirestoreData<T> {
   T get actualValue {
     return switch (this) {
       FieldValueData(fieldValue: final _) => throw UnimplementedError(),
-      ActualValue<T>(actualValue: final actualValue) => actualValue,
+      ActualValue<T>(:final actualValue) => actualValue,
     };
   }
 
   /// Creates a [FirestoreData] from a [FieldValue] or an actual value.
   dynamic get value {
     return switch (this) {
-      FieldValueData(fieldValue: final fieldValue) => fieldValue,
-      ActualValue<T>(actualValue: final actualValue) => actualValue,
+      FieldValueData(:final fieldValue) => fieldValue,
+      ActualValue<T>(:final actualValue) => actualValue,
     };
   }
 }

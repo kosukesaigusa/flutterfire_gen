@@ -14,10 +14,12 @@ void main() {
     when(pathDartObject.toStringValue()).thenReturn('users/{userId}/');
 
     final firestoreDocumentAnnotation = MockDartObject();
-    when(firestoreDocumentAnnotation.getField('path'))
-        .thenReturn(pathDartObject);
-    when(firestoreDocumentAnnotation.getField('readClassPrefix'))
-        .thenReturn(null);
+    when(
+      firestoreDocumentAnnotation.getField('path'),
+    ).thenReturn(pathDartObject);
+    when(
+      firestoreDocumentAnnotation.getField('readClassPrefix'),
+    ).thenReturn(null);
 
     test('test decodeField', () {
       final path = firestoreDocumentAnnotation.decodeField(

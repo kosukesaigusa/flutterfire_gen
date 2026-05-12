@@ -31,12 +31,15 @@ class UpdateClassTemplate {
       }).toList(),
     );
 
-    final fields = _effectiveFieldConfigs.map((fieldConfig) {
-      return 'final ${fieldConfig.typeName(
-        forceNullable: true,
-        wrapByFirestoreData: fieldConfig.allowFieldValue,
-      )} ${fieldConfig.name};';
-    }).join('\n\n');
+    final fields = _effectiveFieldConfigs
+        .map((fieldConfig) {
+          final typeName = fieldConfig.typeName(
+            forceNullable: true,
+            wrapByFirestoreData: fieldConfig.allowFieldValue,
+          );
+          return 'final $typeName ${fieldConfig.name};';
+        })
+        .join('\n\n');
 
     final toJsonTemplate = ToJsonTemplate(config.fieldConfigs);
 

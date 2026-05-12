@@ -46,8 +46,9 @@ void main() {
       nullableIntElement = MockInterfaceElement();
       when(nullableIntElement.name).thenReturn('int');
       when(nullableIntType.isDartCoreList).thenReturn(false);
-      when(nullableIntType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
+      when(
+        nullableIntType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
       when(nullableIntType.element).thenReturn(nullableIntElement);
       when(nullableIntType.typeArguments).thenReturn([]);
 
@@ -64,8 +65,9 @@ void main() {
       nullableStringElement = MockInterfaceElement();
       when(nullableStringElement.name).thenReturn('String');
       when(nullableStringType.isDartCoreList).thenReturn(false);
-      when(nullableStringType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
+      when(
+        nullableStringType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
       when(nullableStringType.element).thenReturn(nullableStringElement);
       when(nullableStringType.typeArguments).thenReturn([]);
 
@@ -81,8 +83,9 @@ void main() {
       nullableDateTimeElement = MockInterfaceElement();
       when(nullableDateTimeElement.name).thenReturn('DateTime');
       when(nullableDateTimeType.isDartCoreList).thenReturn(false);
-      when(nullableDateTimeType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
+      when(
+        nullableDateTimeType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
       when(nullableDateTimeType.element).thenReturn(nullableDateTimeElement);
       when(nullableDateTimeType.typeArguments).thenReturn([]);
 
@@ -93,23 +96,20 @@ void main() {
       when(jsonMapType.isDartCoreMap).thenReturn(true);
       when(jsonMapType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
       when(jsonMapType.element).thenReturn(jsonMapElement);
-      when(jsonMapType.typeArguments).thenReturn([
-        stringType,
-        dynamicType,
-      ]);
+      when(jsonMapType.typeArguments).thenReturn([stringType, dynamicType]);
 
       nullableJsonMapType = MockInterfaceType();
       nullableJsonMapElement = MockInterfaceElement();
       when(nullableJsonMapElement.name).thenReturn('Map');
       when(nullableJsonMapType.isDartCoreList).thenReturn(false);
       when(nullableJsonMapType.isDartCoreMap).thenReturn(true);
-      when(nullableJsonMapType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
+      when(
+        nullableJsonMapType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
       when(nullableJsonMapType.element).thenReturn(nullableJsonMapElement);
-      when(nullableJsonMapType.typeArguments).thenReturn([
-        stringType,
-        dynamicType,
-      ]);
+      when(
+        nullableJsonMapType.typeArguments,
+      ).thenReturn([stringType, dynamicType]);
     });
 
     test('test String field', () {
@@ -277,152 +277,131 @@ void main() {
     });
 
     group('test JsonConverter applied field test', () {
-      test(
-        'test JsonConverter applied field '
-        'with isFieldValueAllowed false and skipIfNull false',
-        () {
-          final parser = ToJsonFieldParser(
-            name: 'foo',
-            dartType: jsonMapType,
-            defaultValueString: null,
-            allowFieldValue: false,
-            alwaysUseFieldValueServerTimestamp: false,
-            jsonConverterConfig: const JsonConverterConfig(
-              jsonConverterString: '_FooJsonConverter()',
-              clientTypeString: 'Foo',
-              firestoreTypeString: 'Map<String, dynamic>',
-            ),
-            skipIfNull: false,
-          );
-          final result = parser.toString();
-          expect(result, "'foo': _FooJsonConverter().toJson(foo),");
-        },
-      );
+      test('test JsonConverter applied field '
+          'with isFieldValueAllowed false and skipIfNull false', () {
+        final parser = ToJsonFieldParser(
+          name: 'foo',
+          dartType: jsonMapType,
+          defaultValueString: null,
+          allowFieldValue: false,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: const JsonConverterConfig(
+            jsonConverterString: '_FooJsonConverter()',
+            clientTypeString: 'Foo',
+            firestoreTypeString: 'Map<String, dynamic>',
+          ),
+          skipIfNull: false,
+        );
+        final result = parser.toString();
+        expect(result, "'foo': _FooJsonConverter().toJson(foo),");
+      });
 
-      test(
-        'test JsonConverter applied field '
-        'with isFieldValueAllowed false and skipIfNull true',
-        () {
-          final parser = ToJsonFieldParser(
-            name: 'foo',
-            dartType: jsonMapType,
-            defaultValueString: null,
-            allowFieldValue: false,
-            alwaysUseFieldValueServerTimestamp: false,
-            jsonConverterConfig: const JsonConverterConfig(
-              jsonConverterString: '_FooJsonConverter()',
-              clientTypeString: 'Foo',
-              firestoreTypeString: 'Map<String, dynamic>',
-            ),
-            skipIfNull: true,
-          );
-          final result = parser.toString();
-          expect(
-            result,
-            "if (foo != null) 'foo': _FooJsonConverter().toJson(foo!),",
-          );
-        },
-      );
+      test('test JsonConverter applied field '
+          'with isFieldValueAllowed false and skipIfNull true', () {
+        final parser = ToJsonFieldParser(
+          name: 'foo',
+          dartType: jsonMapType,
+          defaultValueString: null,
+          allowFieldValue: false,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: const JsonConverterConfig(
+            jsonConverterString: '_FooJsonConverter()',
+            clientTypeString: 'Foo',
+            firestoreTypeString: 'Map<String, dynamic>',
+          ),
+          skipIfNull: true,
+        );
+        final result = parser.toString();
+        expect(
+          result,
+          "if (foo != null) 'foo': _FooJsonConverter().toJson(foo!),",
+        );
+      });
 
-      test(
-        'test JsonConverter applied field '
-        'with isFieldValueAllowed true and skipIfNull false',
-        () {
-          final parser = ToJsonFieldParser(
-            name: 'foo',
-            dartType: jsonMapType,
-            defaultValueString: null,
-            allowFieldValue: true,
-            alwaysUseFieldValueServerTimestamp: false,
-            jsonConverterConfig: const JsonConverterConfig(
-              jsonConverterString: '_FooJsonConverter()',
-              clientTypeString: 'Foo',
-              firestoreTypeString: 'Map<String, dynamic>',
-            ),
-            skipIfNull: false,
-          );
-          final result = parser.toString();
-          expect(
-            result,
-            "'foo': _FooJsonConverter().toJson(foo.actualValue),",
-          );
-        },
-      );
+      test('test JsonConverter applied field '
+          'with isFieldValueAllowed true and skipIfNull false', () {
+        final parser = ToJsonFieldParser(
+          name: 'foo',
+          dartType: jsonMapType,
+          defaultValueString: null,
+          allowFieldValue: true,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: const JsonConverterConfig(
+            jsonConverterString: '_FooJsonConverter()',
+            clientTypeString: 'Foo',
+            firestoreTypeString: 'Map<String, dynamic>',
+          ),
+          skipIfNull: false,
+        );
+        final result = parser.toString();
+        expect(result, "'foo': _FooJsonConverter().toJson(foo.actualValue),");
+      });
 
-      test(
-        'test JsonConverter applied field '
-        'with isFieldValueAllowed true and skipIfNull false',
-        () {
-          final parser = ToJsonFieldParser(
-            name: 'foo',
-            dartType: jsonMapType,
-            defaultValueString: null,
-            allowFieldValue: true,
-            alwaysUseFieldValueServerTimestamp: false,
-            jsonConverterConfig: const JsonConverterConfig(
-              jsonConverterString: '_FooJsonConverter()',
-              clientTypeString: 'Foo',
-              firestoreTypeString: 'Map<String, dynamic>',
-            ),
-            skipIfNull: true,
-          );
-          final result = parser.toString();
-          expect(
-            result,
-            """if (foo != null) 'foo': _FooJsonConverter().toJson(foo!.actualValue),""",
-          );
-        },
-      );
+      test('test JsonConverter applied field '
+          'with isFieldValueAllowed true and skipIfNull false', () {
+        final parser = ToJsonFieldParser(
+          name: 'foo',
+          dartType: jsonMapType,
+          defaultValueString: null,
+          allowFieldValue: true,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: const JsonConverterConfig(
+            jsonConverterString: '_FooJsonConverter()',
+            clientTypeString: 'Foo',
+            firestoreTypeString: 'Map<String, dynamic>',
+          ),
+          skipIfNull: true,
+        );
+        final result = parser.toString();
+        expect(
+          result,
+          """if (foo != null) 'foo': _FooJsonConverter().toJson(foo!.actualValue),""",
+        );
+      });
 
-      test(
-        'test JsonConverter applied nullable field '
-        'with isFieldValueAllowed false and default value',
-        () {
-          final parser = ToJsonFieldParser(
-            name: 'foo',
-            dartType: nullableJsonMapType,
-            defaultValueString: 'const Map<String, dynamic>',
-            allowFieldValue: false,
-            alwaysUseFieldValueServerTimestamp: false,
-            jsonConverterConfig: const JsonConverterConfig(
-              jsonConverterString: '_FooJsonConverter()',
-              clientTypeString: 'Foo',
-              firestoreTypeString: 'Map<String, dynamic>?',
-            ),
-            skipIfNull: false,
-          );
-          final result = parser.toString();
-          expect(
-            result,
-            """'foo': foo == null ? const Map<String, dynamic> : _FooJsonConverter().toJson(foo!),""",
-          );
-        },
-      );
+      test('test JsonConverter applied nullable field '
+          'with isFieldValueAllowed false and default value', () {
+        final parser = ToJsonFieldParser(
+          name: 'foo',
+          dartType: nullableJsonMapType,
+          defaultValueString: 'const Map<String, dynamic>',
+          allowFieldValue: false,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: const JsonConverterConfig(
+            jsonConverterString: '_FooJsonConverter()',
+            clientTypeString: 'Foo',
+            firestoreTypeString: 'Map<String, dynamic>?',
+          ),
+          skipIfNull: false,
+        );
+        final result = parser.toString();
+        expect(
+          result,
+          """'foo': foo == null ? const Map<String, dynamic> : _FooJsonConverter().toJson(foo!),""",
+        );
+      });
 
-      test(
-        'test JsonConverter applied nullable field '
-        'with isFieldValueAllowed true and default value',
-        () {
-          final parser = ToJsonFieldParser(
-            name: 'foo',
-            dartType: nullableJsonMapType,
-            defaultValueString: 'const Map<String, dynamic>',
-            allowFieldValue: true,
-            alwaysUseFieldValueServerTimestamp: false,
-            jsonConverterConfig: const JsonConverterConfig(
-              jsonConverterString: '_FooJsonConverter()',
-              clientTypeString: 'Foo',
-              firestoreTypeString: 'Map<String, dynamic>?',
-            ),
-            skipIfNull: false,
-          );
-          final result = parser.toString();
-          expect(
-            result,
-            """'foo': foo == null ? const Map<String, dynamic> : _FooJsonConverter().toJson(foo!.actualValue),""",
-          );
-        },
-      );
+      test('test JsonConverter applied nullable field '
+          'with isFieldValueAllowed true and default value', () {
+        final parser = ToJsonFieldParser(
+          name: 'foo',
+          dartType: nullableJsonMapType,
+          defaultValueString: 'const Map<String, dynamic>',
+          allowFieldValue: true,
+          alwaysUseFieldValueServerTimestamp: false,
+          jsonConverterConfig: const JsonConverterConfig(
+            jsonConverterString: '_FooJsonConverter()',
+            clientTypeString: 'Foo',
+            firestoreTypeString: 'Map<String, dynamic>?',
+          ),
+          skipIfNull: false,
+        );
+        final result = parser.toString();
+        expect(
+          result,
+          """'foo': foo == null ? const Map<String, dynamic> : _FooJsonConverter().toJson(foo!.actualValue),""",
+        );
+      });
     });
   });
 }

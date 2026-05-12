@@ -63,11 +63,10 @@ class FieldConfig {
   String typeName({
     bool forceNullable = false,
     bool wrapByFirestoreData = false,
-  }) =>
-      dartType.typeName(
-        forceNullable: forceNullable,
-        wrapByFirestoreData: wrapByFirestoreData,
-      );
+  }) => dartType.typeName(
+    forceNullable: forceNullable,
+    wrapByFirestoreData: wrapByFirestoreData,
+  );
 
   /// The default value as a string for the field when reading from Firestore.
   ///

@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -28,12 +29,11 @@ class ReadAppUser {
   final DocumentReference<ReadAppUser> appUserReference;
 
   factory ReadAppUser.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return ReadAppUser(
       name: extendedJson['name'] as String? ?? '',
       imageUrl: extendedJson['imageUrl'] as String? ?? '',
+
       appUserId: extendedJson['appUserId'] as String,
       path: extendedJson['path'] as String,
       appUserReference:
@@ -47,7 +47,9 @@ class ReadAppUser {
       ...data,
       'appUserId': ds.id,
       'path': ds.reference.path,
-      'appUserReference': ds.reference.parent.doc(ds.id).withConverter(
+      'appUserReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) => ReadAppUser.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
@@ -77,25 +79,20 @@ class ReadAppUser {
 /// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateAppUser {
-  const CreateAppUser({
-    required this.name,
-    required this.imageUrl,
-  });
+  const CreateAppUser({required this.name, required this.imageUrl});
 
   final String name;
 
   final String imageUrl;
 
   Map<String, dynamic> toJson() {
-    final json = <String, dynamic>{
-      'name': name,
-      'imageUrl': imageUrl,
-    };
+    final json = <String, dynamic>{'name': name, 'imageUrl': imageUrl};
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -107,10 +104,7 @@ class CreateAppUser {
 /// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
 /// to the server's timestamp upon updating.
 class UpdateAppUser {
-  const UpdateAppUser({
-    this.name,
-    this.imageUrl,
-  });
+  const UpdateAppUser({this.name, this.imageUrl});
 
   final String? name;
 
@@ -124,8 +118,9 @@ class UpdateAppUser {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -146,8 +141,7 @@ final readAppUsersCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific AppUser document.
 DocumentReference<ReadAppUser> readAppUserDocumentReference({
   required String appUserId,
-}) =>
-    readAppUsersCollectionReference.doc(appUserId);
+}) => readAppUsersCollectionReference.doc(appUserId);
 
 /// Reference to the 'appUsers' collection with a converter for [CreateAppUser].
 /// This enables type-safe create operations in Firestore, converting
@@ -162,8 +156,7 @@ final createAppUsersCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific AppUser document.
 DocumentReference<CreateAppUser> createAppUserDocumentReference({
   required String appUserId,
-}) =>
-    createAppUsersCollectionReference.doc(appUserId);
+}) => createAppUsersCollectionReference.doc(appUserId);
 
 /// Reference to the 'appUsers' collection with a converter for [UpdateAppUser].
 /// This allows for type-safe update operations in Firestore, converting
@@ -178,8 +171,7 @@ final updateAppUsersCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific AppUser document.
 DocumentReference<UpdateAppUser> updateAppUserDocumentReference({
   required String appUserId,
-}) =>
-    updateAppUsersCollectionReference.doc(appUserId);
+}) => updateAppUsersCollectionReference.doc(appUserId);
 
 /// Reference to the 'appUsers' collection with a converter for [DeleteAppUser].
 /// This reference is used specifically for delete operations and does not
@@ -194,8 +186,7 @@ final deleteAppUsersCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific AppUser document.
 DocumentReference<DeleteAppUser> deleteAppUserDocumentReference({
   required String appUserId,
-}) =>
-    deleteAppUsersCollectionReference.doc(appUserId);
+}) => deleteAppUsersCollectionReference.doc(appUserId);
 
 /// Reference to the 'appUsers' collection group with a converter for [ReadAppUser].
 /// This allows for type-safe read operations from Firestore, converting
@@ -263,9 +254,7 @@ final class BatchUpdateAppUser extends BatchWriteAppUser {
 /// only requires the ID of the appUser document to be deleted, as no additional
 /// data is needed for deletion.
 final class BatchDeleteAppUser extends BatchWriteAppUser {
-  const BatchDeleteAppUser({
-    required this.appUserId,
-  });
+  const BatchDeleteAppUser({required this.appUserId});
 
   final String appUserId;
 }
@@ -362,8 +351,9 @@ class AppUserQuery {
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -425,6 +415,7 @@ class AppUserQuery {
   /// Returns the sum of the values of the documents that match the query.
   Future<double?> getSum({
     required String field,
+
     Query<ReadAppUser>? Function(Query<ReadAppUser> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -457,6 +448,7 @@ class AppUserQuery {
   /// Returns the average of the values of the documents that match the query.
   Future<double?> getAverage({
     required String field,
+
     Query<ReadAppUser>? Function(Query<ReadAppUser> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -510,8 +502,7 @@ class AppUserQuery {
   /// [createAppUser] data.
   Future<DocumentReference<CreateAppUser>> add({
     required CreateAppUser createAppUser,
-  }) =>
-      createAppUsersCollectionReference.add(createAppUser);
+  }) => createAppUsersCollectionReference.add(createAppUser);
 
   /// Sets a appUser document to Cloud Firestore.
   ///
@@ -521,10 +512,9 @@ class AppUserQuery {
     required String appUserId,
     required CreateAppUser createAppUser,
     SetOptions? options,
-  }) =>
-      createAppUserDocumentReference(
-        appUserId: appUserId,
-      ).set(createAppUser, options);
+  }) => createAppUserDocumentReference(
+    appUserId: appUserId,
+  ).set(createAppUser, options);
 
   /// Updates a appUser document in Cloud Firestore.
   ///
@@ -534,20 +524,15 @@ class AppUserQuery {
   Future<void> update({
     required String appUserId,
     required UpdateAppUser updateAppUser,
-  }) =>
-      updateAppUserDocumentReference(
-        appUserId: appUserId,
-      ).update(updateAppUser.toJson());
+  }) => updateAppUserDocumentReference(
+    appUserId: appUserId,
+  ).update(updateAppUser.toJson());
 
   /// Deletes a appUser document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [appUserId].
-  Future<void> delete({
-    required String appUserId,
-  }) =>
-      deleteAppUserDocumentReference(
-        appUserId: appUserId,
-      ).delete();
+  Future<void> delete({required String appUserId}) =>
+      deleteAppUserDocumentReference(appUserId: appUserId).delete();
 
   /// Performs a batch write operation in Firestore using a list of [BatchWriteAppUser] tasks.
   ///
@@ -578,29 +563,23 @@ class AppUserQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateAppUser(
-            appUserId: final appUserId,
-            createAppUser: final createAppUser,
-          ):
+          appUserId: final appUserId,
+          createAppUser: final createAppUser,
+        ):
           batch.set(
-            createAppUserDocumentReference(
-              appUserId: appUserId,
-            ),
+            createAppUserDocumentReference(appUserId: appUserId),
             createAppUser,
           );
         case BatchUpdateAppUser(
-            appUserId: final appUserId,
-            updateAppUser: final updateAppUser,
-          ):
+          appUserId: final appUserId,
+          updateAppUser: final updateAppUser,
+        ):
           batch.update(
-            updateAppUserDocumentReference(
-              appUserId: appUserId,
-            ),
+            updateAppUserDocumentReference(appUserId: appUserId),
             updateAppUser.toJson(),
           );
         case BatchDeleteAppUser(appUserId: final appUserId):
-          batch.delete(deleteAppUserDocumentReference(
-            appUserId: appUserId,
-          ));
+          batch.delete(deleteAppUserDocumentReference(appUserId: appUserId));
       }
     }
     return batch.commit();

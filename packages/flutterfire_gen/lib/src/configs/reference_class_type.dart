@@ -11,5 +11,4 @@ enum ReferenceClassType {
 
   /// A reference class for deleting.
   delete,
-  ;
 }

@@ -25,20 +25,20 @@ class QueryClassTemplate {
   String toString() {
     final documentIdConstructorParametersDefinition =
         DocumentIdParametersTemplate.constructorParameterDefinition(
-      config.firestoreDocumentPath,
-    );
+          config.firestoreDocumentPath,
+        );
     final documentIdMethodParametersDefinition =
         DocumentIdParametersTemplate.methodParameterDefinition(
-      config.firestoreDocumentPath,
-    );
+          config.firestoreDocumentPath,
+        );
     final documentIdParametersArgumentInvocation =
         DocumentIdParametersTemplate.argumentInvocation(
-      config.firestoreDocumentPath,
-    );
+          config.firestoreDocumentPath,
+        );
     final documentIdFieldDefinitions =
         DocumentIdParametersTemplate.fieldDefinition(
-      config.firestoreDocumentPath,
-    );
+          config.firestoreDocumentPath,
+        );
     final caseParameter = DocumentIdParametersTemplate.caseParameter(
       config.firestoreDocumentPath,
     );

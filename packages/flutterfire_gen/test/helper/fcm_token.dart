@@ -7,10 +7,7 @@ part 'fcm_token.flutterfire_gen.dart';
 
 @FirestoreDocument(path: 'fcmTokens/{fcmTokenId}')
 class FcmToken {
-  const FcmToken({
-    required this.tokenAndDevices,
-    required this.createdAt,
-  });
+  const FcmToken({required this.tokenAndDevices, required this.createdAt});
 
   @allowFieldValue
   @_tokenAndDevicesConverter
@@ -21,10 +18,7 @@ class FcmToken {
 }
 
 class TokenAndDevice {
-  const TokenAndDevice({
-    required this.token,
-    required this.deviceInfo,
-  });
+  const TokenAndDevice({required this.token, required this.deviceInfo});
 
   final String token;
 

@@ -17,7 +17,7 @@ class JsonPostProcessorTemplate {
   /// - [fieldConfigs] A list of field configurations for which post-processing
   /// is required.
   const JsonPostProcessorTemplate.fromJson(this.fieldConfigs)
-      : _type = _JsonPostProcessorTemplateType.fromJson;
+    : _type = _JsonPostProcessorTemplateType.fromJson;
 
   /// Creates a template for generating JSON post-processing methods for
   /// serialization.
@@ -27,7 +27,7 @@ class JsonPostProcessorTemplate {
   /// - [fieldConfigs] A list of field configurations for which post-processing
   /// is required.
   const JsonPostProcessorTemplate.toJson(this.fieldConfigs)
-      : _type = _JsonPostProcessorTemplateType.toJson;
+    : _type = _JsonPostProcessorTemplateType.toJson;
 
   /// Configurations for the fields to be included in post-processing.
   final List<FieldConfig> fieldConfigs;
@@ -45,7 +45,8 @@ class JsonPostProcessorTemplate {
       }
       switch (_type) {
         case _JsonPostProcessorTemplateType.fromJson:
-          final value = '${jsonPostProcessorConfig.jsonPostProcessorString}.'
+          final value =
+              '${jsonPostProcessorConfig.jsonPostProcessorString}.'
               'fromJson(json)';
           buffer.writeln("'${fieldConfig.name}': $value,");
         case _JsonPostProcessorTemplateType.toJson:

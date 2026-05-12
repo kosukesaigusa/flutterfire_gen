@@ -27,7 +27,7 @@ class ChatMessage {
   final Map<String, Map<String, String>> nestedMap;
 
   final Map<String, Map<int, List<Map<String, Map<String, dynamic>>>>>
-      deeplyNestedMap;
+  deeplyNestedMap;
 
   @_chatMessageTypeConverter
   final ChatMessageType chatMessageType;
@@ -54,8 +54,7 @@ class ChatMessage {
 enum ChatMessageType {
   worker,
   host,
-  system,
-  ;
+  system;
 
   /// 与えられた文字列に対応する [ChatMessageType] を返す。
   factory ChatMessageType.fromString(String messageTypeString) {

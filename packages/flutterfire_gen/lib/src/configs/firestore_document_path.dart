@@ -58,12 +58,10 @@ class FirestoreDocumentPath {
         );
       }
 
-      ancestors.add(
-        (
-          collectionName: collectionName,
-          documentId: documentId.substring(1, documentId.length - 1),
-        ),
-      );
+      ancestors.add((
+        collectionName: collectionName,
+        documentId: documentId.substring(1, documentId.length - 1),
+      ));
     }
 
     final endCollectionName = segments[segments.length - 2];
@@ -79,8 +77,10 @@ class FirestoreDocumentPath {
       documentId: endDocumentId.substring(1, endDocumentId.length - 1),
     );
 
-    documentName =
-        endPair.documentId.substring(0, endPair.documentId.length - 2);
+    documentName = endPair.documentId.substring(
+      0,
+      endPair.documentId.length - 2,
+    );
   }
 
   /// Validates the format of a document name.

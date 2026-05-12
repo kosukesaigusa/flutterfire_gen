@@ -39,13 +39,17 @@ class CreateClassTemplate {
       }).toList(),
     );
 
-    final fields = effectiveFieldConfigs.map((fieldConfig) {
-      return 'final ${fieldConfig.typeName(
-        forceNullable: fieldConfig.dartType.isNullableType ||
-            fieldConfig.createDefaultValueString != null,
-        wrapByFirestoreData: fieldConfig.allowFieldValue,
-      )} ${fieldConfig.name};';
-    }).join('\n\n');
+    final fields = effectiveFieldConfigs
+        .map((fieldConfig) {
+          final typeName = fieldConfig.typeName(
+            forceNullable:
+                fieldConfig.dartType.isNullableType ||
+                fieldConfig.createDefaultValueString != null,
+            wrapByFirestoreData: fieldConfig.allowFieldValue,
+          );
+          return 'final $typeName ${fieldConfig.name};';
+        })
+        .join('\n\n');
 
     final toJsonTemplate = ToJsonTemplate(config.fieldConfigs);
 
