@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -28,13 +29,13 @@ class ReadFcmToken {
   final DocumentReference<ReadFcmToken> fcmTokenReference;
 
   factory ReadFcmToken.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return ReadFcmToken(
-      tokenAndDevices: _tokenAndDevicesConverter
-          .fromJson(extendedJson['tokenAndDevices'] as List<dynamic>?),
+      tokenAndDevices: _tokenAndDevicesConverter.fromJson(
+        extendedJson['tokenAndDevices'] as List<dynamic>?,
+      ),
       createdAt: (extendedJson['createdAt'] as Timestamp?)?.toDate(),
+
       fcmTokenId: extendedJson['fcmTokenId'] as String,
       path: extendedJson['path'] as String,
       fcmTokenReference:
@@ -48,7 +49,9 @@ class ReadFcmToken {
       ...data,
       'fcmTokenId': ds.id,
       'path': ds.reference.path,
-      'fcmTokenReference': ds.reference.parent.doc(ds.id).withConverter(
+      'fcmTokenReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) => ReadFcmToken.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
@@ -78,23 +81,23 @@ class ReadFcmToken {
 /// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateFcmToken {
-  const CreateFcmToken({
-    required this.tokenAndDevices,
-  });
+  const CreateFcmToken({required this.tokenAndDevices});
 
   final FirestoreData<List<TokenAndDevice>> tokenAndDevices;
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{
-      'tokenAndDevices':
-          _tokenAndDevicesConverter.toJson(tokenAndDevices.actualValue),
+      'tokenAndDevices': _tokenAndDevicesConverter.toJson(
+        tokenAndDevices.actualValue,
+      ),
       'createdAt': FieldValue.serverTimestamp(),
     };
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -106,10 +109,7 @@ class CreateFcmToken {
 /// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
 /// to the server's timestamp upon updating.
 class UpdateFcmToken {
-  const UpdateFcmToken({
-    this.tokenAndDevices,
-    this.createdAt,
-  });
+  const UpdateFcmToken({this.tokenAndDevices, this.createdAt});
 
   final FirestoreData<List<TokenAndDevice>>? tokenAndDevices;
 
@@ -118,16 +118,18 @@ class UpdateFcmToken {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{
       if (tokenAndDevices != null)
-        'tokenAndDevices':
-            _tokenAndDevicesConverter.toJson(tokenAndDevices!.actualValue),
+        'tokenAndDevices': _tokenAndDevicesConverter.toJson(
+          tokenAndDevices!.actualValue,
+        ),
       if (createdAt != null)
         'createdAt': createdAt == null ? null : Timestamp.fromDate(createdAt!),
     };
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -148,8 +150,7 @@ final readFcmTokensCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific FcmToken document.
 DocumentReference<ReadFcmToken> readFcmTokenDocumentReference({
   required String fcmTokenId,
-}) =>
-    readFcmTokensCollectionReference.doc(fcmTokenId);
+}) => readFcmTokensCollectionReference.doc(fcmTokenId);
 
 /// Reference to the 'fcmTokens' collection with a converter for [CreateFcmToken].
 /// This enables type-safe create operations in Firestore, converting
@@ -164,8 +165,7 @@ final createFcmTokensCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific FcmToken document.
 DocumentReference<CreateFcmToken> createFcmTokenDocumentReference({
   required String fcmTokenId,
-}) =>
-    createFcmTokensCollectionReference.doc(fcmTokenId);
+}) => createFcmTokensCollectionReference.doc(fcmTokenId);
 
 /// Reference to the 'fcmTokens' collection with a converter for [UpdateFcmToken].
 /// This allows for type-safe update operations in Firestore, converting
@@ -180,8 +180,7 @@ final updateFcmTokensCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific FcmToken document.
 DocumentReference<UpdateFcmToken> updateFcmTokenDocumentReference({
   required String fcmTokenId,
-}) =>
-    updateFcmTokensCollectionReference.doc(fcmTokenId);
+}) => updateFcmTokensCollectionReference.doc(fcmTokenId);
 
 /// Reference to the 'fcmTokens' collection with a converter for [DeleteFcmToken].
 /// This reference is used specifically for delete operations and does not
@@ -196,8 +195,7 @@ final deleteFcmTokensCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific FcmToken document.
 DocumentReference<DeleteFcmToken> deleteFcmTokenDocumentReference({
   required String fcmTokenId,
-}) =>
-    deleteFcmTokensCollectionReference.doc(fcmTokenId);
+}) => deleteFcmTokensCollectionReference.doc(fcmTokenId);
 
 /// Reference to the 'fcmTokens' collection group with a converter for [ReadFcmToken].
 /// This allows for type-safe read operations from Firestore, converting
@@ -265,9 +263,7 @@ final class BatchUpdateFcmToken extends BatchWriteFcmToken {
 /// only requires the ID of the fcmToken document to be deleted, as no additional
 /// data is needed for deletion.
 final class BatchDeleteFcmToken extends BatchWriteFcmToken {
-  const BatchDeleteFcmToken({
-    required this.fcmTokenId,
-  });
+  const BatchDeleteFcmToken({required this.fcmTokenId});
 
   final String fcmTokenId;
 }
@@ -364,8 +360,9 @@ class FcmTokenQuery {
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -427,6 +424,7 @@ class FcmTokenQuery {
   /// Returns the sum of the values of the documents that match the query.
   Future<double?> getSum({
     required String field,
+
     Query<ReadFcmToken>? Function(Query<ReadFcmToken> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -459,6 +457,7 @@ class FcmTokenQuery {
   /// Returns the average of the values of the documents that match the query.
   Future<double?> getAverage({
     required String field,
+
     Query<ReadFcmToken>? Function(Query<ReadFcmToken> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -512,8 +511,7 @@ class FcmTokenQuery {
   /// [createFcmToken] data.
   Future<DocumentReference<CreateFcmToken>> add({
     required CreateFcmToken createFcmToken,
-  }) =>
-      createFcmTokensCollectionReference.add(createFcmToken);
+  }) => createFcmTokensCollectionReference.add(createFcmToken);
 
   /// Sets a fcmToken document to Cloud Firestore.
   ///
@@ -523,10 +521,9 @@ class FcmTokenQuery {
     required String fcmTokenId,
     required CreateFcmToken createFcmToken,
     SetOptions? options,
-  }) =>
-      createFcmTokenDocumentReference(
-        fcmTokenId: fcmTokenId,
-      ).set(createFcmToken, options);
+  }) => createFcmTokenDocumentReference(
+    fcmTokenId: fcmTokenId,
+  ).set(createFcmToken, options);
 
   /// Updates a fcmToken document in Cloud Firestore.
   ///
@@ -536,20 +533,15 @@ class FcmTokenQuery {
   Future<void> update({
     required String fcmTokenId,
     required UpdateFcmToken updateFcmToken,
-  }) =>
-      updateFcmTokenDocumentReference(
-        fcmTokenId: fcmTokenId,
-      ).update(updateFcmToken.toJson());
+  }) => updateFcmTokenDocumentReference(
+    fcmTokenId: fcmTokenId,
+  ).update(updateFcmToken.toJson());
 
   /// Deletes a fcmToken document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [fcmTokenId].
-  Future<void> delete({
-    required String fcmTokenId,
-  }) =>
-      deleteFcmTokenDocumentReference(
-        fcmTokenId: fcmTokenId,
-      ).delete();
+  Future<void> delete({required String fcmTokenId}) =>
+      deleteFcmTokenDocumentReference(fcmTokenId: fcmTokenId).delete();
 
   /// Performs a batch write operation in Firestore using a list of [BatchWriteFcmToken] tasks.
   ///
@@ -580,29 +572,23 @@ class FcmTokenQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateFcmToken(
-            fcmTokenId: final fcmTokenId,
-            createFcmToken: final createFcmToken,
-          ):
+          fcmTokenId: final fcmTokenId,
+          createFcmToken: final createFcmToken,
+        ):
           batch.set(
-            createFcmTokenDocumentReference(
-              fcmTokenId: fcmTokenId,
-            ),
+            createFcmTokenDocumentReference(fcmTokenId: fcmTokenId),
             createFcmToken,
           );
         case BatchUpdateFcmToken(
-            fcmTokenId: final fcmTokenId,
-            updateFcmToken: final updateFcmToken,
-          ):
+          fcmTokenId: final fcmTokenId,
+          updateFcmToken: final updateFcmToken,
+        ):
           batch.update(
-            updateFcmTokenDocumentReference(
-              fcmTokenId: fcmTokenId,
-            ),
+            updateFcmTokenDocumentReference(fcmTokenId: fcmTokenId),
             updateFcmToken.toJson(),
           );
         case BatchDeleteFcmToken(fcmTokenId: final fcmTokenId):
-          batch.delete(deleteFcmTokenDocumentReference(
-            fcmTokenId: fcmTokenId,
-          ));
+          batch.delete(deleteFcmTokenDocumentReference(fcmTokenId: fcmTokenId));
       }
     }
     return batch.commit();

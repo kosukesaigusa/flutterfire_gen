@@ -73,8 +73,9 @@ void main() {
       when(nullableStringElement.name).thenReturn('String');
       when(nullableStringType.isDartCoreList).thenReturn(false);
       when(nullableStringType.isJsonMap).thenReturn(false);
-      when(nullableStringType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
+      when(
+        nullableStringType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
       when(nullableStringType.element).thenReturn(nullableStringElement);
       when(nullableStringType.typeArguments).thenReturn([]);
 
@@ -92,8 +93,9 @@ void main() {
       when(nullableDateTimeElement.name).thenReturn('DateTime');
       when(nullableDateTimeType.isDartCoreList).thenReturn(false);
       when(nullableDateTimeType.isJsonMap).thenReturn(false);
-      when(nullableDateTimeType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
+      when(
+        nullableDateTimeType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
       when(nullableDateTimeType.element).thenReturn(nullableDateTimeElement);
       when(nullableDateTimeType.typeArguments).thenReturn([]);
 
@@ -104,92 +106,91 @@ void main() {
       when(jsonMapType.isDartCoreMap).thenReturn(true);
       when(jsonMapType.nullabilitySuffix).thenReturn(NullabilitySuffix.none);
       when(jsonMapType.element).thenReturn(jsonMapElement);
-      when(jsonMapType.typeArguments).thenReturn([
-        stringType,
-        dynamicType,
-      ]);
+      when(jsonMapType.typeArguments).thenReturn([stringType, dynamicType]);
 
       nullableJsonMapType = MockInterfaceType();
       nullableJsonMapElement = MockInterfaceElement();
       when(nullableJsonMapElement.name).thenReturn('Map');
       when(nullableJsonMapType.isDartCoreList).thenReturn(false);
       when(nullableJsonMapType.isDartCoreMap).thenReturn(true);
-      when(nullableJsonMapType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
+      when(
+        nullableJsonMapType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
       when(nullableJsonMapType.element).thenReturn(nullableJsonMapElement);
-      when(nullableJsonMapType.typeArguments).thenReturn([
-        stringType,
-        dynamicType,
-      ]);
+      when(
+        nullableJsonMapType.typeArguments,
+      ).thenReturn([stringType, dynamicType]);
 
       mapStringDynamicJsonMapType = MockInterfaceType();
       mapStringDynamicJsonMapElement = MockInterfaceElement();
       when(mapStringDynamicJsonMapElement.name).thenReturn('Map');
       when(mapStringDynamicJsonMapType.isDartCoreList).thenReturn(false);
       when(mapStringDynamicJsonMapType.isDartCoreMap).thenReturn(true);
-      when(mapStringDynamicJsonMapType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.none);
-      when(mapStringDynamicJsonMapType.element)
-          .thenReturn(mapStringDynamicJsonMapElement);
-      when(mapStringDynamicJsonMapType.typeArguments).thenReturn([
-        stringType,
-        jsonMapType,
-      ]);
+      when(
+        mapStringDynamicJsonMapType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.none);
+      when(
+        mapStringDynamicJsonMapType.element,
+      ).thenReturn(mapStringDynamicJsonMapElement);
+      when(
+        mapStringDynamicJsonMapType.typeArguments,
+      ).thenReturn([stringType, jsonMapType]);
 
       mapStringIntType = MockInterfaceType();
       mapStringIntElement = MockInterfaceElement();
       when(mapStringIntElement.name).thenReturn('Map');
       when(mapStringIntType.isDartCoreList).thenReturn(false);
       when(mapStringIntType.isDartCoreMap).thenReturn(true);
-      when(mapStringIntType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.none);
+      when(
+        mapStringIntType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.none);
       when(mapStringIntType.element).thenReturn(mapStringIntElement);
-      when(mapStringIntType.typeArguments).thenReturn([
-        stringType,
-        intType,
-      ]);
+      when(mapStringIntType.typeArguments).thenReturn([stringType, intType]);
 
       mapStringIntJsonMapType = MockInterfaceType();
       mapStringIntJsonMapElement = MockInterfaceElement();
       when(mapStringIntJsonMapElement.name).thenReturn('Map');
       when(mapStringIntJsonMapType.isDartCoreList).thenReturn(false);
       when(mapStringIntJsonMapType.isDartCoreMap).thenReturn(true);
-      when(mapStringIntJsonMapType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.none);
-      when(mapStringIntJsonMapType.element)
-          .thenReturn(mapStringIntJsonMapElement);
-      when(mapStringIntJsonMapType.typeArguments).thenReturn([
-        stringType,
-        mapStringIntType,
-      ]);
+      when(
+        mapStringIntJsonMapType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.none);
+      when(
+        mapStringIntJsonMapType.element,
+      ).thenReturn(mapStringIntJsonMapElement);
+      when(
+        mapStringIntJsonMapType.typeArguments,
+      ).thenReturn([stringType, mapStringIntType]);
 
       nullableMapStringIntType = MockInterfaceType();
       nullableMapStringIntElement = MockInterfaceElement();
       when(mapStringIntElement.name).thenReturn('Map');
       when(nullableMapStringIntType.isDartCoreList).thenReturn(false);
       when(nullableMapStringIntType.isDartCoreMap).thenReturn(true);
-      when(nullableMapStringIntType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
-      when(nullableMapStringIntType.element)
-          .thenReturn(nullableMapStringIntElement);
-      when(nullableMapStringIntType.typeArguments).thenReturn([
-        stringType,
-        intType,
-      ]);
+      when(
+        nullableMapStringIntType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
+      when(
+        nullableMapStringIntType.element,
+      ).thenReturn(nullableMapStringIntElement);
+      when(
+        nullableMapStringIntType.typeArguments,
+      ).thenReturn([stringType, intType]);
 
       nullableMapStringIntJsonMapType = MockInterfaceType();
       nullableMapStringIntJsonMapElement = MockInterfaceElement();
       when(nullableMapStringIntJsonMapElement.name).thenReturn('Map');
       when(nullableMapStringIntJsonMapType.isDartCoreList).thenReturn(false);
       when(nullableMapStringIntJsonMapType.isDartCoreMap).thenReturn(true);
-      when(nullableMapStringIntJsonMapType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.none);
-      when(nullableMapStringIntJsonMapType.element)
-          .thenReturn(nullableMapStringIntJsonMapElement);
-      when(nullableMapStringIntJsonMapType.typeArguments).thenReturn([
-        stringType,
-        nullableMapStringIntType,
-      ]);
+      when(
+        nullableMapStringIntJsonMapType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.none);
+      when(
+        nullableMapStringIntJsonMapType.element,
+      ).thenReturn(nullableMapStringIntJsonMapElement);
+      when(
+        nullableMapStringIntJsonMapType.typeArguments,
+      ).thenReturn([stringType, nullableMapStringIntType]);
 
       listStringType = MockInterfaceType();
       listStringElement = MockInterfaceElement();
@@ -203,21 +204,26 @@ void main() {
       listNullableStringElement = MockInterfaceElement();
       when(listNullableStringElement.name).thenReturn('List');
       when(listNullableStringType.isDartCoreList).thenReturn(true);
-      when(listNullableStringType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.none);
-      when(listNullableStringType.element)
-          .thenReturn(listNullableStringElement);
-      when(listNullableStringType.typeArguments)
-          .thenReturn([nullableStringType]);
+      when(
+        listNullableStringType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.none);
+      when(
+        listNullableStringType.element,
+      ).thenReturn(listNullableStringElement);
+      when(
+        listNullableStringType.typeArguments,
+      ).thenReturn([nullableStringType]);
 
       nullableListStringType = MockInterfaceType();
       nullableListStringElement = MockInterfaceElement();
       when(nullableListStringElement.name).thenReturn('List');
       when(nullableListStringType.isDartCoreList).thenReturn(true);
-      when(nullableListStringType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
-      when(nullableListStringType.element)
-          .thenReturn(nullableListStringElement);
+      when(
+        nullableListStringType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
+      when(
+        nullableListStringType.element,
+      ).thenReturn(nullableListStringElement);
       when(nullableListStringType.typeArguments).thenReturn([stringType]);
     });
 

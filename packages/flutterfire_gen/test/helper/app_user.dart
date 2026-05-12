@@ -5,10 +5,7 @@ part 'app_user.flutterfire_gen.dart';
 
 @FirestoreDocument(path: 'appUsers/{appUserId}')
 class AppUser {
-  AppUser({
-    required this.name,
-    required this.imageUrl,
-  });
+  AppUser({required this.name, required this.imageUrl});
 
   @ReadDefault('')
   final String name;

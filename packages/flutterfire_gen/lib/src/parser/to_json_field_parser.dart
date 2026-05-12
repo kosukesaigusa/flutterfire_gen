@@ -74,7 +74,8 @@ class ToJsonFieldParser {
 
   @override
   String toString() {
-    final assertNonNull = skipIfNull &&
+    final assertNonNull =
+        skipIfNull &&
         (defaultValueString ?? '').isEmpty &&
         !alwaysUseFieldValueServerTimestamp;
     final result = _generateToJsonCodeSnippet(
@@ -113,8 +114,9 @@ class ToJsonFieldParser {
     required bool assertNonNull,
   }) {
     final hasDefaultValue = (defaultValueString ?? '').isNotEmpty;
-    final defaultValueExpression =
-        hasDefaultValue ? ' ?? $defaultValueString' : '';
+    final defaultValueExpression = hasDefaultValue
+        ? ' ?? $defaultValueString'
+        : '';
 
     if (isAlwaysUseFieldValueServerTimestamp) {
       return 'FieldValue.serverTimestamp()';

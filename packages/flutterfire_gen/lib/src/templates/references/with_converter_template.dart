@@ -28,8 +28,9 @@ class WithConverterTemplate {
 
   @override
   String toString() {
-    final className =
-        config.classNameFromReferenceClassType(referenceClassType);
+    final className = config.classNameFromReferenceClassType(
+      referenceClassType,
+    );
     switch (referenceClassType) {
       case ReferenceClassType.read:
         return '''

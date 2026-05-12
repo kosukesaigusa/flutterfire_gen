@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -160,9 +161,7 @@ class ReadEntity {
   final DocumentReference<ReadEntity> entityReference;
 
   factory ReadEntity.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return ReadEntity(
       text: extendedJson['text'] as String,
       textWithDefault:
@@ -182,109 +181,141 @@ class ReadEntity {
       texts: (extendedJson['texts'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      textsWithDefault: (extendedJson['textsWithDefault'] as List<dynamic>?)
+      textsWithDefault:
+          (extendedJson['textsWithDefault'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>['requiredWithDefault'],
-      nullableTexts: (extendedJson['nullableTexts'] as List<dynamic>?)
+      nullableTexts:
+          (extendedJson['nullableTexts'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
       map: extendedJson['map'] as Map<String, dynamic>,
-      mapWithDefault: extendedJson['mapWithDefault'] as Map<String, dynamic>? ??
+      mapWithDefault:
+          extendedJson['mapWithDefault'] as Map<String, dynamic>? ??
           const <String, dynamic>{},
-      nullableMap: extendedJson['nullableMap'] as Map<String, dynamic>? ??
+      nullableMap:
+          extendedJson['nullableMap'] as Map<String, dynamic>? ??
           const <String, dynamic>{},
-      stringMap: (extendedJson['stringMap'] as Map<String, dynamic>)
-          .map((k, v) => MapEntry(k, v as String)),
+      stringMap: (extendedJson['stringMap'] as Map<String, dynamic>).map(
+        (k, v) => MapEntry(k, v as String),
+      ),
       stringMapWithDefault:
-          (extendedJson['stringMapWithDefault'] as Map<String, dynamic>?)
-                  ?.map((k, v) => MapEntry(k, v as String)) ??
-              const <String, String>{},
+          (extendedJson['stringMapWithDefault'] as Map<String, dynamic>?)?.map(
+            (k, v) => MapEntry(k, v as String),
+          ) ??
+          const <String, String>{},
       nullableStringMap:
-          (extendedJson['nullableStringMap'] as Map<String, dynamic>?)
-                  ?.map((k, v) => MapEntry(k, v as String)) ??
-              const <String, String>{},
+          (extendedJson['nullableStringMap'] as Map<String, dynamic>?)?.map(
+            (k, v) => MapEntry(k, v as String),
+          ) ??
+          const <String, String>{},
       nestedMap: (extendedJson['nestedMap'] as Map<String, dynamic>).map(
-          (k, v) => MapEntry(
-              k,
-              (v as Map<String, dynamic>)
-                  .map((k, v) => MapEntry(k, v as int)))),
+        (k, v) => MapEntry(
+          k,
+          (v as Map<String, dynamic>).map((k, v) => MapEntry(k, v as int)),
+        ),
+      ),
       nestedMapWithDefault:
           (extendedJson['nestedMapWithDefault'] as Map<String, dynamic>?)?.map(
-                  (k, v) => MapEntry(
-                      k,
-                      (v as Map<String, dynamic>)
-                          .map((k, v) => MapEntry(k, v as int)))) ??
-              const <String, Map<String, int>>{
-                'requiredWithDefault': <String, int>{}
-              },
+            (k, v) => MapEntry(
+              k,
+              (v as Map<String, dynamic>).map((k, v) => MapEntry(k, v as int)),
+            ),
+          ) ??
+          const <String, Map<String, int>>{
+            'requiredWithDefault': <String, int>{},
+          },
       nullableNestedMap:
           (extendedJson['nullableNestedMap'] as Map<String, dynamic>?)?.map(
-                  (k, v) => MapEntry(
-                      k,
-                      (v as Map<String, dynamic>)
-                          .map((k, v) => MapEntry(k, v as int)))) ??
-              const <String, Map<String, int>>{},
-      listMap: (extendedJson['listMap'] as Map<String, dynamic>).map((k, v) =>
-          MapEntry(k, (v as List<dynamic>).map((e) => e as int).toList())),
+            (k, v) => MapEntry(
+              k,
+              (v as Map<String, dynamic>).map((k, v) => MapEntry(k, v as int)),
+            ),
+          ) ??
+          const <String, Map<String, int>>{},
+      listMap: (extendedJson['listMap'] as Map<String, dynamic>).map(
+        (k, v) =>
+            MapEntry(k, (v as List<dynamic>).map((e) => e as int).toList()),
+      ),
       listMapWithDefault:
           (extendedJson['listMapWithDefault'] as Map<String, dynamic>?)?.map(
-                  (k, v) => MapEntry(
-                      k, (v as List<dynamic>).map((e) => e as int).toList())) ??
-              const <String, List<int>>{'requiredWithDefault': <int>[]},
+            (k, v) =>
+                MapEntry(k, (v as List<dynamic>).map((e) => e as int).toList()),
+          ) ??
+          const <String, List<int>>{'requiredWithDefault': <int>[]},
       nullableListMap:
           (extendedJson['nullableListMap'] as Map<String, dynamic>?)?.map(
-                  (k, v) => MapEntry(
-                      k, (v as List<dynamic>).map((e) => e as int).toList())) ??
-              const <String, List<int>>{},
+            (k, v) =>
+                MapEntry(k, (v as List<dynamic>).map((e) => e as int).toList()),
+          ) ??
+          const <String, List<int>>{},
       mapList: (extendedJson['mapList'] as List<dynamic>)
-          .map((e) =>
-              (e as Map<String, dynamic>).map((k, v) => MapEntry(k, v as int)))
+          .map(
+            (e) => (e as Map<String, dynamic>).map(
+              (k, v) => MapEntry(k, v as int),
+            ),
+          )
           .toList(),
-      mapListWithDefault: (extendedJson['mapListWithDefault'] as List<dynamic>?)
-              ?.map((e) => (e as Map<String, dynamic>)
-                  .map((k, v) => MapEntry(k, v as int)))
+      mapListWithDefault:
+          (extendedJson['mapListWithDefault'] as List<dynamic>?)
+              ?.map(
+                (e) => (e as Map<String, dynamic>).map(
+                  (k, v) => MapEntry(k, v as int),
+                ),
+              )
               .toList() ??
           const <Map<String, int>>[
-            <String, int>{'requiredWithDefault': 0}
+            <String, int>{'requiredWithDefault': 0},
           ],
-      nullableMapList: (extendedJson['nullableMapList'] as List<dynamic>?)
-              ?.map((e) => (e as Map<String, dynamic>)
-                  .map((k, v) => MapEntry(k, v as int)))
+      nullableMapList:
+          (extendedJson['nullableMapList'] as List<dynamic>?)
+              ?.map(
+                (e) => (e as Map<String, dynamic>).map(
+                  (k, v) => MapEntry(k, v as int),
+                ),
+              )
               .toList() ??
           const <Map<String, int>>[],
       geoPoint: extendedJson['geoPoint'] as GeoPoint,
-      geoPointWithDefault: extendedJson['geoPointWithDefault'] as GeoPoint? ??
+      geoPointWithDefault:
+          extendedJson['geoPointWithDefault'] as GeoPoint? ??
           const GeoPoint(0, 0),
       nullableGeoPoint:
           extendedJson['nullableGeoPoint'] as GeoPoint? ?? const GeoPoint(0, 0),
       dateTime: (extendedJson['dateTime'] as Timestamp).toDate(),
-      nullableDateTime:
-          (extendedJson['nullableDateTime'] as Timestamp?)?.toDate(),
+      nullableDateTime: (extendedJson['nullableDateTime'] as Timestamp?)
+          ?.toDate(),
       timestamp: extendedJson['timestamp'] as Timestamp,
       nullableTimestamp: extendedJson['nullableTimestamp'] as Timestamp?,
       documentReference:
           extendedJson['documentReference'] as DocumentReference<Object?>,
-      nullableDocumentReference: extendedJson['nullableDocumentReference']
-          as DocumentReference<Object?>?,
-      foo: _FooJsonConverter()
-          .fromJson(extendedJson['foo'] as Map<String, dynamic>),
+      nullableDocumentReference:
+          extendedJson['nullableDocumentReference']
+              as DocumentReference<Object?>?,
+      foo: _FooJsonConverter().fromJson(
+        extendedJson['foo'] as Map<String, dynamic>,
+      ),
       fooWithDefault: extendedJson['fooWithDefault'] == null
           ? const Foo('requiredWithDefault')
-          : _FooJsonConverter()
-              .fromJson(extendedJson['fooWithDefault'] as Map<String, dynamic>),
-      nullableFoo: _nullableFooJsonConverter
-          .fromJson(extendedJson['nullableFoo'] as Map<String, dynamic>),
+          : _FooJsonConverter().fromJson(
+              extendedJson['fooWithDefault'] as Map<String, dynamic>,
+            ),
+      nullableFoo: _nullableFooJsonConverter.fromJson(
+        extendedJson['nullableFoo'] as Map<String, dynamic>,
+      ),
       nullableFooWithDefaultAnnotation: _FooJsonConverter().fromJson(
-          extendedJson['nullableFooWithDefaultAnnotation']
-              as Map<String, dynamic>),
+        extendedJson['nullableFooWithDefaultAnnotation']
+            as Map<String, dynamic>,
+      ),
       fieldValueAllowedInt: extendedJson['fieldValueAllowedInt'] as int,
       fieldValueAllowedNullableInt:
           extendedJson['fieldValueAllowedNullableInt'] as int?,
       fieldValueAllowedNullableIntWithDefaultAnnotation:
           extendedJson['fieldValueAllowedNullableIntWithDefaultAnnotation']
               as int?,
+
       entityId: extendedJson['entityId'] as String,
       path: extendedJson['path'] as String,
       entityReference:
@@ -298,7 +329,9 @@ class ReadEntity {
       ...data,
       'entityId': ds.id,
       'path': ds.reference.path,
-      'entityReference': ds.reference.parent.doc(ds.id).withConverter(
+      'entityReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) => ReadEntity.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
@@ -401,14 +434,15 @@ class ReadEntity {
       foo: foo ?? this.foo,
       fooWithDefault: fooWithDefault ?? this.fooWithDefault,
       nullableFoo: nullableFoo ?? this.nullableFoo,
-      nullableFooWithDefaultAnnotation: nullableFooWithDefaultAnnotation ??
+      nullableFooWithDefaultAnnotation:
+          nullableFooWithDefaultAnnotation ??
           this.nullableFooWithDefaultAnnotation,
       fieldValueAllowedInt: fieldValueAllowedInt ?? this.fieldValueAllowedInt,
       fieldValueAllowedNullableInt:
           fieldValueAllowedNullableInt ?? this.fieldValueAllowedNullableInt,
       fieldValueAllowedNullableIntWithDefaultAnnotation:
           fieldValueAllowedNullableIntWithDefaultAnnotation ??
-              this.fieldValueAllowedNullableIntWithDefaultAnnotation,
+          this.fieldValueAllowedNullableIntWithDefaultAnnotation,
       entityId: entityId ?? this.entityId,
       path: path ?? this.path,
       entityReference: entityReference ?? this.entityReference,
@@ -611,8 +645,8 @@ class CreateEntity {
       'nullableFoo': _nullableFooJsonConverter.toJson(nullableFoo),
       'nullableFooWithDefaultAnnotation':
           nullableFooWithDefaultAnnotation == null
-              ? const Foo('defaultBar')
-              : _FooJsonConverter().toJson(nullableFooWithDefaultAnnotation!),
+          ? const Foo('defaultBar')
+          : _FooJsonConverter().toJson(nullableFooWithDefaultAnnotation!),
       'fieldValueAllowedInt': fieldValueAllowedInt.value,
       'fieldValueAllowedNullableInt': fieldValueAllowedNullableInt?.value,
       'fieldValueAllowedNullableIntWithDefaultAnnotation':
@@ -621,8 +655,9 @@ class CreateEntity {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -831,8 +866,9 @@ class UpdateEntity {
       if (nullableFoo != null)
         'nullableFoo': _nullableFooJsonConverter.toJson(nullableFoo!),
       if (nullableFooWithDefaultAnnotation != null)
-        'nullableFooWithDefaultAnnotation':
-            _FooJsonConverter().toJson(nullableFooWithDefaultAnnotation!),
+        'nullableFooWithDefaultAnnotation': _FooJsonConverter().toJson(
+          nullableFooWithDefaultAnnotation!,
+        ),
       if (fieldValueAllowedInt != null)
         'fieldValueAllowedInt': fieldValueAllowedInt!.value,
       if (fieldValueAllowedNullableInt != null)
@@ -844,8 +880,9 @@ class UpdateEntity {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -856,17 +893,17 @@ class DeleteEntity {}
 /// Reference to the 'entities' collection with a converter for [ReadEntity].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [ReadEntity] objects.
-final readEntitiesCollectionReference =
-    FirebaseFirestore.instance.collection('entities').withConverter<ReadEntity>(
-          fromFirestore: (ds, _) => ReadEntity.fromDocumentSnapshot(ds),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+final readEntitiesCollectionReference = FirebaseFirestore.instance
+    .collection('entities')
+    .withConverter<ReadEntity>(
+      fromFirestore: (ds, _) => ReadEntity.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific Entity document.
 DocumentReference<ReadEntity> readEntityDocumentReference({
   required String entityId,
-}) =>
-    readEntitiesCollectionReference.doc(entityId);
+}) => readEntitiesCollectionReference.doc(entityId);
 
 /// Reference to the 'entities' collection with a converter for [CreateEntity].
 /// This enables type-safe create operations in Firestore, converting
@@ -881,8 +918,7 @@ final createEntitiesCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific Entity document.
 DocumentReference<CreateEntity> createEntityDocumentReference({
   required String entityId,
-}) =>
-    createEntitiesCollectionReference.doc(entityId);
+}) => createEntitiesCollectionReference.doc(entityId);
 
 /// Reference to the 'entities' collection with a converter for [UpdateEntity].
 /// This allows for type-safe update operations in Firestore, converting
@@ -897,8 +933,7 @@ final updateEntitiesCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific Entity document.
 DocumentReference<UpdateEntity> updateEntityDocumentReference({
   required String entityId,
-}) =>
-    updateEntitiesCollectionReference.doc(entityId);
+}) => updateEntitiesCollectionReference.doc(entityId);
 
 /// Reference to the 'entities' collection with a converter for [DeleteEntity].
 /// This reference is used specifically for delete operations and does not
@@ -913,8 +948,7 @@ final deleteEntitiesCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific Entity document.
 DocumentReference<DeleteEntity> deleteEntityDocumentReference({
   required String entityId,
-}) =>
-    deleteEntitiesCollectionReference.doc(entityId);
+}) => deleteEntitiesCollectionReference.doc(entityId);
 
 /// Reference to the 'entities' collection group with a converter for [ReadEntity].
 /// This allows for type-safe read operations from Firestore, converting
@@ -950,10 +984,7 @@ sealed class BatchWriteEntity {
 /// creating new entity documents. It encapsulates the ID of the new entity document
 /// and the data required for creation.
 final class BatchCreateEntity extends BatchWriteEntity {
-  const BatchCreateEntity({
-    required this.entityId,
-    required this.createEntity,
-  });
+  const BatchCreateEntity({required this.entityId, required this.createEntity});
 
   final String entityId;
 
@@ -966,10 +997,7 @@ final class BatchCreateEntity extends BatchWriteEntity {
 /// the update of existing entity documents. It includes the entity document's ID
 /// and the data for the update.
 final class BatchUpdateEntity extends BatchWriteEntity {
-  const BatchUpdateEntity({
-    required this.entityId,
-    required this.updateEntity,
-  });
+  const BatchUpdateEntity({required this.entityId, required this.updateEntity});
 
   final String entityId;
 
@@ -982,9 +1010,7 @@ final class BatchUpdateEntity extends BatchWriteEntity {
 /// only requires the ID of the entity document to be deleted, as no additional
 /// data is needed for deletion.
 final class BatchDeleteEntity extends BatchWriteEntity {
-  const BatchDeleteEntity({
-    required this.entityId,
-  });
+  const BatchDeleteEntity({required this.entityId});
 
   final String entityId;
 }
@@ -1081,8 +1107,9 @@ class EntityQuery {
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -1144,6 +1171,7 @@ class EntityQuery {
   /// Returns the sum of the values of the documents that match the query.
   Future<double?> getSum({
     required String field,
+
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -1176,6 +1204,7 @@ class EntityQuery {
   /// Returns the average of the values of the documents that match the query.
   Future<double?> getAverage({
     required String field,
+
     Query<ReadEntity>? Function(Query<ReadEntity> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -1229,8 +1258,7 @@ class EntityQuery {
   /// [createEntity] data.
   Future<DocumentReference<CreateEntity>> add({
     required CreateEntity createEntity,
-  }) =>
-      createEntitiesCollectionReference.add(createEntity);
+  }) => createEntitiesCollectionReference.add(createEntity);
 
   /// Sets a entity document to Cloud Firestore.
   ///
@@ -1240,10 +1268,9 @@ class EntityQuery {
     required String entityId,
     required CreateEntity createEntity,
     SetOptions? options,
-  }) =>
-      createEntityDocumentReference(
-        entityId: entityId,
-      ).set(createEntity, options);
+  }) => createEntityDocumentReference(
+    entityId: entityId,
+  ).set(createEntity, options);
 
   /// Updates a entity document in Cloud Firestore.
   ///
@@ -1253,20 +1280,15 @@ class EntityQuery {
   Future<void> update({
     required String entityId,
     required UpdateEntity updateEntity,
-  }) =>
-      updateEntityDocumentReference(
-        entityId: entityId,
-      ).update(updateEntity.toJson());
+  }) => updateEntityDocumentReference(
+    entityId: entityId,
+  ).update(updateEntity.toJson());
 
   /// Deletes a entity document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [entityId].
-  Future<void> delete({
-    required String entityId,
-  }) =>
-      deleteEntityDocumentReference(
-        entityId: entityId,
-      ).delete();
+  Future<void> delete({required String entityId}) =>
+      deleteEntityDocumentReference(entityId: entityId).delete();
 
   /// Performs a batch write operation in Firestore using a list of [BatchWriteEntity] tasks.
   ///
@@ -1297,29 +1319,23 @@ class EntityQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateEntity(
-            entityId: final entityId,
-            createEntity: final createEntity,
-          ):
+          entityId: final entityId,
+          createEntity: final createEntity,
+        ):
           batch.set(
-            createEntityDocumentReference(
-              entityId: entityId,
-            ),
+            createEntityDocumentReference(entityId: entityId),
             createEntity,
           );
         case BatchUpdateEntity(
-            entityId: final entityId,
-            updateEntity: final updateEntity,
-          ):
+          entityId: final entityId,
+          updateEntity: final updateEntity,
+        ):
           batch.update(
-            updateEntityDocumentReference(
-              entityId: entityId,
-            ),
+            updateEntityDocumentReference(entityId: entityId),
             updateEntity.toJson(),
           );
         case BatchDeleteEntity(entityId: final entityId):
-          batch.delete(deleteEntityDocumentReference(
-            entityId: entityId,
-          ));
+          batch.delete(deleteEntityDocumentReference(entityId: entityId));
       }
     }
     return batch.commit();

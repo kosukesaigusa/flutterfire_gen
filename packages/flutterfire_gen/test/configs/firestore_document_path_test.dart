@@ -11,15 +11,16 @@ void main() {
         documentPath.ancestors,
         <({String collectionName, String documentId})>[],
       );
-      expect(
-        documentPath.endPair,
-        (collectionName: 'users', documentId: 'userId'),
-      );
+      expect(documentPath.endPair, (
+        collectionName: 'users',
+        documentId: 'userId',
+      ));
     });
 
     test("test with valid path 'users/{userId}/posts/{postId}'", () {
-      final documentPath =
-          FirestoreDocumentPath('users/{userId}/posts/{postId}');
+      final documentPath = FirestoreDocumentPath(
+        'users/{userId}/posts/{postId}',
+      );
       expect(documentPath.documentName, 'post');
       expect(
         documentPath.ancestors,
@@ -27,31 +28,32 @@ void main() {
           (collectionName: 'users', documentId: 'userId'),
         ],
       );
-      expect(
-        documentPath.endPair,
-        (collectionName: 'posts', documentId: 'postId'),
-      );
+      expect(documentPath.endPair, (
+        collectionName: 'posts',
+        documentId: 'postId',
+      ));
     });
 
     test(
-        "test with valid path 'users/{userId}/posts/{postId}/postLikes/{postLikeId}'",
-        () {
-      final documentPath = FirestoreDocumentPath(
-        'users/{userId}/posts/{postId}/postLikes/{postLikeId}',
-      );
-      expect(documentPath.documentName, 'postLike');
-      expect(
-        documentPath.ancestors,
-        <({String collectionName, String documentId})>[
-          (collectionName: 'users', documentId: 'userId'),
-          (collectionName: 'posts', documentId: 'postId'),
-        ],
-      );
-      expect(
-        documentPath.endPair,
-        (collectionName: 'postLikes', documentId: 'postLikeId'),
-      );
-    });
+      "test with valid path 'users/{userId}/posts/{postId}/postLikes/{postLikeId}'",
+      () {
+        final documentPath = FirestoreDocumentPath(
+          'users/{userId}/posts/{postId}/postLikes/{postLikeId}',
+        );
+        expect(documentPath.documentName, 'postLike');
+        expect(
+          documentPath.ancestors,
+          <({String collectionName, String documentId})>[
+            (collectionName: 'users', documentId: 'userId'),
+            (collectionName: 'posts', documentId: 'postId'),
+          ],
+        );
+        expect(documentPath.endPair, (
+          collectionName: 'postLikes',
+          documentId: 'postLikeId',
+        ));
+      },
+    );
 
     test('test with empty path', () {
       expect(

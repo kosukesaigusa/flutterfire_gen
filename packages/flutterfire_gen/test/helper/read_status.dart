@@ -5,9 +5,7 @@ part 'read_status.flutterfire_gen.dart';
 
 @FirestoreDocument(path: 'chatRooms/{chatRoomId}/readStatuses/{readStatusId}')
 class ReadStatus {
-  const ReadStatus({
-    this.lastReadAt,
-  });
+  const ReadStatus({this.lastReadAt});
 
   @alwaysUseFieldValueServerTimestampWhenCreating
   @alwaysUseFieldValueServerTimestampWhenUpdating

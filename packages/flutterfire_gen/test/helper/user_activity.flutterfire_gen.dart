@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -31,17 +32,17 @@ class ReadUserActivity {
   final DocumentReference<ReadUserActivity> activityReference;
 
   factory ReadUserActivity.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return ReadUserActivity(
       title: extendedJson['title'] as String,
       createdAt: (extendedJson['createdAt'] as Timestamp).toDate(),
       updatedAt: (extendedJson['updatedAt'] as Timestamp).toDate(),
+
       activityId: extendedJson['activityId'] as String,
       path: extendedJson['path'] as String,
-      activityReference: extendedJson['activityReference']
-          as DocumentReference<ReadUserActivity>,
+      activityReference:
+          extendedJson['activityReference']
+              as DocumentReference<ReadUserActivity>,
     );
   }
 
@@ -51,7 +52,9 @@ class ReadUserActivity {
       ...data,
       'activityId': ds.id,
       'path': ds.reference.path,
-      'activityReference': ds.reference.parent.doc(ds.id).withConverter(
+      'activityReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) => ReadUserActivity.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
@@ -104,8 +107,9 @@ class CreateUserActivity {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -117,11 +121,7 @@ class CreateUserActivity {
 /// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
 /// to the server's timestamp upon updating.
 class UpdateUserActivity {
-  const UpdateUserActivity({
-    this.title,
-    this.createdAt,
-    this.updatedAt,
-  });
+  const UpdateUserActivity({this.title, this.createdAt, this.updatedAt});
 
   final String? title;
 
@@ -138,8 +138,9 @@ class UpdateUserActivity {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -152,96 +153,84 @@ class DeleteUserActivity {}
 /// Firestore documents to [ReadUserActivity] objects.
 CollectionReference<ReadUserActivity> readActivitiesCollectionReference({
   required String userId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('activities')
-        .withConverter<ReadUserActivity>(
-          fromFirestore: (ds, _) => ReadUserActivity.fromDocumentSnapshot(ds),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('users')
+    .doc(userId)
+    .collection('activities')
+    .withConverter<ReadUserActivity>(
+      fromFirestore: (ds, _) => ReadUserActivity.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific UserActivity document.
 DocumentReference<ReadUserActivity> readActivityDocumentReference({
   required String userId,
+
   required String activityId,
-}) =>
-    readActivitiesCollectionReference(
-      userId: userId,
-    ).doc(activityId);
+}) => readActivitiesCollectionReference(userId: userId).doc(activityId);
 
 /// Reference to the 'activities' collection with a converter for [CreateUserActivity].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateUserActivity] objects to Firestore document data.
 CollectionReference<CreateUserActivity> createActivitiesCollectionReference({
   required String userId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('activities')
-        .withConverter<CreateUserActivity>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('users')
+    .doc(userId)
+    .collection('activities')
+    .withConverter<CreateUserActivity>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific UserActivity document.
 DocumentReference<CreateUserActivity> createActivityDocumentReference({
   required String userId,
+
   required String activityId,
-}) =>
-    createActivitiesCollectionReference(
-      userId: userId,
-    ).doc(activityId);
+}) => createActivitiesCollectionReference(userId: userId).doc(activityId);
 
 /// Reference to the 'activities' collection with a converter for [UpdateUserActivity].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateUserActivity] objects to Firestore document data.
 CollectionReference<UpdateUserActivity> updateActivitiesCollectionReference({
   required String userId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('activities')
-        .withConverter<UpdateUserActivity>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('users')
+    .doc(userId)
+    .collection('activities')
+    .withConverter<UpdateUserActivity>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific UserActivity document.
 DocumentReference<UpdateUserActivity> updateActivityDocumentReference({
   required String userId,
+
   required String activityId,
-}) =>
-    updateActivitiesCollectionReference(
-      userId: userId,
-    ).doc(activityId);
+}) => updateActivitiesCollectionReference(userId: userId).doc(activityId);
 
 /// Reference to the 'activities' collection with a converter for [DeleteUserActivity].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
 CollectionReference<DeleteUserActivity> deleteActivitiesCollectionReference({
   required String userId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('activities')
-        .withConverter<DeleteUserActivity>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('users')
+    .doc(userId)
+    .collection('activities')
+    .withConverter<DeleteUserActivity>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific UserActivity document.
 DocumentReference<DeleteUserActivity> deleteActivityDocumentReference({
   required String userId,
+
   required String activityId,
-}) =>
-    deleteActivitiesCollectionReference(
-      userId: userId,
-    ).doc(activityId);
+}) => deleteActivitiesCollectionReference(userId: userId).doc(activityId);
 
 /// Reference to the 'activities' collection group with a converter for [ReadUserActivity].
 /// This allows for type-safe read operations from Firestore, converting
@@ -279,6 +268,7 @@ sealed class BatchWriteActivity {
 final class BatchCreateActivity extends BatchWriteActivity {
   const BatchCreateActivity({
     required this.userId,
+
     required this.activityId,
     required this.createActivity,
   });
@@ -298,6 +288,7 @@ final class BatchCreateActivity extends BatchWriteActivity {
 final class BatchUpdateActivity extends BatchWriteActivity {
   const BatchUpdateActivity({
     required this.userId,
+
     required this.activityId,
     required this.updateActivity,
   });
@@ -315,10 +306,7 @@ final class BatchUpdateActivity extends BatchWriteActivity {
 /// only requires the ID of the activity document to be deleted, as no additional
 /// data is needed for deletion.
 final class BatchDeleteActivity extends BatchWriteActivity {
-  const BatchDeleteActivity({
-    required this.userId,
-    required this.activityId,
-  });
+  const BatchDeleteActivity({required this.userId, required this.activityId});
 
   final String userId;
 
@@ -370,17 +358,16 @@ class UserActivityQuery {
   /// Returns a list of [ReadUserActivity] documents.
   Future<List<ReadUserActivity>> fetchDocuments({
     required String userId,
+
     GetOptions? options,
     Query<ReadUserActivity>? Function(Query<ReadUserActivity> query)?
-        queryBuilder,
+    queryBuilder,
     int Function(ReadUserActivity lhs, ReadUserActivity rhs)? compare,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadUserActivity> query = asCollectionGroup
         ? readActivitiesCollectionGroupReference
-        : readActivitiesCollectionReference(
-            userId: userId,
-          );
+        : readActivitiesCollectionReference(userId: userId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -410,8 +397,9 @@ class UserActivityQuery {
   /// - [asCollectionGroup] Query the 'activities' as a collection group if true.
   Stream<List<ReadUserActivity>> subscribeDocuments({
     required String userId,
+
     Query<ReadUserActivity>? Function(Query<ReadUserActivity> query)?
-        queryBuilder,
+    queryBuilder,
     int Function(ReadUserActivity lhs, ReadUserActivity rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
@@ -419,14 +407,13 @@ class UserActivityQuery {
   }) {
     Query<ReadUserActivity> query = asCollectionGroup
         ? readActivitiesCollectionGroupReference
-        : readActivitiesCollectionReference(
-            userId: userId,
-          );
+        : readActivitiesCollectionReference(userId: userId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -457,16 +444,15 @@ class UserActivityQuery {
   /// Returns the count of documents as an integer.
   Future<int?> count({
     required String userId,
+
     Query<ReadUserActivity>? Function(Query<ReadUserActivity> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadUserActivity> query = asCollectionGroup
         ? readActivitiesCollectionGroupReference
-        : readActivitiesCollectionReference(
-            userId: userId,
-          );
+        : readActivitiesCollectionReference(userId: userId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -493,16 +479,15 @@ class UserActivityQuery {
   Future<double?> getSum({
     required String field,
     required String userId,
+
     Query<ReadUserActivity>? Function(Query<ReadUserActivity> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadUserActivity> query = asCollectionGroup
         ? readActivitiesCollectionGroupReference
-        : readActivitiesCollectionReference(
-            userId: userId,
-          );
+        : readActivitiesCollectionReference(userId: userId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -529,16 +514,15 @@ class UserActivityQuery {
   Future<double?> getAverage({
     required String field,
     required String userId,
+
     Query<ReadUserActivity>? Function(Query<ReadUserActivity> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadUserActivity> query = asCollectionGroup
         ? readActivitiesCollectionGroupReference
-        : readActivitiesCollectionReference(
-            userId: userId,
-          );
+        : readActivitiesCollectionReference(userId: userId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -553,11 +537,13 @@ class UserActivityQuery {
   /// You can control the data retrieval with [GetOptions].
   Future<ReadUserActivity?> fetchDocument({
     required String userId,
+
     required String activityId,
     GetOptions? options,
   }) async {
     final ds = await readActivityDocumentReference(
       userId: userId,
+
       activityId: activityId,
     ).get(options);
     return ds.data();
@@ -569,12 +555,14 @@ class UserActivityQuery {
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
   Stream<ReadUserActivity?> subscribeDocument({
     required String userId,
+
     required String activityId,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
     var streamDs = readActivityDocumentReference(
       userId: userId,
+
       activityId: activityId,
     ).snapshots(includeMetadataChanges: includeMetadataChanges);
     if (excludePendingWrites) {
@@ -589,11 +577,9 @@ class UserActivityQuery {
   /// [createUserActivity] data.
   Future<DocumentReference<CreateUserActivity>> add({
     required String userId,
+
     required CreateUserActivity createActivity,
-  }) =>
-      createActivitiesCollectionReference(
-        userId: userId,
-      ).add(createActivity);
+  }) => createActivitiesCollectionReference(userId: userId).add(createActivity);
 
   /// Sets a activity document to Cloud Firestore.
   ///
@@ -601,14 +587,15 @@ class UserActivityQuery {
   /// [createUserActivity] data.
   Future<void> set({
     required String userId,
+
     required String activityId,
     required CreateUserActivity createActivity,
     SetOptions? options,
-  }) =>
-      createActivityDocumentReference(
-        userId: userId,
-        activityId: activityId,
-      ).set(createActivity, options);
+  }) => createActivityDocumentReference(
+    userId: userId,
+
+    activityId: activityId,
+  ).set(createActivity, options);
 
   /// Updates a activity document in Cloud Firestore.
   ///
@@ -617,23 +604,22 @@ class UserActivityQuery {
   /// The update is based on the structure defined in `UpdateUserActivity.toJson()`.
   Future<void> update({
     required String userId,
+
     required String activityId,
     required UpdateUserActivity updateActivity,
-  }) =>
-      updateActivityDocumentReference(
-        userId: userId,
-        activityId: activityId,
-      ).update(updateActivity.toJson());
+  }) => updateActivityDocumentReference(
+    userId: userId,
+
+    activityId: activityId,
+  ).update(updateActivity.toJson());
 
   /// Deletes a activity document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [activityId].
-  Future<void> delete({
-    required String userId,
-    required String activityId,
-  }) =>
+  Future<void> delete({required String userId, required String activityId}) =>
       deleteActivityDocumentReference(
         userId: userId,
+
         activityId: activityId,
       ).delete();
 
@@ -666,37 +652,45 @@ class UserActivityQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateActivity(
-            userId: final userId,
-            activityId: final activityId,
-            createActivity: final createActivity,
-          ):
+          userId: final userId,
+
+          activityId: final activityId,
+          createActivity: final createActivity,
+        ):
           batch.set(
             createActivityDocumentReference(
               userId: userId,
+
               activityId: activityId,
             ),
             createActivity,
           );
         case BatchUpdateActivity(
-            userId: final userId,
-            activityId: final activityId,
-            updateActivity: final updateActivity,
-          ):
+          userId: final userId,
+
+          activityId: final activityId,
+          updateActivity: final updateActivity,
+        ):
           batch.update(
             updateActivityDocumentReference(
               userId: userId,
+
               activityId: activityId,
             ),
             updateActivity.toJson(),
           );
         case BatchDeleteActivity(
-            userId: final userId,
-            activityId: final activityId
-          ):
-          batch.delete(deleteActivityDocumentReference(
-            userId: userId,
-            activityId: activityId,
-          ));
+          userId: final userId,
+
+          activityId: final activityId,
+        ):
+          batch.delete(
+            deleteActivityDocumentReference(
+              userId: userId,
+
+              activityId: activityId,
+            ),
+          );
       }
     }
     return batch.commit();

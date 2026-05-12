@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -25,15 +26,15 @@ class ReadReadStatus {
   final DocumentReference<ReadReadStatus> readStatusReference;
 
   factory ReadReadStatus.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return ReadReadStatus(
       lastReadAt: (extendedJson['lastReadAt'] as Timestamp?)?.toDate(),
+
       readStatusId: extendedJson['readStatusId'] as String,
       path: extendedJson['path'] as String,
-      readStatusReference: extendedJson['readStatusReference']
-          as DocumentReference<ReadReadStatus>,
+      readStatusReference:
+          extendedJson['readStatusReference']
+              as DocumentReference<ReadReadStatus>,
     );
   }
 
@@ -43,7 +44,9 @@ class ReadReadStatus {
       ...data,
       'readStatusId': ds.id,
       'path': ds.reference.path,
-      'readStatusReference': ds.reference.parent.doc(ds.id).withConverter(
+      'readStatusReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) => ReadReadStatus.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
@@ -74,14 +77,13 @@ class CreateReadStatus {
   const CreateReadStatus();
 
   Map<String, dynamic> toJson() {
-    final json = <String, dynamic>{
-      'lastReadAt': FieldValue.serverTimestamp(),
-    };
+    final json = <String, dynamic>{'lastReadAt': FieldValue.serverTimestamp()};
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -96,14 +98,13 @@ class UpdateReadStatus {
   const UpdateReadStatus();
 
   Map<String, dynamic> toJson() {
-    final json = <String, dynamic>{
-      'lastReadAt': FieldValue.serverTimestamp(),
-    };
+    final json = <String, dynamic>{'lastReadAt': FieldValue.serverTimestamp()};
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -116,96 +117,92 @@ class DeleteReadStatus {}
 /// Firestore documents to [ReadReadStatus] objects.
 CollectionReference<ReadReadStatus> readReadStatusesCollectionReference({
   required String chatRoomId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('readStatuses')
-        .withConverter<ReadReadStatus>(
-          fromFirestore: (ds, _) => ReadReadStatus.fromDocumentSnapshot(ds),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('chatRooms')
+    .doc(chatRoomId)
+    .collection('readStatuses')
+    .withConverter<ReadReadStatus>(
+      fromFirestore: (ds, _) => ReadReadStatus.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific ReadStatus document.
 DocumentReference<ReadReadStatus> readReadStatusDocumentReference({
   required String chatRoomId,
+
   required String readStatusId,
-}) =>
-    readReadStatusesCollectionReference(
-      chatRoomId: chatRoomId,
-    ).doc(readStatusId);
+}) => readReadStatusesCollectionReference(
+  chatRoomId: chatRoomId,
+).doc(readStatusId);
 
 /// Reference to the 'readStatuses' collection with a converter for [CreateReadStatus].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateReadStatus] objects to Firestore document data.
 CollectionReference<CreateReadStatus> createReadStatusesCollectionReference({
   required String chatRoomId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('readStatuses')
-        .withConverter<CreateReadStatus>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('chatRooms')
+    .doc(chatRoomId)
+    .collection('readStatuses')
+    .withConverter<CreateReadStatus>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific ReadStatus document.
 DocumentReference<CreateReadStatus> createReadStatusDocumentReference({
   required String chatRoomId,
+
   required String readStatusId,
-}) =>
-    createReadStatusesCollectionReference(
-      chatRoomId: chatRoomId,
-    ).doc(readStatusId);
+}) => createReadStatusesCollectionReference(
+  chatRoomId: chatRoomId,
+).doc(readStatusId);
 
 /// Reference to the 'readStatuses' collection with a converter for [UpdateReadStatus].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateReadStatus] objects to Firestore document data.
 CollectionReference<UpdateReadStatus> updateReadStatusesCollectionReference({
   required String chatRoomId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('readStatuses')
-        .withConverter<UpdateReadStatus>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('chatRooms')
+    .doc(chatRoomId)
+    .collection('readStatuses')
+    .withConverter<UpdateReadStatus>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific ReadStatus document.
 DocumentReference<UpdateReadStatus> updateReadStatusDocumentReference({
   required String chatRoomId,
+
   required String readStatusId,
-}) =>
-    updateReadStatusesCollectionReference(
-      chatRoomId: chatRoomId,
-    ).doc(readStatusId);
+}) => updateReadStatusesCollectionReference(
+  chatRoomId: chatRoomId,
+).doc(readStatusId);
 
 /// Reference to the 'readStatuses' collection with a converter for [DeleteReadStatus].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
 CollectionReference<DeleteReadStatus> deleteReadStatusesCollectionReference({
   required String chatRoomId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('chatRooms')
-        .doc(chatRoomId)
-        .collection('readStatuses')
-        .withConverter<DeleteReadStatus>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('chatRooms')
+    .doc(chatRoomId)
+    .collection('readStatuses')
+    .withConverter<DeleteReadStatus>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific ReadStatus document.
 DocumentReference<DeleteReadStatus> deleteReadStatusDocumentReference({
   required String chatRoomId,
+
   required String readStatusId,
-}) =>
-    deleteReadStatusesCollectionReference(
-      chatRoomId: chatRoomId,
-    ).doc(readStatusId);
+}) => deleteReadStatusesCollectionReference(
+  chatRoomId: chatRoomId,
+).doc(readStatusId);
 
 /// Reference to the 'readStatuses' collection group with a converter for [ReadReadStatus].
 /// This allows for type-safe read operations from Firestore, converting
@@ -243,6 +240,7 @@ sealed class BatchWriteReadStatus {
 final class BatchCreateReadStatus extends BatchWriteReadStatus {
   const BatchCreateReadStatus({
     required this.chatRoomId,
+
     required this.readStatusId,
     required this.createReadStatus,
   });
@@ -262,6 +260,7 @@ final class BatchCreateReadStatus extends BatchWriteReadStatus {
 final class BatchUpdateReadStatus extends BatchWriteReadStatus {
   const BatchUpdateReadStatus({
     required this.chatRoomId,
+
     required this.readStatusId,
     required this.updateReadStatus,
   });
@@ -281,6 +280,7 @@ final class BatchUpdateReadStatus extends BatchWriteReadStatus {
 final class BatchDeleteReadStatus extends BatchWriteReadStatus {
   const BatchDeleteReadStatus({
     required this.chatRoomId,
+
     required this.readStatusId,
   });
 
@@ -334,6 +334,7 @@ class ReadStatusQuery {
   /// Returns a list of [ReadReadStatus] documents.
   Future<List<ReadReadStatus>> fetchDocuments({
     required String chatRoomId,
+
     GetOptions? options,
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     int Function(ReadReadStatus lhs, ReadReadStatus rhs)? compare,
@@ -341,9 +342,7 @@ class ReadStatusQuery {
   }) async {
     Query<ReadReadStatus> query = asCollectionGroup
         ? readReadStatusesCollectionGroupReference
-        : readReadStatusesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readReadStatusesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -373,6 +372,7 @@ class ReadStatusQuery {
   /// - [asCollectionGroup] Query the 'readStatuses' as a collection group if true.
   Stream<List<ReadReadStatus>> subscribeDocuments({
     required String chatRoomId,
+
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     int Function(ReadReadStatus lhs, ReadReadStatus rhs)? compare,
     bool includeMetadataChanges = false,
@@ -381,14 +381,13 @@ class ReadStatusQuery {
   }) {
     Query<ReadReadStatus> query = asCollectionGroup
         ? readReadStatusesCollectionGroupReference
-        : readReadStatusesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readReadStatusesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -419,15 +418,14 @@ class ReadStatusQuery {
   /// Returns the count of documents as an integer.
   Future<int?> count({
     required String chatRoomId,
+
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadReadStatus> query = asCollectionGroup
         ? readReadStatusesCollectionGroupReference
-        : readReadStatusesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readReadStatusesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -454,15 +452,14 @@ class ReadStatusQuery {
   Future<double?> getSum({
     required String field,
     required String chatRoomId,
+
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadReadStatus> query = asCollectionGroup
         ? readReadStatusesCollectionGroupReference
-        : readReadStatusesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readReadStatusesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -489,15 +486,14 @@ class ReadStatusQuery {
   Future<double?> getAverage({
     required String field,
     required String chatRoomId,
+
     Query<ReadReadStatus>? Function(Query<ReadReadStatus> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadReadStatus> query = asCollectionGroup
         ? readReadStatusesCollectionGroupReference
-        : readReadStatusesCollectionReference(
-            chatRoomId: chatRoomId,
-          );
+        : readReadStatusesCollectionReference(chatRoomId: chatRoomId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -512,11 +508,13 @@ class ReadStatusQuery {
   /// You can control the data retrieval with [GetOptions].
   Future<ReadReadStatus?> fetchDocument({
     required String chatRoomId,
+
     required String readStatusId,
     GetOptions? options,
   }) async {
     final ds = await readReadStatusDocumentReference(
       chatRoomId: chatRoomId,
+
       readStatusId: readStatusId,
     ).get(options);
     return ds.data();
@@ -528,12 +526,14 @@ class ReadStatusQuery {
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
   Stream<ReadReadStatus?> subscribeDocument({
     required String chatRoomId,
+
     required String readStatusId,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
     var streamDs = readReadStatusDocumentReference(
       chatRoomId: chatRoomId,
+
       readStatusId: readStatusId,
     ).snapshots(includeMetadataChanges: includeMetadataChanges);
     if (excludePendingWrites) {
@@ -548,11 +548,11 @@ class ReadStatusQuery {
   /// [createReadStatus] data.
   Future<DocumentReference<CreateReadStatus>> add({
     required String chatRoomId,
+
     required CreateReadStatus createReadStatus,
-  }) =>
-      createReadStatusesCollectionReference(
-        chatRoomId: chatRoomId,
-      ).add(createReadStatus);
+  }) => createReadStatusesCollectionReference(
+    chatRoomId: chatRoomId,
+  ).add(createReadStatus);
 
   /// Sets a readStatus document to Cloud Firestore.
   ///
@@ -560,14 +560,15 @@ class ReadStatusQuery {
   /// [createReadStatus] data.
   Future<void> set({
     required String chatRoomId,
+
     required String readStatusId,
     required CreateReadStatus createReadStatus,
     SetOptions? options,
-  }) =>
-      createReadStatusDocumentReference(
-        chatRoomId: chatRoomId,
-        readStatusId: readStatusId,
-      ).set(createReadStatus, options);
+  }) => createReadStatusDocumentReference(
+    chatRoomId: chatRoomId,
+
+    readStatusId: readStatusId,
+  ).set(createReadStatus, options);
 
   /// Updates a readStatus document in Cloud Firestore.
   ///
@@ -576,25 +577,27 @@ class ReadStatusQuery {
   /// The update is based on the structure defined in `UpdateReadStatus.toJson()`.
   Future<void> update({
     required String chatRoomId,
+
     required String readStatusId,
     required UpdateReadStatus updateReadStatus,
-  }) =>
-      updateReadStatusDocumentReference(
-        chatRoomId: chatRoomId,
-        readStatusId: readStatusId,
-      ).update(updateReadStatus.toJson());
+  }) => updateReadStatusDocumentReference(
+    chatRoomId: chatRoomId,
+
+    readStatusId: readStatusId,
+  ).update(updateReadStatus.toJson());
 
   /// Deletes a readStatus document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [readStatusId].
   Future<void> delete({
     required String chatRoomId,
+
     required String readStatusId,
-  }) =>
-      deleteReadStatusDocumentReference(
-        chatRoomId: chatRoomId,
-        readStatusId: readStatusId,
-      ).delete();
+  }) => deleteReadStatusDocumentReference(
+    chatRoomId: chatRoomId,
+
+    readStatusId: readStatusId,
+  ).delete();
 
   /// Performs a batch write operation in Firestore using a list of [BatchWriteReadStatus] tasks.
   ///
@@ -625,37 +628,45 @@ class ReadStatusQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateReadStatus(
-            chatRoomId: final chatRoomId,
-            readStatusId: final readStatusId,
-            createReadStatus: final createReadStatus,
-          ):
+          chatRoomId: final chatRoomId,
+
+          readStatusId: final readStatusId,
+          createReadStatus: final createReadStatus,
+        ):
           batch.set(
             createReadStatusDocumentReference(
               chatRoomId: chatRoomId,
+
               readStatusId: readStatusId,
             ),
             createReadStatus,
           );
         case BatchUpdateReadStatus(
-            chatRoomId: final chatRoomId,
-            readStatusId: final readStatusId,
-            updateReadStatus: final updateReadStatus,
-          ):
+          chatRoomId: final chatRoomId,
+
+          readStatusId: final readStatusId,
+          updateReadStatus: final updateReadStatus,
+        ):
           batch.update(
             updateReadStatusDocumentReference(
               chatRoomId: chatRoomId,
+
               readStatusId: readStatusId,
             ),
             updateReadStatus.toJson(),
           );
         case BatchDeleteReadStatus(
-            chatRoomId: final chatRoomId,
-            readStatusId: final readStatusId
-          ):
-          batch.delete(deleteReadStatusDocumentReference(
-            chatRoomId: chatRoomId,
-            readStatusId: readStatusId,
-          ));
+          chatRoomId: final chatRoomId,
+
+          readStatusId: final readStatusId,
+        ):
+          batch.delete(
+            deleteReadStatusDocumentReference(
+              chatRoomId: chatRoomId,
+
+              readStatusId: readStatusId,
+            ),
+          );
       }
     }
     return batch.commit();

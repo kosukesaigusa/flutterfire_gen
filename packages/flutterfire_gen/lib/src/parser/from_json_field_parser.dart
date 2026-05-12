@@ -76,11 +76,13 @@ class FromJsonFieldParser {
     String parsedKey = 'e',
   }) {
     final hasDefaultValue = (defaultValueString ?? '').isNotEmpty;
-    final defaultValueExpression =
-        (isFirstLoop && hasDefaultValue) ? ' ?? $defaultValueString' : '';
+    final defaultValueExpression = (isFirstLoop && hasDefaultValue)
+        ? ' ?? $defaultValueString'
+        : '';
 
     if (jsonConverterConfig != null) {
-      final fromJsonString = '${jsonConverterConfig.jsonConverterString}.'
+      final fromJsonString =
+          '${jsonConverterConfig.jsonConverterString}.'
           "fromJson(extendedJson['$name']"
           ' as ${jsonConverterConfig.firestoreTypeString})';
       if (defaultValueString != null) {
@@ -91,8 +93,9 @@ class FromJsonFieldParser {
       }
     }
 
-    final effectiveParsedKey =
-        isFirstLoop ? "extendedJson['$name']" : parsedKey;
+    final effectiveParsedKey = isFirstLoop
+        ? "extendedJson['$name']"
+        : parsedKey;
 
     if (dartType.isDartCoreList) {
       if (dartType.firstTypeArgumentOfList != null) {

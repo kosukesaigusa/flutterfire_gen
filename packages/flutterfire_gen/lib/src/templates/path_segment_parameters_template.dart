@@ -38,9 +38,8 @@ class DocumentIdParametersTemplate {
   ///
   /// This constructor generates a representation suitable for defining fields
   /// in a class that represent document IDs from a Firestore path.
-  const DocumentIdParametersTemplate.fieldDefinition(
-    this.firestoreDocumentPath,
-  ) : _type = _DocumentIdParametersType.fieldDefinition;
+  const DocumentIdParametersTemplate.fieldDefinition(this.firestoreDocumentPath)
+    : _type = _DocumentIdParametersType.fieldDefinition;
 
   /// Creates a template for argument invocation using document ID.
   ///
@@ -57,9 +56,8 @@ class DocumentIdParametersTemplate {
   /// This constructor generates a representation suitable for defining case
   /// parameters in switch statements that handle document IDs from a Firestore
   /// path.
-  const DocumentIdParametersTemplate.caseParameter(
-    this.firestoreDocumentPath,
-  ) : _type = _DocumentIdParametersType.caseParameter;
+  const DocumentIdParametersTemplate.caseParameter(this.firestoreDocumentPath)
+    : _type = _DocumentIdParametersType.caseParameter;
 
   /// The Firestore document path configuration.
   final FirestoreDocumentPath firestoreDocumentPath;

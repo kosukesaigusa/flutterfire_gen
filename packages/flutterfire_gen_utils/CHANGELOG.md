@@ -1,3 +1,9 @@
+## 0.6.0
+
+* Adopt unified versioning across the `flutterfire_gen` family. From this release onwards, `flutterfire_gen`, `flutterfire_gen_annotation`, and `flutterfire_gen_utils` are released together under the same version number, which makes it easier for users to pick a compatible set.
+* Raise the minimum Dart SDK to `>=3.5.0` so the package can participate in Dart workspaces (`resolution: workspace` requires language version 3.5+).
+* Use the Dart pattern-matching shorthand (`(:final field)`) in `FirestoreData` switch expressions to satisfy the up-to-date pattern-style lints. No behavioural change.
+
 ## 0.5.1
 
 * Update `cloud_firestore` dependency to `>=5.5.0` to support wider range of versions.

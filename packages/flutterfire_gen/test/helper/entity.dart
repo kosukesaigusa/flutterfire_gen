@@ -118,9 +118,9 @@ class Entity {
 
   final Map<String, Map<String, int>> nestedMap;
 
-  @ReadDefault(
-    <String, Map<String, int>>{'requiredWithDefault': <String, int>{}},
-  )
+  @ReadDefault(<String, Map<String, int>>{
+    'requiredWithDefault': <String, int>{},
+  })
   final Map<String, Map<String, int>> nestedMapWithDefault;
 
   @ReadDefault(<String, Map<String, int>>{})

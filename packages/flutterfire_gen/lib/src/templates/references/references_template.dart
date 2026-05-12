@@ -113,8 +113,8 @@ class ReferencesTemplate {
     } else {
       final documentIdParametersDefinition =
           DocumentIdParametersTemplate.methodParameterDefinition(
-        config.firestoreDocumentPath,
-      );
+            config.firestoreDocumentPath,
+          );
       return '$typeName $varName ({$documentIdParametersDefinition}) => ';
     }
   }
@@ -122,10 +122,12 @@ class ReferencesTemplate {
   String _documentReference(ReferenceClassType referenceClassType) {
     final ancestors = config.firestoreDocumentPath.ancestors;
     final typeName = config.documentReferenceTypeName(referenceClassType);
-    final documentReferenceVarName =
-        config.documentReferenceName(referenceClassType);
-    final collectionReferenceVarName =
-        config.collectionReferenceName(referenceClassType);
+    final documentReferenceVarName = config.documentReferenceName(
+      referenceClassType,
+    );
+    final collectionReferenceVarName = config.collectionReferenceName(
+      referenceClassType,
+    );
     if (ancestors.isEmpty) {
       return '''
 $typeName $documentReferenceVarName({
@@ -136,12 +138,12 @@ $typeName $documentReferenceVarName({
     } else {
       final documentIdParametersDefinition =
           DocumentIdParametersTemplate.methodParameterDefinition(
-        config.firestoreDocumentPath,
-      );
+            config.firestoreDocumentPath,
+          );
       final documentIdParametersArgumentInvocation =
           DocumentIdParametersTemplate.argumentInvocation(
-        config.firestoreDocumentPath,
-      );
+            config.firestoreDocumentPath,
+          );
       return '''
 $typeName $documentReferenceVarName({
   $documentIdParametersDefinition

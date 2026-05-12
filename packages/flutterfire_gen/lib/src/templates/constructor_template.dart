@@ -9,10 +9,7 @@ class ConstructorFieldConfig {
   ///
   /// - [name] The name of the field.
   /// - [isOptional] Indicates whether the field is optional in the constructor.
-  ConstructorFieldConfig({
-    required this.name,
-    required this.isOptional,
-  });
+  ConstructorFieldConfig({required this.name, required this.isOptional});
 
   /// The name of the field.
   final String name;

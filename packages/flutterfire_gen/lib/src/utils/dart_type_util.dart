@@ -23,12 +23,11 @@ extension DartTypeExtension on DartType {
   String typeName({
     bool forceNullable = false,
     bool wrapByFirestoreData = false,
-  }) =>
-      _typeToCode(
-        this,
-        forceNullable: forceNullable,
-        wrapByFirestoreData: wrapByFirestoreData,
-      );
+  }) => _typeToCode(
+    this,
+    forceNullable: forceNullable,
+    wrapByFirestoreData: wrapByFirestoreData,
+  );
 
   /// If the DartType is a List, returns its first type argument.
   ///

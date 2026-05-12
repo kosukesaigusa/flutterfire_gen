@@ -48,8 +48,9 @@ void main() {
       when(nullableIntElement.name).thenReturn('int');
       when(nullableIntType.element).thenReturn(nullableIntElement);
       when(nullableIntType.typeArguments).thenReturn([]);
-      when(nullableIntType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
+      when(
+        nullableIntType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
 
       stringType = MockInterfaceType();
       stringElement = MockInterfaceElement();
@@ -65,8 +66,9 @@ void main() {
       when(nullableStringElement.name).thenReturn('String');
       when(nullableStringType.element).thenReturn(nullableStringElement);
       when(nullableStringType.typeArguments).thenReturn([]);
-      when(nullableStringType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.question);
+      when(
+        nullableStringType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.question);
 
       dateTimeType = MockInterfaceType();
       dateTimeElement = MockInterfaceElement();
@@ -80,8 +82,9 @@ void main() {
       when(listOfStringsElement.name).thenReturn('List');
       when(listOfStringsType.element).thenReturn(listOfStringsElement);
       when(listOfStringsType.typeArguments).thenReturn([stringType]);
-      when(listOfStringsType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.none);
+      when(
+        listOfStringsType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.none);
       when(listOfStringsType.isDartCoreList).thenReturn(true);
 
       jsonMapType = MockInterfaceType();
@@ -99,8 +102,9 @@ void main() {
       when(intDynamicMapType.isDartCoreMap).thenReturn(true);
       when(intDynamicMapType.element).thenReturn(mapElement);
       when(intDynamicMapType.typeArguments).thenReturn([intType, dynamicType]);
-      when(intDynamicMapType.nullabilitySuffix)
-          .thenReturn(NullabilitySuffix.none);
+      when(
+        intDynamicMapType.nullabilitySuffix,
+      ).thenReturn(NullabilitySuffix.none);
     });
 
     group('DartType.typeName tests', () {
@@ -121,8 +125,7 @@ void main() {
         expect(listOfStringsType.typeName(), 'List<String>');
       });
 
-      test(
-          'int? type (wrapByFirestoreData: true) '
+      test('int? type (wrapByFirestoreData: true) '
           'returns "FirestoreData<int>?"', () {
         expect(
           nullableIntType.typeName(wrapByFirestoreData: true),
@@ -130,8 +133,7 @@ void main() {
         );
       });
 
-      test(
-          'List<String> type (wrapByFirestoreData: true) '
+      test('List<String> type (wrapByFirestoreData: true) '
           'returns "FirestoreData<List<String>>"', () {
         expect(
           listOfStringsType.typeName(wrapByFirestoreData: true),
@@ -177,13 +179,12 @@ void main() {
     });
 
     group('keyValueOfMap test', () {
-      test(
-          'Map<String, dynamic> type returns '
+      test('Map<String, dynamic> type returns '
           'Record of (key: stringType, value: dynamicType)', () {
-        expect(
-          jsonMapType.keyValueOfMap,
-          (key: stringType, value: dynamicType),
-        );
+        expect(jsonMapType.keyValueOfMap, (
+          key: stringType,
+          value: dynamicType,
+        ));
       });
 
       test('Map<int, dynamic> type returns null', () {

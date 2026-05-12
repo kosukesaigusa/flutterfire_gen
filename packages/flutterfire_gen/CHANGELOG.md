@@ -1,3 +1,18 @@
+## 0.6.0
+
+> [!NOTE]
+> This release has breaking changes.
+
+* **Breaking**: Adopt unified versioning across the `flutterfire_gen` family. `flutterfire_gen`, `flutterfire_gen_annotation`, and `flutterfire_gen_utils` are now released together under the same version number; this release pins both companion packages to `^0.6.0`.
+* **Breaking**: Bump the minimum Dart SDK to `>=3.9.0` so that the package can depend on `analyzer` 9.x.
+* **Breaking**: Update `analyzer` constraint to `>=9.0.0 <14.0.0`.
+* **Breaking**: Update `source_gen` constraint to `>=4.0.0 <5.0.0`.
+* Update `build` constraint to `>=2.4.0 <5.0.0`.
+* Replace `TypeChecker.fromRuntime` with `TypeChecker.typeNamed`, since `fromRuntime` was removed in `source_gen` 4.
+* Adapt to `Element.name` becoming nullable in `analyzer` 9 by normalising it before use.
+* Adapt to `Element.metadata` returning a `Metadata` object instead of `List<ElementAnnotation>`, going through `metadata.annotations` to iterate annotations.
+* Drop the deprecated `withNullability` argument from `DartType.getDisplayString()` calls; the new default already excludes nullability suffixes.
+
 ## 0.5.1
 
 * Update dependency versions to support wider range of `analyzer` versions (thanks to @tenpei-peso).

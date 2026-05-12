@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -31,20 +32,21 @@ class ReadAppUserPost {
   final DocumentReference<ReadAppUserPost> appUserPostReference;
 
   factory ReadAppUserPost.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return ReadAppUserPost(
       content: extendedJson['content'] as String? ?? '',
-      numbers: (extendedJson['numbers'] as List<dynamic>?)
+      numbers:
+          (extendedJson['numbers'] as List<dynamic>?)
               ?.map((e) => e as int)
               .toList() ??
           const <int>[],
       updatedAt: (extendedJson['updatedAt'] as Timestamp?)?.toDate(),
+
       appUserPostId: extendedJson['appUserPostId'] as String,
       path: extendedJson['path'] as String,
-      appUserPostReference: extendedJson['appUserPostReference']
-          as DocumentReference<ReadAppUserPost>,
+      appUserPostReference:
+          extendedJson['appUserPostReference']
+              as DocumentReference<ReadAppUserPost>,
     );
   }
 
@@ -54,7 +56,9 @@ class ReadAppUserPost {
       ...data,
       'appUserPostId': ds.id,
       'path': ds.reference.path,
-      'appUserPostReference': ds.reference.parent.doc(ds.id).withConverter(
+      'appUserPostReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) => ReadAppUserPost.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
@@ -86,10 +90,7 @@ class ReadAppUserPost {
 /// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateAppUserPost {
-  const CreateAppUserPost({
-    required this.content,
-    required this.numbers,
-  });
+  const CreateAppUserPost({required this.content, required this.numbers});
 
   final String content;
 
@@ -104,8 +105,9 @@ class CreateAppUserPost {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -117,10 +119,7 @@ class CreateAppUserPost {
 /// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
 /// to the server's timestamp upon updating.
 class UpdateAppUserPost {
-  const UpdateAppUserPost({
-    this.content,
-    this.numbers,
-  });
+  const UpdateAppUserPost({this.content, this.numbers});
 
   final String? content;
 
@@ -135,8 +134,9 @@ class UpdateAppUserPost {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -149,96 +149,92 @@ class DeleteAppUserPost {}
 /// Firestore documents to [ReadAppUserPost] objects.
 CollectionReference<ReadAppUserPost> readAppUserPostsCollectionReference({
   required String appUserId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('appUsers')
-        .doc(appUserId)
-        .collection('appUserPosts')
-        .withConverter<ReadAppUserPost>(
-          fromFirestore: (ds, _) => ReadAppUserPost.fromDocumentSnapshot(ds),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('appUsers')
+    .doc(appUserId)
+    .collection('appUserPosts')
+    .withConverter<ReadAppUserPost>(
+      fromFirestore: (ds, _) => ReadAppUserPost.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific AppUserPost document.
 DocumentReference<ReadAppUserPost> readAppUserPostDocumentReference({
   required String appUserId,
+
   required String appUserPostId,
-}) =>
-    readAppUserPostsCollectionReference(
-      appUserId: appUserId,
-    ).doc(appUserPostId);
+}) => readAppUserPostsCollectionReference(
+  appUserId: appUserId,
+).doc(appUserPostId);
 
 /// Reference to the 'appUserPosts' collection with a converter for [CreateAppUserPost].
 /// This enables type-safe create operations in Firestore, converting
 /// [CreateAppUserPost] objects to Firestore document data.
 CollectionReference<CreateAppUserPost> createAppUserPostsCollectionReference({
   required String appUserId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('appUsers')
-        .doc(appUserId)
-        .collection('appUserPosts')
-        .withConverter<CreateAppUserPost>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('appUsers')
+    .doc(appUserId)
+    .collection('appUserPosts')
+    .withConverter<CreateAppUserPost>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific AppUserPost document.
 DocumentReference<CreateAppUserPost> createAppUserPostDocumentReference({
   required String appUserId,
+
   required String appUserPostId,
-}) =>
-    createAppUserPostsCollectionReference(
-      appUserId: appUserId,
-    ).doc(appUserPostId);
+}) => createAppUserPostsCollectionReference(
+  appUserId: appUserId,
+).doc(appUserPostId);
 
 /// Reference to the 'appUserPosts' collection with a converter for [UpdateAppUserPost].
 /// This allows for type-safe update operations in Firestore, converting
 /// [UpdateAppUserPost] objects to Firestore document data.
 CollectionReference<UpdateAppUserPost> updateAppUserPostsCollectionReference({
   required String appUserId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('appUsers')
-        .doc(appUserId)
-        .collection('appUserPosts')
-        .withConverter<UpdateAppUserPost>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (obj, _) => obj.toJson(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('appUsers')
+    .doc(appUserId)
+    .collection('appUserPosts')
+    .withConverter<UpdateAppUserPost>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// Creates a [DocumentReference] for a specific AppUserPost document.
 DocumentReference<UpdateAppUserPost> updateAppUserPostDocumentReference({
   required String appUserId,
+
   required String appUserPostId,
-}) =>
-    updateAppUserPostsCollectionReference(
-      appUserId: appUserId,
-    ).doc(appUserPostId);
+}) => updateAppUserPostsCollectionReference(
+  appUserId: appUserId,
+).doc(appUserPostId);
 
 /// Reference to the 'appUserPosts' collection with a converter for [DeleteAppUserPost].
 /// This reference is used specifically for delete operations and does not
 /// support reading or writing data to Firestore.
 CollectionReference<DeleteAppUserPost> deleteAppUserPostsCollectionReference({
   required String appUserId,
-}) =>
-    FirebaseFirestore.instance
-        .collection('appUsers')
-        .doc(appUserId)
-        .collection('appUserPosts')
-        .withConverter<DeleteAppUserPost>(
-          fromFirestore: (_, __) => throw UnimplementedError(),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+}) => FirebaseFirestore.instance
+    .collection('appUsers')
+    .doc(appUserId)
+    .collection('appUserPosts')
+    .withConverter<DeleteAppUserPost>(
+      fromFirestore: (_, __) => throw UnimplementedError(),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific AppUserPost document.
 DocumentReference<DeleteAppUserPost> deleteAppUserPostDocumentReference({
   required String appUserId,
+
   required String appUserPostId,
-}) =>
-    deleteAppUserPostsCollectionReference(
-      appUserId: appUserId,
-    ).doc(appUserPostId);
+}) => deleteAppUserPostsCollectionReference(
+  appUserId: appUserId,
+).doc(appUserPostId);
 
 /// Reference to the 'appUserPosts' collection group with a converter for [ReadAppUserPost].
 /// This allows for type-safe read operations from Firestore, converting
@@ -276,6 +272,7 @@ sealed class BatchWriteAppUserPost {
 final class BatchCreateAppUserPost extends BatchWriteAppUserPost {
   const BatchCreateAppUserPost({
     required this.appUserId,
+
     required this.appUserPostId,
     required this.createAppUserPost,
   });
@@ -295,6 +292,7 @@ final class BatchCreateAppUserPost extends BatchWriteAppUserPost {
 final class BatchUpdateAppUserPost extends BatchWriteAppUserPost {
   const BatchUpdateAppUserPost({
     required this.appUserId,
+
     required this.appUserPostId,
     required this.updateAppUserPost,
   });
@@ -314,6 +312,7 @@ final class BatchUpdateAppUserPost extends BatchWriteAppUserPost {
 final class BatchDeleteAppUserPost extends BatchWriteAppUserPost {
   const BatchDeleteAppUserPost({
     required this.appUserId,
+
     required this.appUserPostId,
   });
 
@@ -367,17 +366,16 @@ class AppUserPostQuery {
   /// Returns a list of [ReadAppUserPost] documents.
   Future<List<ReadAppUserPost>> fetchDocuments({
     required String appUserId,
+
     GetOptions? options,
     Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
-        queryBuilder,
+    queryBuilder,
     int Function(ReadAppUserPost lhs, ReadAppUserPost rhs)? compare,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadAppUserPost> query = asCollectionGroup
         ? readAppUserPostsCollectionGroupReference
-        : readAppUserPostsCollectionReference(
-            appUserId: appUserId,
-          );
+        : readAppUserPostsCollectionReference(appUserId: appUserId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -407,8 +405,9 @@ class AppUserPostQuery {
   /// - [asCollectionGroup] Query the 'appUserPosts' as a collection group if true.
   Stream<List<ReadAppUserPost>> subscribeDocuments({
     required String appUserId,
+
     Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
-        queryBuilder,
+    queryBuilder,
     int Function(ReadAppUserPost lhs, ReadAppUserPost rhs)? compare,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
@@ -416,14 +415,13 @@ class AppUserPostQuery {
   }) {
     Query<ReadAppUserPost> query = asCollectionGroup
         ? readAppUserPostsCollectionGroupReference
-        : readAppUserPostsCollectionReference(
-            appUserId: appUserId,
-          );
+        : readAppUserPostsCollectionReference(appUserId: appUserId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -454,16 +452,15 @@ class AppUserPostQuery {
   /// Returns the count of documents as an integer.
   Future<int?> count({
     required String appUserId,
+
     Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadAppUserPost> query = asCollectionGroup
         ? readAppUserPostsCollectionGroupReference
-        : readAppUserPostsCollectionReference(
-            appUserId: appUserId,
-          );
+        : readAppUserPostsCollectionReference(appUserId: appUserId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -490,16 +487,15 @@ class AppUserPostQuery {
   Future<double?> getSum({
     required String field,
     required String appUserId,
+
     Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadAppUserPost> query = asCollectionGroup
         ? readAppUserPostsCollectionGroupReference
-        : readAppUserPostsCollectionReference(
-            appUserId: appUserId,
-          );
+        : readAppUserPostsCollectionReference(appUserId: appUserId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -526,16 +522,15 @@ class AppUserPostQuery {
   Future<double?> getAverage({
     required String field,
     required String appUserId,
+
     Query<ReadAppUserPost>? Function(Query<ReadAppUserPost> query)?
-        queryBuilder,
+    queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
   }) async {
     Query<ReadAppUserPost> query = asCollectionGroup
         ? readAppUserPostsCollectionGroupReference
-        : readAppUserPostsCollectionReference(
-            appUserId: appUserId,
-          );
+        : readAppUserPostsCollectionReference(appUserId: appUserId);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -550,11 +545,13 @@ class AppUserPostQuery {
   /// You can control the data retrieval with [GetOptions].
   Future<ReadAppUserPost?> fetchDocument({
     required String appUserId,
+
     required String appUserPostId,
     GetOptions? options,
   }) async {
     final ds = await readAppUserPostDocumentReference(
       appUserId: appUserId,
+
       appUserPostId: appUserPostId,
     ).get(options);
     return ds.data();
@@ -566,12 +563,14 @@ class AppUserPostQuery {
   /// real-time based on the database changes. You can control the data retrieval with [GetOptions].
   Stream<ReadAppUserPost?> subscribeDocument({
     required String appUserId,
+
     required String appUserPostId,
     bool includeMetadataChanges = false,
     bool excludePendingWrites = false,
   }) {
     var streamDs = readAppUserPostDocumentReference(
       appUserId: appUserId,
+
       appUserPostId: appUserPostId,
     ).snapshots(includeMetadataChanges: includeMetadataChanges);
     if (excludePendingWrites) {
@@ -586,11 +585,11 @@ class AppUserPostQuery {
   /// [createAppUserPost] data.
   Future<DocumentReference<CreateAppUserPost>> add({
     required String appUserId,
+
     required CreateAppUserPost createAppUserPost,
-  }) =>
-      createAppUserPostsCollectionReference(
-        appUserId: appUserId,
-      ).add(createAppUserPost);
+  }) => createAppUserPostsCollectionReference(
+    appUserId: appUserId,
+  ).add(createAppUserPost);
 
   /// Sets a appUserPost document to Cloud Firestore.
   ///
@@ -598,14 +597,15 @@ class AppUserPostQuery {
   /// [createAppUserPost] data.
   Future<void> set({
     required String appUserId,
+
     required String appUserPostId,
     required CreateAppUserPost createAppUserPost,
     SetOptions? options,
-  }) =>
-      createAppUserPostDocumentReference(
-        appUserId: appUserId,
-        appUserPostId: appUserPostId,
-      ).set(createAppUserPost, options);
+  }) => createAppUserPostDocumentReference(
+    appUserId: appUserId,
+
+    appUserPostId: appUserPostId,
+  ).set(createAppUserPost, options);
 
   /// Updates a appUserPost document in Cloud Firestore.
   ///
@@ -614,25 +614,27 @@ class AppUserPostQuery {
   /// The update is based on the structure defined in `UpdateAppUserPost.toJson()`.
   Future<void> update({
     required String appUserId,
+
     required String appUserPostId,
     required UpdateAppUserPost updateAppUserPost,
-  }) =>
-      updateAppUserPostDocumentReference(
-        appUserId: appUserId,
-        appUserPostId: appUserPostId,
-      ).update(updateAppUserPost.toJson());
+  }) => updateAppUserPostDocumentReference(
+    appUserId: appUserId,
+
+    appUserPostId: appUserPostId,
+  ).update(updateAppUserPost.toJson());
 
   /// Deletes a appUserPost document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [appUserPostId].
   Future<void> delete({
     required String appUserId,
+
     required String appUserPostId,
-  }) =>
-      deleteAppUserPostDocumentReference(
-        appUserId: appUserId,
-        appUserPostId: appUserPostId,
-      ).delete();
+  }) => deleteAppUserPostDocumentReference(
+    appUserId: appUserId,
+
+    appUserPostId: appUserPostId,
+  ).delete();
 
   /// Performs a batch write operation in Firestore using a list of [BatchWriteAppUserPost] tasks.
   ///
@@ -663,37 +665,45 @@ class AppUserPostQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateAppUserPost(
-            appUserId: final appUserId,
-            appUserPostId: final appUserPostId,
-            createAppUserPost: final createAppUserPost,
-          ):
+          appUserId: final appUserId,
+
+          appUserPostId: final appUserPostId,
+          createAppUserPost: final createAppUserPost,
+        ):
           batch.set(
             createAppUserPostDocumentReference(
               appUserId: appUserId,
+
               appUserPostId: appUserPostId,
             ),
             createAppUserPost,
           );
         case BatchUpdateAppUserPost(
-            appUserId: final appUserId,
-            appUserPostId: final appUserPostId,
-            updateAppUserPost: final updateAppUserPost,
-          ):
+          appUserId: final appUserId,
+
+          appUserPostId: final appUserPostId,
+          updateAppUserPost: final updateAppUserPost,
+        ):
           batch.update(
             updateAppUserPostDocumentReference(
               appUserId: appUserId,
+
               appUserPostId: appUserPostId,
             ),
             updateAppUserPost.toJson(),
           );
         case BatchDeleteAppUserPost(
-            appUserId: final appUserId,
-            appUserPostId: final appUserPostId
-          ):
-          batch.delete(deleteAppUserPostDocumentReference(
-            appUserId: appUserId,
-            appUserPostId: appUserPostId,
-          ));
+          appUserId: final appUserId,
+
+          appUserPostId: final appUserPostId,
+        ):
+          batch.delete(
+            deleteAppUserPostDocumentReference(
+              appUserId: appUserId,
+
+              appUserPostId: appUserPostId,
+            ),
+          );
       }
     }
     return batch.commit();
