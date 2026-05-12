@@ -6,7 +6,7 @@ part 'todo.flutterfire_gen.dart';
 part 'todo.g.dart';
 
 @riverpod
-TodoQuery todoQuery(TodoQueryRef _) => TodoQuery();
+TodoQuery todoQuery(Ref _) => TodoQuery();
 
 @riverpod
 class TodoList extends _$TodoList {
@@ -24,7 +24,9 @@ class TodoList extends _$TodoList {
     required String todoId,
     required bool isCompleted,
   }) async {
-    await ref.read(todoQueryProvider).update(
+    await ref
+        .read(todoQueryProvider)
+        .update(
           todoId: todoId,
           updateTodoData: UpdateTodoData(isCompleted: isCompleted),
         );
@@ -37,9 +39,12 @@ class TodoList extends _$TodoList {
   }
 
   Future<void> completeAll() async {
-    final todoIds =
-        (await ref.read(todoListProvider.future)).map((todo) => todo.todoId);
-    await ref.read(todoQueryProvider).batchWrite(
+    final todoIds = (await ref.read(
+      todoListProvider.future,
+    )).map((todo) => todo.todoId);
+    await ref
+        .read(todoQueryProvider)
+        .batchWrite(
           todoIds
               .map(
                 (todoId) => BatchUpdateTodo(
@@ -53,15 +58,20 @@ class TodoList extends _$TodoList {
   }
 
   Future<void> deleteAll() async {
-    final todoIds =
-        (await ref.read(todoListProvider.future)).map((todo) => todo.todoId);
-    await ref.read(todoQueryProvider).batchWrite(
+    final todoIds = (await ref.read(
+      todoListProvider.future,
+    )).map((todo) => todo.todoId);
+    await ref
+        .read(todoQueryProvider)
+        .batchWrite(
           todoIds.map((todoId) => BatchDeleteTodo(todoId: todoId)).toList(),
         );
     ref.invalidateSelf();
   }
 
-  Future<int?> countNotCompletedTodos() => ref.read(todoQueryProvider).count(
+  Future<int?> countNotCompletedTodos() => ref
+      .read(todoQueryProvider)
+      .count(
         queryBuilder: (query) => query.where('isCompleted', isNotEqualTo: true),
       );
 }

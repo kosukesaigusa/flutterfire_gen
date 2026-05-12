@@ -92,16 +92,15 @@ class _CounterListPageState extends ConsumerState<CounterListPage> {
           const SizedBox(height: 4),
           FloatingActionButton(
             onPressed: () async {
-              final average =
-                  await ref.read(counterListProvider.notifier).getAverage();
-              if (!mounted) {
+              final average = await ref
+                  .read(counterListProvider.notifier)
+                  .getAverage();
+              if (!context.mounted) {
                 return;
               }
               ScaffoldMessenger.of(context)
                 ..removeCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(content: Text('average: $average')),
-                );
+                ..showSnackBar(SnackBar(content: Text('average: $average')));
             },
             child: const Icon(Icons.balance),
           ),
@@ -109,14 +108,12 @@ class _CounterListPageState extends ConsumerState<CounterListPage> {
           FloatingActionButton(
             onPressed: () async {
               final sum = await ref.read(counterListProvider.notifier).getSum();
-              if (!mounted) {
+              if (!context.mounted) {
                 return;
               }
               ScaffoldMessenger.of(context)
                 ..removeCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(content: Text('sum: $sum')),
-                );
+                ..showSnackBar(SnackBar(content: Text('sum: $sum')));
             },
             child: const Icon(Icons.add_circle_outline),
           ),

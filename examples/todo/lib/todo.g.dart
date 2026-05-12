@@ -6,34 +6,90 @@ part of 'todo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$todoQueryHash() => r'1ae9990e8428b0fd8b6e46f9f84089d61a9b9926';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [todoQuery].
 @ProviderFor(todoQuery)
-final todoQueryProvider = AutoDisposeProvider<TodoQuery>.internal(
-  todoQuery,
-  name: r'todoQueryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$todoQueryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final todoQueryProvider = TodoQueryProvider._();
 
-typedef TodoQueryRef = AutoDisposeProviderRef<TodoQuery>;
+final class TodoQueryProvider
+    extends $FunctionalProvider<TodoQuery, TodoQuery, TodoQuery>
+    with $Provider<TodoQuery> {
+  TodoQueryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'todoQueryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$todoQueryHash();
+
+  @$internal
+  @override
+  $ProviderElement<TodoQuery> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  TodoQuery create(Ref ref) {
+    return todoQuery(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(TodoQuery value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<TodoQuery>(value),
+    );
+  }
+}
+
+String _$todoQueryHash() => r'1f26a40a4eb01f78b98e5f94460d649b164707f1';
+
+@ProviderFor(TodoList)
+final todoListProvider = TodoListProvider._();
+
+final class TodoListProvider
+    extends $AsyncNotifierProvider<TodoList, List<Todo>> {
+  TodoListProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'todoListProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$todoListHash();
+
+  @$internal
+  @override
+  TodoList create() => TodoList();
+}
+
 String _$todoListHash() => r'7e71fca1db0730983b28290b2737ef974a2e571e';
 
-/// See also [TodoList].
-@ProviderFor(TodoList)
-final todoListProvider =
-    AutoDisposeAsyncNotifierProvider<TodoList, List<Todo>>.internal(
-  TodoList.new,
-  name: r'todoListProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$todoListHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$TodoList = AutoDisposeAsyncNotifier<List<Todo>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+abstract class _$TodoList extends $AsyncNotifier<List<Todo>> {
+  FutureOr<List<Todo>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<List<Todo>>, List<Todo>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<Todo>>, List<Todo>>,
+              AsyncValue<List<Todo>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}

@@ -1,3 +1,16 @@
+# Run flutterfire_gen before riverpod_generator.
+#
+# The classes generated into `*.flutterfire_gen.dart` are referenced as types
+# by downstream generators, so those generators need flutterfire_gen to have
+# finished writing its outputs first; otherwise type resolution fails.
+#
+# Ordering between builders is the consumer's responsibility, so the rule is
+# defined here on the consumer side rather than inside the builder package.
+global_options:
+  flutterfire_gen:flutterfire_gen:
+    runs_before:
+      - riverpod_generator:riverpod_generator
+
 targets:
   $default:
     builders:

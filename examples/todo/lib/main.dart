@@ -98,14 +98,12 @@ class _TodoListPageState extends ConsumerState<TodoListPage> {
               if (count == null) {
                 return;
               }
-              if (!mounted) {
+              if (!context.mounted) {
                 return;
               }
               ScaffoldMessenger.of(context)
                 ..removeCurrentSnackBar()
-                ..showSnackBar(
-                  SnackBar(content: Text('$count todos left.')),
-                );
+                ..showSnackBar(SnackBar(content: Text('$count todos left.')));
             },
             child: const Icon(Icons.onetwothree),
           ),

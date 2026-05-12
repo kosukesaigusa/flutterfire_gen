@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
@@ -31,13 +32,12 @@ class Counter {
   final DocumentReference<Counter> counterReference;
 
   factory Counter.fromJson(Map<String, dynamic> json) {
-    final extendedJson = <String, dynamic>{
-      ...json,
-    };
+    final extendedJson = <String, dynamic>{...json};
     return Counter(
       value: extendedJson['value'] as int,
       createdAt: (extendedJson['createdAt'] as Timestamp?)?.toDate(),
       updatedAt: (extendedJson['updatedAt'] as Timestamp?)?.toDate(),
+
       counterId: extendedJson['counterId'] as String,
       path: extendedJson['path'] as String,
       counterReference:
@@ -51,7 +51,9 @@ class Counter {
       ...data,
       'counterId': ds.id,
       'path': ds.reference.path,
-      'counterReference': ds.reference.parent.doc(ds.id).withConverter(
+      'counterReference': ds.reference.parent
+          .doc(ds.id)
+          .withConverter(
             fromFirestore: (ds, _) => Counter.fromDocumentSnapshot(ds),
             toFirestore: (obj, _) => throw UnimplementedError(),
           ),
@@ -83,9 +85,7 @@ class Counter {
 /// `@alwaysUseFieldValueServerTimestampWhenCreating` annotated fields are
 /// automatically set to the server's timestamp.
 class CreateCounterData {
-  const CreateCounterData({
-    this.value,
-  });
+  const CreateCounterData({this.value});
 
   final FirestoreData<int>? value;
 
@@ -98,8 +98,9 @@ class CreateCounterData {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -111,10 +112,7 @@ class CreateCounterData {
 /// sets the `@alwaysUseFieldValueServerTimestampWhenUpdating` annotated fields
 /// to the server's timestamp upon updating.
 class UpdateCounterData {
-  const UpdateCounterData({
-    this.value,
-    this.createdAt,
-  });
+  const UpdateCounterData({this.value, this.createdAt});
 
   final FirestoreData<int>? value;
 
@@ -130,8 +128,9 @@ class UpdateCounterData {
     final jsonPostProcessors = <({String key, dynamic value})>[];
     return {
       ...json,
-      ...Map.fromEntries(jsonPostProcessors
-          .map((record) => MapEntry(record.key, record.value))),
+      ...Map.fromEntries(
+        jsonPostProcessors.map((record) => MapEntry(record.key, record.value)),
+      ),
     };
   }
 }
@@ -142,17 +141,17 @@ class DeleteCounter {}
 /// Reference to the 'counters' collection with a converter for [Counter].
 /// This allows for type-safe read operations from Firestore, converting
 /// Firestore documents to [Counter] objects.
-final readCountersCollectionReference =
-    FirebaseFirestore.instance.collection('counters').withConverter<Counter>(
-          fromFirestore: (ds, _) => Counter.fromDocumentSnapshot(ds),
-          toFirestore: (_, __) => throw UnimplementedError(),
-        );
+final readCountersCollectionReference = FirebaseFirestore.instance
+    .collection('counters')
+    .withConverter<Counter>(
+      fromFirestore: (ds, _) => Counter.fromDocumentSnapshot(ds),
+      toFirestore: (_, __) => throw UnimplementedError(),
+    );
 
 /// Creates a [DocumentReference] for a specific Counter document.
 DocumentReference<Counter> readCounterDocumentReference({
   required String counterId,
-}) =>
-    readCountersCollectionReference.doc(counterId);
+}) => readCountersCollectionReference.doc(counterId);
 
 /// Reference to the 'counters' collection with a converter for [CreateCounterData].
 /// This enables type-safe create operations in Firestore, converting
@@ -167,8 +166,7 @@ final createCountersCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific Counter document.
 DocumentReference<CreateCounterData> createCounterDocumentReference({
   required String counterId,
-}) =>
-    createCountersCollectionReference.doc(counterId);
+}) => createCountersCollectionReference.doc(counterId);
 
 /// Reference to the 'counters' collection with a converter for [UpdateCounterData].
 /// This allows for type-safe update operations in Firestore, converting
@@ -183,8 +181,7 @@ final updateCountersCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific Counter document.
 DocumentReference<UpdateCounterData> updateCounterDocumentReference({
   required String counterId,
-}) =>
-    updateCountersCollectionReference.doc(counterId);
+}) => updateCountersCollectionReference.doc(counterId);
 
 /// Reference to the 'counters' collection with a converter for [DeleteCounter].
 /// This reference is used specifically for delete operations and does not
@@ -199,8 +196,7 @@ final deleteCountersCollectionReference = FirebaseFirestore.instance
 /// Creates a [DocumentReference] for a specific Counter document.
 DocumentReference<DeleteCounter> deleteCounterDocumentReference({
   required String counterId,
-}) =>
-    deleteCountersCollectionReference.doc(counterId);
+}) => deleteCountersCollectionReference.doc(counterId);
 
 /// Reference to the 'counters' collection group with a converter for [Counter].
 /// This allows for type-safe read operations from Firestore, converting
@@ -268,9 +264,7 @@ final class BatchUpdateCounter extends BatchWriteCounter {
 /// only requires the ID of the counter document to be deleted, as no additional
 /// data is needed for deletion.
 final class BatchDeleteCounter extends BatchWriteCounter {
-  const BatchDeleteCounter({
-    required this.counterId,
-  });
+  const BatchDeleteCounter({required this.counterId});
 
   final String counterId;
 }
@@ -367,8 +361,9 @@ class CounterQuery {
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
-    var streamQs =
-        query.snapshots(includeMetadataChanges: includeMetadataChanges);
+    var streamQs = query.snapshots(
+      includeMetadataChanges: includeMetadataChanges,
+    );
     if (excludePendingWrites) {
       streamQs = streamQs.where((qs) => !qs.metadata.hasPendingWrites);
     }
@@ -430,6 +425,7 @@ class CounterQuery {
   /// Returns the sum of the values of the documents that match the query.
   Future<double?> getSum({
     required String field,
+
     Query<Counter>? Function(Query<Counter> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -462,6 +458,7 @@ class CounterQuery {
   /// Returns the average of the values of the documents that match the query.
   Future<double?> getAverage({
     required String field,
+
     Query<Counter>? Function(Query<Counter> query)? queryBuilder,
     AggregateSource source = AggregateSource.server,
     bool asCollectionGroup = false,
@@ -515,8 +512,7 @@ class CounterQuery {
   /// [createCounter] data.
   Future<DocumentReference<CreateCounterData>> add({
     required CreateCounterData createCounterData,
-  }) =>
-      createCountersCollectionReference.add(createCounterData);
+  }) => createCountersCollectionReference.add(createCounterData);
 
   /// Sets a counter document to Cloud Firestore.
   ///
@@ -526,10 +522,9 @@ class CounterQuery {
     required String counterId,
     required CreateCounterData createCounterData,
     SetOptions? options,
-  }) =>
-      createCounterDocumentReference(
-        counterId: counterId,
-      ).set(createCounterData, options);
+  }) => createCounterDocumentReference(
+    counterId: counterId,
+  ).set(createCounterData, options);
 
   /// Updates a counter document in Cloud Firestore.
   ///
@@ -539,20 +534,15 @@ class CounterQuery {
   Future<void> update({
     required String counterId,
     required UpdateCounterData updateCounterData,
-  }) =>
-      updateCounterDocumentReference(
-        counterId: counterId,
-      ).update(updateCounterData.toJson());
+  }) => updateCounterDocumentReference(
+    counterId: counterId,
+  ).update(updateCounterData.toJson());
 
   /// Deletes a counter document from Cloud Firestore.
   ///
   /// This method deletes an existing document identified by [counterId].
-  Future<void> delete({
-    required String counterId,
-  }) =>
-      deleteCounterDocumentReference(
-        counterId: counterId,
-      ).delete();
+  Future<void> delete({required String counterId}) =>
+      deleteCounterDocumentReference(counterId: counterId).delete();
 
   /// Performs a batch write operation in Firestore using a list of [BatchWriteCounter] tasks.
   ///
@@ -583,29 +573,23 @@ class CounterQuery {
     for (final task in batchWriteTasks) {
       switch (task) {
         case BatchCreateCounter(
-            counterId: final counterId,
-            createCounterData: final createCounterData,
-          ):
+          counterId: final counterId,
+          createCounterData: final createCounterData,
+        ):
           batch.set(
-            createCounterDocumentReference(
-              counterId: counterId,
-            ),
+            createCounterDocumentReference(counterId: counterId),
             createCounterData,
           );
         case BatchUpdateCounter(
-            counterId: final counterId,
-            updateCounterData: final updateCounterData,
-          ):
+          counterId: final counterId,
+          updateCounterData: final updateCounterData,
+        ):
           batch.update(
-            updateCounterDocumentReference(
-              counterId: counterId,
-            ),
+            updateCounterDocumentReference(counterId: counterId),
             updateCounterData.toJson(),
           );
         case BatchDeleteCounter(counterId: final counterId):
-          batch.delete(deleteCounterDocumentReference(
-            counterId: counterId,
-          ));
+          batch.delete(deleteCounterDocumentReference(counterId: counterId));
       }
     }
     return batch.commit();
