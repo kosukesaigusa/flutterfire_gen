@@ -28,7 +28,7 @@ dev_dependencies:
     sdk: flutter
   flutterfire_gen:
     path: ../../packages/flutterfire_gen
-  freezed: ^3.2.0
+  freezed: ^4.0.1
   riverpod_generator: ^4.0.0
   riverpod_lint: ^3.1.0
 
